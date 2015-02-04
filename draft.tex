@@ -1,0 +1,87 @@
+\documentclass[10pt,preprint,nocopyrightspace]{sigplanconf}
+
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{natbib}
+\usepackage{xspace}
+\usepackage{balance}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{breakurl}
+\usepackage{amsmath}
+
+\begin{document}
+
+\special{papersize=8.5in,11in}
+\setlength{\pdfpageheight}{\paperheight}
+\setlength{\pdfpagewidth}{\paperwidth}
+
+\conferenceinfo{CONF 'yy}{Month d--d, 20yy, City, ST, Country} 
+\copyrightyear{20yy} 
+\copyrightdata{978-1-nnnn-nnnn-n/yy/mm} 
+\doi{nnnnnnn.nnnnnnn}
+
+% Uncomment one of the following two, if you are not going for the 
+% traditional copyright transfer agreement.
+
+%\exclusivelicense                % ACM gets exclusive license to publish, 
+                                  % you retain copyright
+
+%\permissiontopublish             % ACM gets nonexclusive license to publish
+                                  % (paid open-access papers, 
+                                  % short abstracts)
+
+% \titlebanner{banner above paper title}        % These are ignored unless
+% \preprintfooter{short description of paper}   % 'preprint' option specified.
+
+\title{Abstract Data Type Inference}
+% \subtitle{}
+
+\authorinfo{Michael Emmi}
+           {IMDEA Software Institute}
+           {michael.emmi@imdea.org}
+\authorinfo{Constantin Enea\and Jad Hamza}
+           {Université Paris Diderot}
+           {\{cenea,jhamza\}@univ-paris-diderot.fr}
+
+\maketitle
+
+\begin{abstract}
+
+  TODO WRITE THE ABSTRACT
+
+\end{abstract}
+
+\category{F.3.1}{Specifying and Verifying and Reasoning about Programs}{Mechanical verification}
+
+\terms
+Reliability, Verification
+
+\keywords
+Concurrency; Refinement; Linearizability
+
+\input intro
+\input inference
+\input embedding
+\input computing
+\input empirical
+\input related
+
+% \appendix
+
+% \acks …
+
+\bibliographystyle{abbrvnat}
+\bibliography{violin}
+
+% % The bibliography should be embedded for final submission.
+%
+% \begin{thebibliography}{}
+% \softraggedright
+%
+% \bibitem[Smith et~al.(2009)Smith, Jones]{smith02}
+% P. Q. Smith, and X. Y. Jones. ...reference text...
+%
+% \end{thebibliography}
+
+\end{document}
