@@ -5,11 +5,12 @@ TODO DISCUSS THE IMPORTANCE OF OBSERVATIONAL REFINEMENT, AND THAT IT IS HARD
 
 Recent work has demonstrated that checking observational refinement can be
 performed efficiently in practice, given symbolic ADT representations,
-e.g.,~using first-order logic. However, writing accurate symbolic
-specifications is an expected challenge for the designers of concurrent ADTs.
-Common practice is to write reference implementations. Mapping these imperative
-implementations to the logical formulæ describing valid executions is a great
-challenge for human developers.
+e.g.,~using first-order logic~\cite{conf/popl/BouajjaniEEH15,
+conf/pldi/EmmiEH15}. However, writing accurate symbolic specifications is an
+expected challenge for the designers of concurrent ADTs. Common practice is to
+write reference implementations. Mapping these imperative implementations to
+the logical formulæ describing valid executions is a great challenge for human
+developers.
 
 In this work we demonstrate that effective symbolic ADT representations can be
 extracted from the executions of reference implementations. Our approach
