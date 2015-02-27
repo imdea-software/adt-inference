@@ -1,4 +1,91 @@
 \section{Introduction}
 \label{sec:intro}
 
-TODO WRITE THE STORY
+TODO DISCUSS THE IMPORTANCE OF OBSERVATIONAL REFINEMENT, AND THAT IT IS HARD
+
+Recent work has demonstrated that checking observational refinement can be
+performed efficiently in practice, given symbolic ADT representations,
+e.g.,~using first-order logic. However, writing accurate symbolic
+specifications is an expected challenge for the designers of concurrent ADTs.
+Common practice is to write reference implementations. Mapping these imperative
+implementations to the logical formulæ describing valid executions is a great
+challenge for human developers.
+
+In this work we demonstrate that effective symbolic ADT representations can be
+extracted from the executions of reference implementations. Our approach
+exploits two key features of concurrent object ADTs: that violations of each
+ADT can be decomposed into a small set of representative patterns, and that
+these patterns manifest in executions with few operations. The first feature
+allows us to represent symbolic ADTs finitely, as exclusions of violation
+patterns. The second allows us to extract violation patterns from finite
+enumerations of executions.
+
+The fundamental challenge is in identifying the algebraic properties of ADTs
+which allow us to characterize an infinite set of violating executions with a
+finite set of patterns. This characterization is non-trivial since an execution
+with more operations than a given violating execution is not necessarily a
+violation itself. For instance, an execution which contains only a single {\tt
+pop} operation returning the value {\tt 1} is a violation to the atomic stack
+ADT, whereas an execution containing an additional {\tt push(1)} operation,
+overlapping in time with the {\tt pop}, is not. Further complication arises
+from the infinite set of possible data values, i.e.,~method argument and return
+values. Our patterns must be sensitive to the \emph{relation} among data values
+without being sensitive to the data values themselves. For instance, a
+sequential execution in which {\tt 1} and {\tt 2} are pushed and subsequently
+popped in the same order violates the atomic stack ADT. Yet, while replacing
+both values {\tt 1} and {\tt 2} with the value {\tt 1} results in a
+\emph{valid} stack execution, replacing them with {\tt 3} and {\tt 4} results
+in a violation.
+
+Our algebraic insight is based on grouping the operations of an execution into
+\emph{matchings}. Intuitively, operations which refer to the same instances of
+values belong to the same matching. For example, a {\tt pop} operation
+returning the value {\tt 1} matches a preceding {\tt push(1)} operation. By
+comparing executions by the characteristics of their matchings, rather than the
+actual data values they use, we capture the relation among data values
+independently of the data values themselves. Furthermore, the notion of
+matchings provides a key algebraic property of ADTs: the executions of
+naturally-occurring concurrent object ADTs are closed under the removal of
+matchings. For example, any execution of the atomic stack ADT using values {\tt
+1}, {\tt 2}, and {\tt 3} would remain a valid execution were all operations
+using the value {\tt 2} deleted. Conversely, any execution which extends a
+violating execution with additional matchings is itself a violation. This
+property, along with analogous algebraic properties concerning operation order
+and completion, allow us to characterize the violations of ADTs with finite
+basis sets, ultimately leading to finite symbolic ADT representations.
+
+Computing the basis sets of ADT violation patterns is a challenging problem,
+requiring the computation of global properties of an infinite number of
+executions — analogously to the inference of inductive invariants. Exploiting a
+hypothesis that violation patterns manifest in executions with few operations,
+we propose an under-approximating algorithm which extracts the patterns
+observed in all violating executions up to a given number of operations. In
+theory, for an arbitrary ADT, this is clearly incomplete: any violation which
+only surfaces with a greater number of operations would not be captured, thus
+resulting in a symbolic ADT representation which can fail to identify
+violations — though still guarantees never to classify a valid execution as a
+violation. Empirically, however, we demonstrate that our hypothesis holds: the
+patterns emerging from executions with few operations are complete in
+characterizing all violations of naturally-occurring concurrent object ADTs,
+thus allowing us to compute complete symbolic ADT representations in practice.
+
+The contributions and outline of this work are as follows:
+\begin{itemize}
+
+  \item The statement of the ADT inference problem (§\ref{sec:inference}).
+
+  \item Identification of algebraic properties allowing finite
+  characterizations of infinite ADT violations sets (§\ref{sec:embedding}).
+
+  \item An under-approximating algorithm for the ADT inference problem
+  (§\ref{sec:computing}).
+
+  \item An algorithm to infer the matching functions required for our algebraic
+  characterization of ADTs (§\ref{sec:matching}).
+
+  \item Empirical validation that our ADT-inference approximation is complete
+  in practice, and effective for the detection of violations to observational
+  refinement~(§\ref{sec:empirical}).
+
+\end{itemize}
+We conclude with a discussion of related work (§\ref{sec:related}).
