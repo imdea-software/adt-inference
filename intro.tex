@@ -15,24 +15,27 @@ admitted by the the ADT.
 Although checking observational refinement is a fundamentally hard
 problem\footnote{See Section~\ref{sec:related} for further discussion.} for
 arbitrary ADTs~\cite{journals/siamcomp/GibbonsK97, conf/esop/BouajjaniEEH13},
-recent work demonstrates that naturally-occurring ADTs like atomic collections,
-semaphores, and locks can be checked efficiently given effective symbolic ADT
-representations~\cite{conf/popl/BouajjaniEEH15, journals/arxiv/BouajjaniEEH15,
-conf/pldi/EmmiEH15}, e.g.,~specified in first-order logic. However, writing
-accurate symbolic specifications is an expected challenge for ADT designers. In
-practice, ADTs are specified indirectly as the observable behaviors of
-possibly-abstract imperative \emph{reference implementations}. Mapping these
-reference implementations to logical formulæ describing the same sets of
-behaviors is a complex task requiring rare expertise.
+recent work demonstrates that implementations of naturally-occurring ADTs like
+atomic collections, semaphores, and locks can be checked efficiently given
+effective symbolic ADT representations~\cite{conf/popl/BouajjaniEEH15,
+journals/arxiv/BouajjaniEEH15, conf/pldi/EmmiEH15}, e.g.,~specified in
+first-order logic. However, writing accurate symbolic specifications is an
+expected challenge for ADT designers. In practice, ADTs are specified
+indirectly as the observable behaviors of possibly-abstract imperative
+\emph{reference implementations}. Mapping these reference implementations to
+logical formulæ describing the same sets of behaviors is a complex task
+requiring rare expertise.
 
 In this work we demonstrate that effective symbolic ADT representations can be
-generated automatically from the executions of reference implementations. Our
-approach exploits two key features of concurrent-object ADTs: that violations
-of each ADT can be decomposed into a small set of representative patterns, and
-that these patterns manifest in executions with few operations. The first
-feature allows us to represent symbolic ADTs finitely, as exclusions of
-violation patterns. The second allows us to extract violation patterns from
-finite enumerations of executions.
+generated automatically from the executions of reference implementations,
+enabling the application of efficient symbolic refinement-checking algorithms
+without the burden of writing formal specifications manually. Our approach
+exploits two key features of concurrent-object ADTs: that violations of each
+ADT can be decomposed into a small set of representative patterns, and that
+these patterns manifest in executions with few operations. The first feature
+allows us to represent symbolic ADTs finitely, as exclusions of violation
+patterns. The second allows us to extract violation patterns from finite
+enumerations of executions.
 
 The fundamental challenge is in identifying the algebraic properties of ADTs
 which allow us to characterize an infinite set of violating executions with a
@@ -106,3 +109,10 @@ The contributions and outline of this work are as follows:
 
 \end{itemize}
 We conclude with a discussion of related work (§\ref{sec:related}).
+
+As far as we are aware, this work is the first to suggest the automatic
+generation of symbolic ADT representations for concurrent objects. By removing
+the burden of writing formal ADT specifications manually, this work broadens
+the scope of efficient symbolic refinement-checking algorithms to
+newly-designed ADTs, apart from those few traditionally studied in the
+literature.

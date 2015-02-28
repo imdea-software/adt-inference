@@ -1,24 +1,43 @@
 \section{Related Work}
 \label{sec:related}
 
-TODO COMPARE WITH OTHER REFINEMENT CHECKING APPROACHES AND FIGURE OUT HOW THIS
-MIGHT BE RELATED TO OTHER INFERENCE ALGORITHMS
+Inference of symbolic abstract data types is a recently-pertinent problem
+arising from the the emergence of efficient symbolic refinement-checking
+algorithms~\cite{conf/popl/BouajjaniEEH15, conf/pldi/EmmiEH15} which require
+symbolic, logical representations of ADT specifications. Though approaches
+based on the explicit enumeration of execution
+linearizations~\cite{journals/jpdc/WingG93, conf/pldi/BurckhardtDMT10,
+conf/asplos/BurnimNS11, conf/kbse/ZhangCW13} do not require symbolic ADT
+representations, and work directly with given reference implementations, these
+approaches are intractable, since the number of linearizations is exponential
+in execution length.
+
+Other approaches to tractable refinement-checking are based on annotating
+method bodies with \emph{linearization
+points}~\cite{journals/toplas/HerlihyW90, conf/cav/AmitRRSY07,
+conf/fm/LiuCLS09, conf/cav/Vafeiadis10, conf/podc/OHearnRVYY10,
+conf/icse/Zhang11a, conf/oopsla/ShachamBASVY11, conf/cav/DragoiGH13,
+conf/pldi/LiangF13} to reduce the otherwise exponential number of possible
+linearizations to one single linearization. This approach, however, does not
+apply to all implementations~\cite{journals/toplas/HerlihyW90}, and
+applications of this approach often rely on manual annotation of the
+implementation source code. Furthermore, this approach does not admit
+conclusive evidence of a refinement violation in case of failure.
 
 The idea of decomposing ADT violations into a finite set of patterns has been
-proposed for atomic collections~\cite{conf/concur/HenzingerSV13,
-conf/popl/DoddsHK15, conf/popl/BouajjaniEEH15}, and generalized to ADTs which
-can be expressed with a particular form of recursive
-definitions~\cite{journals/arxiv/BouajjaniEEH15}. These works suggest patterns
-which directly recognize violations across the entire set of \emph{concurrent}
-executions, effectively reducing observational refinement to the verification
-of classical temporal-logic properties. Some of these patterns are expressible
-only as infinite, though \emph{regular}, languages. On the contrary, in this
-work we suggest patterns expressed as \emph{finite} languages, which recognize
+proposed for atomic collections~\cite{conf/tacas/AbdullaHHJR13,
+conf/concur/HenzingerSV13, conf/popl/DoddsHK15, conf/popl/BouajjaniEEH15}, and
+generalized to ADTs which can be expressed with a particular form of recursive
+definition~\cite{journals/arxiv/BouajjaniEEH15}. These works suggest patterns
+which directly recognize violations in \emph{concurrent} executions,
+effectively reducing observational refinement to the verification of classical
+temporal-logic properties. Some of these patterns are expressible only as
+\emph{infinite}, though regular, languages. On the contrary, in this work we
+suggest patterns expressed as \emph{finite} languages, which recognize
 violations in ADT \emph{kernels} — i.e.,~the sequential executions of atomic
 objects, or the “concurrency-aware” executions of “concurrency-aware”
 specifications~\cite{conf/podc/HemedR14}. Though by themselves these patterns
-are incomplete in recognizing violations across the entire set of concurrent
-executions, they are complete when considered as negative conditions on
-concurrent executions’ linearization orders, effectively reducing verification
-of a single concurrent execution to satisfiability
-checking~\cite{conf/pldi/EmmiEH15}.
+are incomplete in recognizing violations in concurrent executions, they are
+complete when considered as negative conditions on the linearizations of
+concurrent executions, effectively reducing verification of a single execution
+to satisfiability checking~\cite{conf/pldi/EmmiEH15}.
