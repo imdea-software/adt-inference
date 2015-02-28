@@ -1,25 +1,38 @@
 \section{Introduction}
 \label{sec:intro}
 
-TODO DISCUSS THE IMPORTANCE OF OBSERVATIONAL REFINEMENT, AND THAT IT IS HARD
+Many modern software systems rely on efficient implementations of abstract data
+types (ADTs) like atomic collections, semaphores, and locks. Efficient
+implementation is difficult though, because efficiency entails maximizing
+concurrency, and concurrency jeopardizes atomicity. Consequently,
+implementations are vulnerable to subtle and elusive bugs compromising
+adherence to their ADTs~\cite{journals/cacm/staff11}, thus necessitating
+automated verification. Adherence of an implementation to an ADT is captured
+formally by a property called \emph{observational refinement}: any observable
+behavior over the method call and return actions of the implementation is also
+admitted by the the ADT.
 
-Recent work has demonstrated that checking observational refinement can be
-performed efficiently in practice, given symbolic ADT representations,
-e.g.,~using first-order logic~\cite{conf/popl/BouajjaniEEH15,
-conf/pldi/EmmiEH15}. However, writing accurate symbolic specifications is an
-expected challenge for the designers of concurrent ADTs. Common practice is to
-write reference implementations. Mapping these imperative implementations to
-the logical formulæ describing valid executions is a great challenge for human
-developers.
+Although checking observational refinement is a fundamentally hard
+problem\footnote{See Section~\ref{sec:related} for further discussion.} for
+arbitrary ADTs~\cite{journals/siamcomp/GibbonsK97, conf/esop/BouajjaniEEH13},
+recent work demonstrates that naturally-occurring ADTs like atomic collections,
+semaphores, and locks can be checked efficiently given effective symbolic ADT
+representations~\cite{conf/popl/BouajjaniEEH15, journals/arxiv/BouajjaniEEH15,
+conf/pldi/EmmiEH15}, e.g.,~specified in first-order logic. However, writing
+accurate symbolic specifications is an expected challenge for ADT designers. In
+practice, ADTs are specified indirectly as the observable behaviors of
+possibly-abstract imperative \emph{reference implementations}. Mapping these
+reference implementations to logical formulæ describing the same sets of
+behaviors is a complex task requiring rare expertise.
 
 In this work we demonstrate that effective symbolic ADT representations can be
-extracted from the executions of reference implementations. Our approach
-exploits two key features of concurrent object ADTs: that violations of each
-ADT can be decomposed into a small set of representative patterns, and that
-these patterns manifest in executions with few operations. The first feature
-allows us to represent symbolic ADTs finitely, as exclusions of violation
-patterns. The second allows us to extract violation patterns from finite
-enumerations of executions.
+generated automatically from the executions of reference implementations. Our
+approach exploits two key features of concurrent-object ADTs: that violations
+of each ADT can be decomposed into a small set of representative patterns, and
+that these patterns manifest in executions with few operations. The first
+feature allows us to represent symbolic ADTs finitely, as exclusions of
+violation patterns. The second allows us to extract violation patterns from
+finite enumerations of executions.
 
 The fundamental challenge is in identifying the algebraic properties of ADTs
 which allow us to characterize an infinite set of violating executions with a
@@ -52,8 +65,11 @@ matchings. For example, any execution of the atomic stack ADT using values {\tt
 using the value {\tt 2} deleted. Conversely, any execution which extends a
 violating execution with additional matchings is itself a violation. This
 property, along with analogous algebraic properties concerning operation order
-and completion, allow us to characterize the violations of ADTs with finite
-basis sets, ultimately leading to finite symbolic ADT representations.
+and completion, allow us to compare executions via a violation-preserving
+embedding relation. This relation is a well-founded partial order on
+executions, and thus allows us to characterize the infinite set of violations
+to an ADT with a finite basis set, ultimately leading to a finite symbolic
+representation.
 
 Computing the basis sets of ADT violation patterns is a challenging problem,
 requiring the computation of global properties of an infinite number of
@@ -85,8 +101,8 @@ The contributions and outline of this work are as follows:
   characterization of ADTs (§\ref{sec:matching}).
 
   \item Empirical validation that our ADT-inference approximation is complete
-  in practice, and effective for the detection of violations to observational
-  refinement~(§\ref{sec:empirical}).
+  in practice, and effective for the detection of observational-refinement
+  violations~(§\ref{sec:empirical}).
 
 \end{itemize}
 We conclude with a discussion of related work (§\ref{sec:related}).

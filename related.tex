@@ -3,3 +3,22 @@
 
 TODO COMPARE WITH OTHER REFINEMENT CHECKING APPROACHES AND FIGURE OUT HOW THIS
 MIGHT BE RELATED TO OTHER INFERENCE ALGORITHMS
+
+The idea of decomposing ADT violations into a finite set of patterns has been
+proposed for atomic collections~\cite{conf/concur/HenzingerSV13,
+conf/popl/DoddsHK15, conf/popl/BouajjaniEEH15}, and generalized to ADTs which
+can be expressed with a particular form of recursive
+definitions~\cite{journals/arxiv/BouajjaniEEH15}. These works suggest patterns
+which directly recognize violations across the entire set of \emph{concurrent}
+executions, effectively reducing observational refinement to the verification
+of classical temporal-logic properties. Some of these patterns are expressible
+only as infinite, though \emph{regular}, languages. On the contrary, in this
+work we suggest patterns expressed as \emph{finite} languages, which recognize
+violations in ADT \emph{kernels} — i.e.,~the sequential executions of atomic
+objects, or the “concurrency-aware” executions of “concurrency-aware”
+specifications~\cite{conf/podc/HemedR14}. Though by themselves these patterns
+are incomplete in recognizing violations across the entire set of concurrent
+executions, they are complete when considered as negative conditions on
+concurrent executions’ linearization orders, effectively reducing verification
+of a single concurrent execution to satisfiability
+checking~\cite{conf/pldi/EmmiEH15}.
