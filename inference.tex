@@ -83,20 +83,43 @@ loss of precision up to set inclusion for data-independent execution sets.
 For the remainder of this work, we assume each set of executions $E$ comes
 equipped with a faithful matching scheme $M$, and abbreviate $H(M,E)$ by $H(E)$.
 
-An \emph{implementation} $\mathcal{I}$ is a labeled transition system whose
-traces are executions. The histories $H(\mathcal{I})$ of an implementation are
-the histories of its traces. An \emph{abstract data type (ADT)} $A$ is the set
-$H(\mathcal{I})$ of histories of \emph{some} implementation $\mathcal{I}$. We
-define \emph{observational refinement} between two implementations, or between
-an implementation and an ADT, as history-set inclusion. We say $\mathcal{I}_1$
-\emph{refines} $\mathcal{I}_2$ if{f} $H(\mathcal{I}_1) \subseteq
-H(\mathcal{I}_2)$, and $\mathcal{I}$ \emph{refines} $A$ if{f} $H(\mathcal{I})
-\subseteq A$.
+An \emph{implementation} $\mathcal{I}$ is a prefixed-closed set of executions.
+An \emph{abstract data type (ADT)} $A$ is the set $H(\mathcal{I})$ of histories
+of an implementation $\mathcal{I}$. We define \emph{observational refinement}
+between two implementations, or between an implementation and an ADT, as
+history-set inclusion. We say $\mathcal{I}_1$ \emph{refines} $\mathcal{I}_2$
+if{f} $H(\mathcal{I}_1) \subseteq H(\mathcal{I}_2)$, and $\mathcal{I}$
+\emph{refines} $A$ if{f} $H(\mathcal{I}) \subseteq A$.
 
-TODO DEFINE HISTORY LOGIC
+In the following we fix a symbolic representation of ADTs on which to base our
+symbolic ADT inference problem. A \emph{history formula} $F$ is a first-order
+logic formula with
+\begin{itemize}
 
-The \emph{symbolic ADT inference problem} is to compute a first-order history
-formula $F$ for a given ADT $A$ such that
+  \item variables ranging over operation identifiers,
+
+  \item constants from $\mathbb{M}$ for method names,
+
+  \item a function symbol $\mathsf{m}$ for matching, and
+
+  \item predicate symbols $\mathsf{c}$ and $\mathsf{<}$ for completion and
+  order.
+
+\end{itemize}
+A history formula $F$ is interpreted over a history $h$ in the natural way, by
+binding variables to the operations of $h$, and binding function and predicate
+symbols to their interpretations in $h$. We write $h \models F$ when $h$ is a
+model of $F$, and $h \not\models F$ otherwise.
+
+\begin{example}
+
+  TODO HISTORY FORMULA EXAMPLE
+
+\end{example}
+
+TODO DEFINE KERNEL AND COMPLEMENT
+
+A history formula $F$ \emph{represents} an ADT $A$ when:
 \begin{itemize}
 
   \item $h \models F$ for all $h \in \ker A$, and
@@ -104,4 +127,6 @@ formula $F$ for a given ADT $A$ such that
   \item $h \not\models F$ for all $h \in B$,
 
 \end{itemize}
-where $B$ is the complement of $\ker A$.
+where $B$ is the complement of $\ker A$. The \emph{symbolic ADT inference
+problem} is to compute a history formula $F$ representing the ADT of a given
+implementation $\mathcal{I}$.
