@@ -1,14 +1,96 @@
 \section{Symbolic ADT Inference}
 \label{sec:inference}
 
-TODO DEFINE REFINEMENT AND SET THE ADT INFERENCE PROBLEM
+TODO MOTIVATE THIS SECTION
 
-A \emph{history} $h = \tup{O,<,\ell,f,m}$ is a partial order $<$ on a set $O$
-of operations with method labeling $\ell: O \to M$, completion labeling $f: O
-\to \mathbb{B}$ — an operation $o \in O$ is \emph{completed} if $f(o)$
-otherwise \emph{pending} — and partial matching function $m: O \rightharpoonup
-O$ such that pending operations are maximal. We say $h$ is \emph{sequential}
-when $<$ is a total order on $O$, and \emph{(in)complete} when (not) all
-operations are completed. An operation $o \in \rng(m)$ is a \emph{match
-target}, and the set $\set{ o' \in O : m(o') = o}$ of operations targeting $o$
-is a \emph{match}.
+We fix an arbitrary infinite set $\mathbb{O}$ of operation identifiers, and
+given sets $\mathbb{M}$ and $\mathbb{V}$ of method names and values. A
+\emph{call action} binds an operation identifier $o \in \mathbb{O}$ with a
+method name $p \in \mathbb{M}$ and argument value $v \in \mathbb{V}$, while a
+\emph{return action} binds an operation identifier $o$ with a return value $v$.
+An \emph{execution} $e$ is a sequence of call and return actions where
+\begin{itemize}
+
+  \item each operation identifier is used in at most one call action, and in at
+  most one return action, and
+
+  \item each return action is preceded by a call action with the same operation
+  identifier.
+
+\end{itemize}
+A \emph{matching scheme} $M$ associates to each execution $e$ with operations
+$O$ a partial matching function $M(e): O \rightharpoonup O$.
+
+\begin{example}
+
+  TODO MATCHING SCHEME EXAMPLE
+
+\end{example}
+
+In this work, histories are abstractions of executions which retain method
+names yet ignore argument and return values, and retain the relative order of
+operations yet ignore the exact sequence of call and return actions. Formally,
+a \emph{history} $h = \tup{O,<,c,f,m}$ is a tuple where
+\begin{itemize}
+
+  \item $O \subseteq \mathbb{O}$ is a set of \emph{operations},
+
+  \item $<$ is a partial \emph{happens-before} order on $O$,
+
+  \item $c: O \to \mathbb{B}$ labels operations as \emph{completed}, or not,
+
+  \item $f: O \to \mathbb{M}$ labels operations with method names, and
+
+  \item $m: O \rightharpoonup O$ is a partial \emph{matching} function.
+
+\end{itemize}
+Non-completed operations are \emph{pending}, and are maximal in the
+happens-before order. The operations of a \emph{sequential} history are totally
+ordered. An operation $o \in \rng(m)$ is a \emph{match target}, and the set
+$\set{ o' \in O : m(o') = o}$ of operations targeting $o$ is a \emph{match}. We
+assume targets target themselves: $o \in \set{ o' \in O : m(o') = o}$.
+
+The history $H(M,e)$ of an execution $e$ under matching scheme $M$ is the tuple
+$\tup{O,<,c,f,M(e)}$ where
+\begin{itemize}
+
+  \item $O$ are the operations of $e$,
+
+  \item $o_1 < o_2$ if{f} operation $o_1$ returns before $o_2$ is called in $e$,
+
+  \item $c(o)$ if{f} operation $o$ returns in $e$, and
+
+  \item $f(o)$ is the name of the method executed by $o$ in $e$.
+
+\end{itemize}
+We denote the set $\set{H(M,e) : e \in E}$ of histories of an execution set $E$
+by $H(M,E)$.
+
+A matching scheme $M$ is \emph{faithful} to a set $E$ of executions when $e \in
+E$ if{f} $e' \in E$ for any two executions $e$ and $e'$ such that $H(M,e) =
+H(M,e')$. A set of executions $E$ is \emph{data independent}\footnote{TODO NOTE
+THAT THIS IS NOT THE STANDARD DEFINITION…} when there exists a faithful
+matching scheme. By definition, abstracting executions to histories comes at no
+loss of precision up to set inclusion for data-independent execution sets.
+
+\begin{lemma}
+
+  $H(M,e) \in H(M,E)$ if and only if $e \in E$, for any faithful matching
+  scheme $M$.
+
+\end{lemma}
+
+For the remainder of this work, we assume each set of executions $E$ comes
+equipped with a matching scheme $M$, and abbreviate $H(M,E)$ by $H(E)$.
+
+An \emph{implementation} $\mathcal{I}$ is a labeled transition system whose
+traces are executions. The histories $H(\mathcal{I})$ of an implementation are
+the histories of its traces. An \emph{abstract data type (ADT)} $A$ is the set
+$H(\mathcal{I})$ of histories of \emph{some} implementation $\mathcal{I}$. We
+define \emph{observational refinement} between two implementations, or between
+an implementation and an ADT, as history-set inclusion. We say $\mathcal{I}_1$
+\emph{refines} $\mathcal{I}_2$ if{f} $H(\mathcal{I}_1) \subseteq
+H(\mathcal{I}_2)$, and $\mathcal{I}$ \emph{refines} $A$ if{f} $H(\mathcal{I})
+\subseteq A$.
+
+TODO DEFINE THE ADT INFERENCE PROBLEM
