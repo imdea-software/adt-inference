@@ -54,9 +54,26 @@ TODO DEFINE WQO, FINITELY-REPRESENTABLE, COMPUTABLE
 
 \begin{example}
 
-  $\preceq$ is not a wqo.
+  Consider the infinite history sequence $h_1 h_2 \ldots$ where each $h_i$
+  contains $2i$ operations $o_1, o_1', \ldots, o_i, o_i'$ where each $o_j$ is a
+  completed {\tt push} operation matching itself, and each $o_j'$ is a pending
+  {\tt pop} operation with undefined matching. Because each successive $h_i$
+  has both more matches and more pending operations, no two histories of the
+  sequence are related by $\preceq$. Thus $\preceq$ is not a wqo.
 
 \end{example}
+
+The previous example demonstrates that $\preceq$ is not a wqo by allowing each
+history $h_i$ of the infinite sequence to contain more and more pending
+operations in order to ensure that $h_j \not\preceq h_i$ for every $j < i$.
+Curbing this ability by limiting the maximum amount of pending operations per
+history makes $\preceq$ a wqo. Although limiting to $k$ pending operations
+essentially limits us to histories of executions with at most $k$ operations
+parallel at any moment — e.g.,~of programs with at most $k$ threads — this
+restriction comes at no loss of completeness when considering atomic ATD
+kernels, whose histories are limited to $k\!=\!1$ pending operation.
+
+TODO COMMENT ON CONCURRENCY-AWARE KERNELS
 
 \begin{lemma}
 
