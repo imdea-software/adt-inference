@@ -81,7 +81,7 @@ loss of precision up to set inclusion for data-independent execution sets.
 \end{lemma}
 
 For the remainder of this work, we assume each set of executions $E$ comes
-equipped with a matching scheme $M$, and abbreviate $H(M,E)$ by $H(E)$.
+equipped with a faithful matching scheme $M$, and abbreviate $H(M,E)$ by $H(E)$.
 
 An \emph{implementation} $\mathcal{I}$ is a labeled transition system whose
 traces are executions. The histories $H(\mathcal{I})$ of an implementation are
@@ -93,4 +93,15 @@ an implementation and an ADT, as history-set inclusion. We say $\mathcal{I}_1$
 H(\mathcal{I}_2)$, and $\mathcal{I}$ \emph{refines} $A$ if{f} $H(\mathcal{I})
 \subseteq A$.
 
-TODO DEFINE THE ADT INFERENCE PROBLEM
+TODO DEFINE HISTORY LOGIC
+
+The \emph{symbolic ADT inference problem} is to compute a first-order history
+formula $F$ for a given ADT $A$ such that
+\begin{itemize}
+
+  \item $h \models F$ for all $h \in \ker A$, and
+
+  \item $h \not\models F$ for all $h \in B$,
+
+\end{itemize}
+where $B$ is the complement of $\ker A$.
