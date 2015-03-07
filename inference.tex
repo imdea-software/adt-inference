@@ -2,3 +2,13 @@
 \label{sec:inference}
 
 TODO DEFINE REFINEMENT AND SET THE ADT INFERENCE PROBLEM
+
+A \emph{history} $h = \tup{O,<,\ell,f,m}$ is a partial order $<$ on a set $O$
+of operations with method labeling $\ell: O \to M$, completion labeling $f: O
+\to \mathbb{B}$ — an operation $o \in O$ is \emph{completed} if $f(o)$
+otherwise \emph{pending} — and partial matching function $m: O \rightharpoonup
+O$ such that pending operations are maximal. We say $h$ is \emph{sequential}
+when $<$ is a total order on $O$, and \emph{(in)complete} when (not) all
+operations are completed. An operation $o \in \rng(m)$ is a \emph{match
+target}, and the set $\set{ o' \in O : m(o') = o}$ of operations targeting $o$
+is a \emph{match}.

@@ -1,8 +1,98 @@
 \section{Algebraic Properties of ADTs}
 \label{sec:algebra}
 
-TODO DEFINE EMBEDDING AND PROVE OUR ADTS ARE CLOSED
+Two histories $h_1$ and $h_2$ are related by $\to_x$, for $x = \mathrm{o},
+\mathrm{c}, \mathrm{p}$, when $h_2$ is obtained from $h_1$ by:
+\begin{itemize}
 
-\begin{theorem}
-  “Our ADTs are closed under embedding.”
-\end{theorem}
+  \item removing an order constraint (o),
+
+  \item making a completed operation pending (c), or
+
+  \item adding a pending operation (p).
+
+\end{itemize}
+A set of histories $H$ is \emph{closed} under a relation $\to$ when $h_2 \in H$
+whenever $h_1 \to h_2$ and $h_1 \in H$. A fundamental property of concurrent
+object implementations is that their histories are closed under weakening via
+less ordering, fewer operations completed, and additional pending
+operations~\cite{conf/popl/BouajjaniEEH15}.
+
+\begin{lemma}
+
+  $H(\mathcal{I})$ is closed under $\to_\mathrm{o}$, $\to_\mathrm{p}$, 
+  $\to_\mathrm{c}$.
+
+\end{lemma}
+
+The ADTs we consider in this work are also closed under the additional
+relations $\to_\mathrm{m}$ and $\to_\mathrm{d}$ which relate two histories
+$h_1$ and $h_2$ when $h_2$ is obtained from $h_1$ by
+\begin{itemize}
+
+  \item removing a match (m), or
+
+  \item removing a duplicate operation (d).
+
+\end{itemize}
+We say an ADT closed under $\to_\mathrm{m}$ and $\to_\mathrm{d}$ is
+\emph{normal}. Defining the relation $\succeq$ as the reflexive and transitive
+closure of the above relations
+\begin{align*}
+  \succeq = (\to_\mathrm{o} \cup \to_\mathrm{p} \cup \to_\mathrm{c} \cup 
+  \to_\mathrm{m} \cup \to_\mathrm{d})^\ast,
+\end{align*}
+closure under $\succeq$ follows immediately.
+
+\begin{lemma}
+
+  Normal ADTs are closed under $\succeq$.
+
+\end{lemma}
+
+TODO DEFINE WQO, FINITELY-REPRESENTABLE, COMPUTABLE
+
+\begin{example}
+
+  $\preceq$ is not a wqo.
+
+\end{example}
+
+\begin{lemma}
+
+  $\preceq$ is a wqo on the set of histories with at most $k$ pending
+  operations, for any $k \in \mathbb{N}$.
+
+\end{lemma}
+
+For the remainder of this section, we fix an ADT $A$, and let $B$ be the
+complement of $\ker A$.
+
+\begin{lemma}
+
+  $B$ is finitely representable if $A$ is normal.
+
+\end{lemma}
+
+For all $i \in \mathbb{N}$, let
+\begin{align*}
+  B_i &= \set{ h \in B : \_ \le i } \\
+  B_i' &= \set{ h' \in B :
+    \exists h \in B_i.\ h \preceq h' \text{ and } \_ \le i+1
+  }
+\end{align*}
+be, respectively, the histories of $B$ with at most $i$ matches, and those
+derived from $B_i$ with at most $i\!+\!1$ matches. We say that $A$ is
+\emph{predictable} if $B_i = B$ whenever $B_i' = B_{i+1}$.
+
+\begin{lemma}
+
+  $B_i$ is computable, for all $i \in \mathbb{N}$, if $A$ is normal.
+
+\end{lemma}
+
+\begin{lemma}
+
+  $B$ is computable if $A$ is normal and predictable.
+
+\end{lemma}
