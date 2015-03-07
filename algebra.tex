@@ -1,6 +1,8 @@
 \section{Algebraic Properties of ADTs}
 \label{sec:algebra}
 
+TODO MOTIVATE THIS SECTION
+
 Two histories $h_1$ and $h_2$ are related by $\to_x$, for $x = \mathrm{o},
 \mathrm{c}, \mathrm{p}$, when $h_2$ is obtained from $h_1$ by:
 \begin{itemize}
@@ -36,8 +38,9 @@ $h_1$ and $h_2$ when $h_2$ is obtained from $h_1$ by
 
 \end{itemize}
 We say an ADT closed under $\to_\mathrm{m}$ and $\to_\mathrm{d}$ is
-\emph{normal}. Defining the relation $\succeq$ as the reflexive and transitive
-closure of the above relations
+\emph{normal}. In Section~\ref{sec:nature} we demonstrate that
+naturally-occurring ADTs are normal. Defining the relation $\succeq$ as the
+reflexive and transitive closure of the above relations
 \begin{align*}
   \succeq = (\to_\mathrm{o} \cup \to_\mathrm{p} \cup \to_\mathrm{c} \cup 
   \to_\mathrm{m} \cup \to_\mathrm{d})^\ast,
@@ -100,7 +103,9 @@ For all $i \in \mathbb{N}$, let
 \end{align*}
 be, respectively, the histories of $B$ with at most $i$ matches, and those
 derived from $B_i$ with at most $i\!+\!1$ matches. We say that $A$ is
-\emph{predictable} if $B_i = B$ whenever $B_i' = B_{i+1}$.
+\emph{predictable} if $B_i = B$ whenever $B_i' = B_{i+1}$. In 
+Section~\ref{sec:nature} we demonstrate that naturally-occurring ADTs are
+predictable.
 
 \begin{lemma}
 
