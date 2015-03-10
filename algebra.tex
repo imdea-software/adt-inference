@@ -47,17 +47,18 @@ history $h_i$ of the infinite sequence to contain more and more pending
 operations in order to ensure that $h_j \not\preceq h_i$ for every $j < i$.
 Curbing this ability by limiting the maximum amount of pending operations per
 history makes $\preceq$ a wqo. Although limiting to $k$ pending operations
-essentially limits us to histories of executions with at most $k$ operations
-parallel at any moment — e.g.,~of programs with at most $k$ threads — this
-restriction comes at no loss of completeness when considering atomic ATD
-kernels, whose histories are limited to $k\!=\!1$ pending operation.
+essentially limits us to width-$k$ histories, of executions with at most $k$
+operations parallel at any moment — e.g.,~of programs with at most $k$ threads
+— this restriction comes at no loss of completeness when considering atomic ADT
+kernels, which have width $1$.
 
 TODO COMMENT ON CONCURRENCY-AWARE KERNELS
 
+TODO DEFINE A TERM FOR ADTS WHOSE KERNELS HAVE BOUNDED WIDTH
+
 \begin{lemma}
 
-  $\preceq$ is a wqo on the set of histories with at most $k$ pending
-  operations, for any $k \in \mathbb{N}$.
+  $\preceq$ is a wqo on width-$k$ histories, for any $k \in \mathbb{N}$.
 
 \end{lemma}
 
