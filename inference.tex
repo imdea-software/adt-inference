@@ -18,14 +18,21 @@ An \emph{execution} $e$ is a sequence of call and return actions where
   identifier.
 
 \end{itemize}
-A \emph{matching scheme} $M$ associates to each execution $e$ with operations
-$O$ a partial matching function $M(e): O \rightharpoonup O$.
+An \emph{implementation} $\mathcal{I}$ is a prefix-closed set of executions
+which is additionally closed under
+\begin{itemize}
 
-\begin{example}
+  \item appending call actions (of fresh operations),
 
-  TODO MATCHING SCHEME EXAMPLE
+  \item permuting call actions backward in time, and
 
-\end{example}
+  \item permuting return actions forward in time.
+
+\end{itemize}
+These conditions capture the environment in which implementations execute:
+calls are always enabled in their client programs, and thread schedulers may
+induce arbitrary delay between implementation code and the associated call and
+return actions~\cite{conf/popl/BouajjaniEEH15}.
 
 In this work, histories are abstractions of executions which retain method
 names yet ignore argument and return values, and retain the relative order of
@@ -45,10 +52,24 @@ a \emph{history} $h = \tup{O,<,c,f,m}$ is a tuple where
 
 \end{itemize}
 Non-completed operations are \emph{pending}, and are maximal in the
-happens-before order. The operations of a \emph{sequential} history are totally
-ordered. An operation $o \in \rng(m)$ is a \emph{match target}, and the set
-$\set{ o' \in O : m(o') = o}$ of operations targeting $o$ is a \emph{match}. We
-assume targets target themselves: $o \in \set{ o' \in O : m(o') = o}$.
+happens-before order. The \emph{width} of $h$ is the maximal size of a
+subset of $O$ for which each pair of operations is unordered. The \emph{width}
+of a history set is the maximal width of its elements. Width-$1$ histories are
+\emph{sequential}. An operation $o \in \rng(m)$ is a \emph{match target}, and
+the set $\set{ o' \in O : m(o') = o}$ of operations targeting $o$ is a
+\emph{match}. We assume targets target themselves: $o \in \set{ o' \in O :
+m(o') = o}$.
+
+Our abstraction from executions to histories relies correlating the operations
+associated with the same values via matching. A \emph{matching scheme} $M$
+associates to each execution $e$ with operations $O$ a partial matching
+function $M(e): O \rightharpoonup O$.
+
+\begin{example}
+
+  TODO MATCHING SCHEME EXAMPLE
+
+\end{example}
 
 The history $H(M,e)$ of an execution $e$ under matching scheme $M$ is the tuple
 $\tup{O,<,c,f,M(e)}$ where
@@ -87,13 +108,47 @@ schemes. Otherwise, for the remainder of this work, we assume each set of
 executions comes equipped with a faithful matching scheme $M$, and abbreviate
 $H(M,E)$ by $H(E)$.
 
-An \emph{implementation} $\mathcal{I}$ is a prefixed-closed set of executions.
+Two histories $h_1$ and $h_2$ are related by $\to_x$, for $x = \mathrm{o},
+\mathrm{c}, \mathrm{p}$, when $h_2$ is obtained from $h_1$ by:
+\begin{itemize}
+
+  \item removing an order constraint (o),
+
+  \item making a completed operation pending (c), or
+
+  \item adding a pending operation (p).
+
+\end{itemize}
+A set of histories $H$ is \emph{closed} under a relation $\to$ when $h_2 \in H$
+whenever $h_1 \to h_2$ and $h_1 \in H$. A fundamental property of
+implementations is that their histories are closed under weakening via less
+ordering, fewer operations completed, and additional pending
+operations~\cite{conf/popl/BouajjaniEEH15}.
+
+\begin{lemma}
+
+  $H(\mathcal{I})$ is closed under $\to_\mathrm{o}$, $\to_\mathrm{p}$, 
+  $\to_\mathrm{c}$.
+
+\end{lemma}
+
 An \emph{abstract data type (ADT)} $A$ is the set $H(\mathcal{I})$ of histories
-of an implementation $\mathcal{I}$. We define \emph{observational refinement}
-between two implementations, or between an implementation and an ADT, as
-history-set inclusion. We say $\mathcal{I}_1$ \emph{refines} $\mathcal{I}_2$
-if{f} $H(\mathcal{I}_1) \subseteq H(\mathcal{I}_2)$, and $\mathcal{I}$
-\emph{refines} $A$ if{f} $H(\mathcal{I}) \subseteq A$.
+of an implementation $\mathcal{I}$. A \emph{kernel} of an ADT $A$ is a minimal
+set $H$ of histories such that
+\begin{align*}
+  A = \set{ h' : \exists h \in H.\ h \to^\ast h' }
+\end{align*}
+where $\to = (\to_\mathrm{o} \cup \to_\mathrm{p} \cup \to_\mathrm{c})$. In
+Section~\ref{sec:nature} we demonstrate that naturally-occurring ADTs have
+unique kernels. For the remainder of this work, we assume that ADTs have unique
+kernels, and denote \emph{the kernel} of $A$ by $\ker A$. We say that $A$ is
+\emph{atomic} when the width of $\ker A$ is $1$.
+
+We define \emph{observational refinement} between two implementations, or
+between an implementation and an ADT, as history-set inclusion. We say
+$\mathcal{I}_1$ \emph{refines} $\mathcal{I}_2$ if{f} $H(\mathcal{I}_1)
+\subseteq H(\mathcal{I}_2)$, and $\mathcal{I}$ \emph{refines} $A$ if{f}
+$H(\mathcal{I}) \subseteq A$.
 
 In the following we fix a symbolic representation of ADTs on which to base our
 symbolic ADT inference problem. A \emph{history formula} $F$ is a first-order
@@ -121,9 +176,9 @@ model of $F$, and $h \not\models F$ otherwise.
 
 \end{example}
 
-TODO DEFINE KERNEL AND COMPLEMENT
-
-A history formula $F$ \emph{represents} an ADT $A$ when:
+The \emph{complement} of an ADT $A$ with width $k \in \mathbb{N}$ is the set of
+histories of width at most $k$ which are excluded from $A$. A history formula
+$F$ \emph{represents} an ADT $A$ when:
 \begin{itemize}
 
   \item $h \models F$ for all $h \in \ker A$, and

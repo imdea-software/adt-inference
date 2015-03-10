@@ -3,30 +3,6 @@
 
 TODO MOTIVATE THIS SECTION
 
-Two histories $h_1$ and $h_2$ are related by $\to_x$, for $x = \mathrm{o},
-\mathrm{c}, \mathrm{p}$, when $h_2$ is obtained from $h_1$ by:
-\begin{itemize}
-
-  \item removing an order constraint (o),
-
-  \item making a completed operation pending (c), or
-
-  \item adding a pending operation (p).
-
-\end{itemize}
-A set of histories $H$ is \emph{closed} under a relation $\to$ when $h_2 \in H$
-whenever $h_1 \to h_2$ and $h_1 \in H$. A fundamental property of concurrent
-object implementations is that their histories are closed under weakening via
-less ordering, fewer operations completed, and additional pending
-operations~\cite{conf/popl/BouajjaniEEH15}.
-
-\begin{lemma}
-
-  $H(\mathcal{I})$ is closed under $\to_\mathrm{o}$, $\to_\mathrm{p}$, 
-  $\to_\mathrm{c}$.
-
-\end{lemma}
-
 The ADTs we consider in this work are also closed under the additional
 relations $\to_\mathrm{m}$ and $\to_\mathrm{d}$ which relate two histories
 $h_1$ and $h_2$ when $h_2$ is obtained from $h_1$ by
