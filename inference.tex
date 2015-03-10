@@ -52,13 +52,13 @@ a \emph{history} $h = \tup{O,<,c,f,m}$ is a tuple where
 
 \end{itemize}
 Non-completed operations are \emph{pending}, and are maximal in the
-happens-before order. The \emph{width} of $h$ is the maximal size of a
-subset of $O$ for which each pair of operations is unordered. The \emph{width}
-of a history set is the maximal width of its elements. Width-$1$ histories are
-\emph{sequential}. An operation $o \in \rng(m)$ is a \emph{match target}, and
-the set $\set{ o' \in O : m(o') = o}$ of operations targeting $o$ is a
-\emph{match}. We assume targets target themselves: $o \in \set{ o' \in O :
-m(o') = o}$.
+happens-before order. The \emph{width} of a history is the maximum size of an
+unordered subset of its operations. The \emph{width} of a history set is the
+maximal width of its elements. Width-$1$ histories are \emph{sequential}. An
+operation $o \in \rng(m)$ is a \emph{match target}, and the set $\set{ o' \in O
+: m(o') = o}$ of operations targeting $o$ is a \emph{match}. We assume targets
+target themselves: $m(o) = o$ for $o \in \rng(m)$. The \emph{weight} of $h$ is
+the amount $|\rng(m)|$ of matches.
 
 Our abstraction from executions to histories relies correlating the operations
 associated with the same values via matching. A \emph{matching scheme} $M$
