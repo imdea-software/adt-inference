@@ -5,10 +5,11 @@ TODO MOTIVATE THIS SECTION
 
 We fix an arbitrary infinite set $\mathbb{O}$ of operation identifiers, and
 given sets $\mathbb{M}$ and $\mathbb{V}$ of method names and values. A
-\emph{call action} binds an operation identifier $o \in \mathbb{O}$ with a
-method name $p \in \mathbb{M}$ and argument value $v \in \mathbb{V}$, while a
-\emph{return action} binds an operation identifier $o$ with a return value $v$.
-An \emph{execution} $e$ is a sequence of call and return actions where
+\emph{call action} binds an operation $o \in \mathbb{O}$ with a method name $p
+\in \mathbb{M}$ and argument value $v \in \mathbb{V}$, while a \emph{return
+action} binds an operation $o \in \mathbb{O}$ with a return value $v \in
+\mathbb{V}$. An \emph{execution} $e$ is a sequence of call and return actions
+where
 \begin{itemize}
 
   \item each operation identifier is used in at most one call action, and in at
@@ -24,9 +25,9 @@ which is additionally closed under
 
   \item appending call actions (of fresh operations),
 
-  \item permuting call actions backward in time, and
+  \item permuting call actions backward, and
 
-  \item permuting return actions forward in time.
+  \item permuting return actions forward.
 
 \end{itemize}
 These conditions capture the environment in which implementations execute:
@@ -35,9 +36,9 @@ induce arbitrary delay between implementation code and the associated call and
 return actions~\cite{conf/popl/BouajjaniEEH15}.
 
 In this work, histories are abstractions of executions which retain method
-names yet ignore argument and return values, and retain the relative order of
-operations yet ignore the exact sequence of call and return actions. Formally,
-a \emph{history} $h = \tup{O,<,c,f,m}$ is a tuple where
+names yet lose the exact argument and return values, and retain the relative
+order of operations yet lose the exact sequence of call and return actions.
+Formally, a \emph{history} $h = \tup{O,<,c,f,m}$ is a tuple where
 \begin{itemize}
 
   \item $O \subseteq \mathbb{O}$ is a set of \emph{operations},
@@ -52,18 +53,27 @@ a \emph{history} $h = \tup{O,<,c,f,m}$ is a tuple where
 
 \end{itemize}
 Non-completed operations are \emph{pending}, and are maximal in the
-happens-before order. The \emph{width} of a history is the maximum size of an
-unordered subset of its operations. The \emph{width} of a history set is the
-maximal width of its elements. Width-$1$ histories are \emph{sequential}. An
-operation $o \in \rng(m)$ is a \emph{match target}, and the set $\set{ o' \in O
-: m(o') = o}$ of operations targeting $o$ is a \emph{match}. We assume targets
-target themselves: $m(o) = o$ for $o \in \rng(m)$. The \emph{weight} of $h$ is
-the amount $|\rng(m)|$ of matches.
+happens-before order. The \emph{width} of a history is the maximum number of
+its operations which are mutually unordered, and the \emph{width} of a history
+set is the maximum width of its elements. Histories with width $1$ are
+\emph{sequential}. An operation $o \in \rng(m)$ is a \emph{match target}, and
+the set $\set{ o' \in O : m(o') = o}$ of operations targeting $o$ is a
+\emph{match}. We assume targets target themselves: $m(o) = o$ for $o \in
+\rng(m)$. The \emph{weight} of $h$ is the number $|\rng(m)|$ of matches.
+Since the operation identifiers of a history have no intrinsic meaning, we
+consider equality between histories up to renaming of operation identifiers.
 
-Our abstraction from executions to histories relies correlating the operations
-associated with the same values via matching. A \emph{matching scheme} $M$
-associates to each execution $e$ with operations $O$ a partial matching
-function $M(e): O \rightharpoonup O$.
+\begin{example}
+
+  TODO HISTORY EXAMPLE
+
+\end{example}
+
+Our abstraction of executions relies on correlating the operations associated
+with the same values in an execution via the partial matching function of a
+history. We construct partial matching functions systematically. A
+\emph{matching scheme} $M$ associates to each execution $e$ with operations $O$
+a partial matching function $M(e): O \rightharpoonup O$.
 
 \begin{example}
 
@@ -71,7 +81,7 @@ function $M(e): O \rightharpoonup O$.
 
 \end{example}
 
-The history $H(M,e)$ of an execution $e$ under matching scheme $M$ is the tuple
+The history $H(e,M)$ of an execution $e$ under matching scheme $M$ is the tuple
 $\tup{O,<,c,f,M(e)}$ where
 \begin{itemize}
 
@@ -84,29 +94,34 @@ $\tup{O,<,c,f,M(e)}$ where
   \item $f(o)$ is the name of the method executed by $o$ in $e$.
 
 \end{itemize}
-We denote the set $\set{H(M,e) : e \in E}$ of histories of an execution set $E$
-by $H(M,E)$.
+We denote the set $\set{H(e,M) : e \in E}$ of histories of an execution set $E$
+by $H(E,M)$.
+
+\begin{example}
+
+  TODO HISTORY OF AN EXECUTION
+
+\end{example}
 
 A matching scheme $M$ is \emph{faithful} to a set $E$ of executions when $e \in
-E$ if{f} $e' \in E$ for any two executions $e$ and $e'$ such that $H(M,e) =
-H(M,e')$. A set of executions $E$ is \emph{data independent}\footnote{TODO NOTE
+E$ if{f} $e' \in E$ for any two executions $e$ and $e'$ such that $H(e,M) =
+H(e',M)$. A set of executions $E$ is \emph{data independent}\footnote{TODO NOTE
 THAT THIS IS NOT THE STANDARD DEFINITION…} when there exists a faithful
-matching scheme. By definition, abstracting executions to histories comes at no
-loss of precision up to set inclusion for data-independent execution sets.
+matching scheme. By definition, our abstraction of executions incurs no loss of
+precision for data-independent execution sets.
 
 \begin{lemma}
 
-  $H(M,e) \in H(M,E)$ if and only if $e \in E$, for any faithful matching
+  $H(e,M) \in H(E,M)$ if and only if $e \in E$, for any faithful matching
   scheme $M$.
 
 \end{lemma}
 
 In Section~\ref{sec:nature} we demonstrate faithful matching schemes for the
-executions of naturally-occurring concurrent objects, and in
-Section~\ref{sec:matching} we demonstrate how to infer faithful matching
-schemes. Otherwise, for the remainder of this work, we assume each set of
-executions comes equipped with a faithful matching scheme $M$, and abbreviate
-$H(M,E)$ by $H(E)$.
+executions of naturally-occurring ADTs, and in Section~\ref{sec:matching} we
+demonstrate how to infer faithful matching schemes. Otherwise, for the
+remainder of this work, we assume each set of executions comes equipped with a
+faithful matching scheme $M$, and abbreviate $H(E,M)$ by $H(E)$.
 
 Two histories $h_1$ and $h_2$ are related by $\to_x$, for $x = \mathrm{o},
 \mathrm{c}, \mathrm{p}$, when $h_2$ is obtained from $h_1$ by:
@@ -134,7 +149,7 @@ operations~\cite{conf/popl/BouajjaniEEH15}.
 
 An \emph{abstract data type (ADT)} $A$ is the set $H(\mathcal{I})$ of histories
 of an implementation $\mathcal{I}$. A \emph{kernel} of an ADT $A$ is a minimal
-set $H$ of histories such that
+set $H$ of histories generating $A$, i.e.,~such that
 \begin{align*}
   A = \set{ h' : \exists h \in H.\ h \to^\ast h' }
 \end{align*}
@@ -144,15 +159,23 @@ unique kernels. For the remainder of this work, we assume that ADTs have unique
 kernels, and denote \emph{the kernel} of $A$ by $\ker A$. We say that $A$ is
 \emph{atomic} when the width of $\ker A$ is $1$.
 
-We define \emph{observational refinement} between two implementations, or
-between an implementation and an ADT, as history-set inclusion. We say
-$\mathcal{I}_1$ \emph{refines} $\mathcal{I}_2$ if{f} $H(\mathcal{I}_1)
-\subseteq H(\mathcal{I}_2)$, and $\mathcal{I}$ \emph{refines} $A$ if{f}
-$H(\mathcal{I}) \subseteq A$.
+We define \emph{observational refinement} between implementations and ADTs as
+history-set inclusion. Although this refinement is typically defined with
+respect to the admissibility of program executions, recent work demonstrates
+that these definitions are equivalent~\cite{conf/popl/BouajjaniEEH15}.
 
-In the following we fix a symbolic representation of ADTs on which to base our
-symbolic ADT inference problem. A \emph{history formula} $F$ is a first-order
-logic formula with
+\begin{definition}
+
+  We say an implementation $\mathcal{I}$ \emph{refines} an ADT $A$ when
+  $H(\mathcal{I}) \subseteq A$. We say an implementation $\mathcal{I}_1$
+  \emph{refines} another implementation $\mathcal{I}_2$ when $\mathcal{I}_1$
+  refines $H(\mathcal{I}_2)$.
+
+\end{definition}
+
+In order to frame the symbolic ADT inference problem, we fix a natural symbolic
+representation of ADTs. A \emph{history formula} $F$ is a first-order logic
+formula with
 \begin{itemize}
 
   \item variables ranging over operation identifiers,
@@ -176,16 +199,22 @@ model of $F$, and $h \not\models F$ otherwise.
 
 \end{example}
 
-The \emph{complement} of an ADT $A$ with width $k \in \mathbb{N}$ is the set of
-histories of width at most $k$ which are excluded from $A$. A history formula
-$F$ \emph{represents} an ADT $A$ when:
+The \emph{complement} of a history set $H$ of width $k \in \mathbb{N} \cup
+\set{\omega}$ is the set of histories of width at most $k$ which are excluded
+from $H$. Let $A$ be an ADT and $B$ the complement of $\ker A$. We say that
+a history formula $F$ \emph{represents} $A$ when
 \begin{itemize}
 
   \item $h \models F$ for all $h \in \ker A$, and
 
-  \item $h \not\models F$ for all $h \in B$,
+  \item $h \not\models F$ for all $h \in B$.
 
 \end{itemize}
-where $B$ is the complement of $\ker A$. The \emph{symbolic ADT inference
-problem} is to compute a history formula $F$ representing the ADT of a given
-implementation $\mathcal{I}$.
+The inference problem is thus to compute a formula representing an ADT.
+
+\begin{definition}
+
+  The \emph{symbolic ADT inference problem} is to compute a history formula $F$
+  representing the ADT $H(\mathcal{I})$ of a given implementation $\mathcal{I}$.
+
+\end{definition}
