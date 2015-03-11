@@ -29,9 +29,12 @@ that these definitions are equivalent~\cite{conf/popl/BouajjaniEEH15}.
 
 \end{definition}
 
-In order to frame the symbolic ADT inference problem, we fix a natural symbolic
-representation of ADTs. A \emph{history formula} $F$ is a first-order logic
-formula with
+Recent works demonstrate efficient algorithms\footnote{In time polynomial in
+the number of operations, per execution.} for checking observational
+refinement~\cite{conf/popl/BouajjaniEEH15, conf/pldi/EmmiEH15}, yet rely on
+hand-written symbolic ADT representations. In order to frame the problem of
+computing these automatically, we fix a language for symbolic representation. A
+\emph{history formula} $F$ is a first-order logic formula with
 \begin{itemize}
 
   \item variables ranging over operation identifiers,
