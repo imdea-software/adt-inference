@@ -6,12 +6,9 @@ TODO MOTIVATE THIS SECTION
 In addition to the relations $\to_\mathrm{o}$, $\to_\mathrm{p}$, and
 $\to_\mathrm{c}$ of Section~\ref{sec:histories} under which all ADTs are
 closed, the ADTs we consider in this work are also closed under additional
-relations which remove matches, and duplicate operations. Given a history
-$\tup{O,<,c,f,m}$, we say an operation $o \in O$ is a \emph{duplicate} if there
-exists another operation $o' \in O$ with the same labels and matching: $c(o) =
-c(o')$, $f(o) = f(o')$, and $m(o) = m(o')$. The relations $\to_\mathrm{m}$ and
-$\to_\mathrm{d}$ relate two histories $h_1$ and $h_2$ when $h_2$ is obtained
-from $h_1$ by
+relations which remove matches, and duplicate operations. The relations
+$\to_\mathrm{m}$ and $\to_\mathrm{d}$ relate two histories $h_1$ and $h_2$ when
+$h_2$ is obtained from $h_1$ by
 \begin{itemize}
 
   \item removing a match (m), or
@@ -95,14 +92,14 @@ recognize a condition on the weight-increasing enumeration of $B$ which
 guarantees coverage by the current set of minimals. Formally, for all $i \in
 \mathbb{N}$, we define
 \begin{align*}
-  B_i &= \set{ h \in B : \weight h \le i } \\
+  B_i &= \set{ h \in B : \weight(h) \le i } \\
   B_i' &= \set{ h' \in B :
-    \exists h \in B_i.\ h \preceq h' \text{ and } \weight h \le i+1
+    \exists h \in B_i.\ h \preceq h' \text{ and } \weight(h) \le i+1
   }
 \end{align*}
-as, respectively, the histories of $B$ with at most $i$ matches, and those
-derived from $B_i$ with at most $i\!+\!1$ matches. We say that $A$ is
-\emph{predictable} if $B_i = B$ whenever $B_i' = B_{i+1}$. In 
+as, respectively, the histories of $B$ with at most $i$ matches and duplicates,
+and those derived from $B_i$ with at most $i\!+\!1$ matches and duplicates. We
+say that $A$ is \emph{predictable} if $B_i = B$ whenever $B_i' = B_{i+1}$. In
 Section~\ref{sec:nature} we demonstrate that naturally-occurring ADTs are
 predictable. Since the number of weight-$i$ histories is finite\footnote{As
 noted in Section~\ref{sec:histories}, we consider equality between histories up
