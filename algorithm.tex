@@ -36,8 +36,7 @@ TODO MOTIVATE WQO
 
 A \emph{well-quasi-ordering (wqo)} $R$ on a set $X$ is a reflexive, transitive
 binary relation on $X$ for which in every infinite sequence $x_0 x_1 \ldots$ of
-elements from $X$, there exists a pair $x_i, x_j$, for $i \neq j$, related by
-$R$.
+elements from $X$, there exists indices $i < j$ such that $R(x_i,x_j)$.
 
 \begin{example}
 
@@ -63,7 +62,7 @@ of this section.
 
 \begin{lemma}
 
-  $\preceq$ is a wqo on width-$k$ histories, for any $k \in \mathbb{N}$.
+  $\preceq$ is a wqo on width-bounded histories.
 
 \end{lemma}
 

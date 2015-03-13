@@ -62,17 +62,19 @@ Non-completed operations are \emph{pending}, and are maximal in the
 happens-before order. The \emph{width} of a history is the maximum number of
 its operations which are mutually unordered, and the \emph{width} of a history
 set is the maximum width of its elements. Width-$1$ histories are
-\emph{sequential}. Two operations with the same labels and matching are
-\emph{identical}, and the \emph{frequency} of an operation $o$, denoted
-$\freq(o)$, is the number of operations identical to $o$, including $o$ itself.
-An operation is a \emph{duplicate} when $\freq(o) > 1$. An operation $o \in
-\rng(m)$ is a \emph{match target}, and the set $\set{ o' \in O : m(o') = o}$ of
-operations targeting $o$ is a \emph{match}. We assume targets target
-themselves: $m(o) = o$ for $o \in \rng(m)$. The \emph{weight} of $h$ is the
-maximum $\max(\set{ \freq(o) : o \in O } \cup \set{|\rng(m)|})$ between
-operation frequencies and the number of matches. Since the operation
-identifiers of a history have no intrinsic meaning, we consider equality
-between histories up to renaming of operation identifiers.
+\emph{sequential}.
+Two operations $o, o'$ are \emph{identical}, written $o \sim o'$, when they
+have the same labels: $c(o) = c(o')$, $f(o) = f(o')$, and matching: $m(o) =
+m(o')$. The \emph{frequency} of an operation $o$ is the number $\freq(o) =
+|\set{ o' \in O : o \sim o' }|$ of operations identical to $o$, and $o$ has
+\emph{duplicates} when $\freq(o) > 1$. An operation $o \in \rng(m)$ is a
+\emph{match target}, and the set $\set{ o' \in O : m(o') = o}$ of operations
+targeting $o$ is a \emph{match}. We assume targets target themselves: $m(o) =
+o$ for $o \in \rng(m)$. The \emph{weight} of $h$ is the maximum $\max(\set{
+\freq(o) : o \in O } \cup \set{|\rng(m)|})$ between operation frequencies and
+the number of matches. Since the operation identifiers of a history have no
+intrinsic meaning, we consider equality between histories up to renaming of
+operation identifiers.
 
 \begin{example}
 
