@@ -139,12 +139,33 @@ contains one variable $x_o$ for each $o\in O$.
 \begin{align*}
 \exists X_O. & \bigwedge_{o\in O} {\sf meth}(x_o)=f(o) \land \bigwedge_{o_1<o_2} x_{o_1} < x_{o_2}\land \bigwedge_{c(o)} {\sf c}(x_o) \\
 & \land \bigwedge_{m(o_1)=o_2} {\sf match}(x_{o_1}) = x_{o_2} \\
-& \land \forall x.\  (\bigvee_{o\in O} {\sf match}(x) = x_o)\Rightarrow \textsc{Dupl}(x,x_o)\vee {\sf rd}(x)  
+& \land  \bigwedge_{o\in O} \forall x.\ {\sf match}(x) = x_o\Rightarrow \textsc{Dupl}(x,x_o)\vee {\sf rd}(x) 
 \end{align*}
 
 \begin{align*}
 \textsc{Dupl}(x,x_o) \triangleq \bigvee_{o_1\in O} {\sf meth}(x_{o_1}) = {\sf meth}(x) \land {\sf match}(x_{o_1})=x_o
 \end{align*}
+
+\begin{lemma}
+
+For every two histories $h$ and $h'$,
+\begin{align*}
+h'\models \textsc{Stronger}(h) \mbox{ implies } h\preceq h'
+\end{align*}
+
+\end{lemma}
+
+Let $Min(B)$ be the set of minimal elements of $B$. Then, the formula $F$ representing the ADT A is defined as:
+\begin{align*}
+F \triangleq \neg \bigvee_{h\in Min(B)} \textsc{Stronger}(h)
+\end{align*}
+
+\begin{theorem}
+
+  The formula $F$ represents $A$.
+
+\end{theorem}
+
 
 \begin{theorem}
 
