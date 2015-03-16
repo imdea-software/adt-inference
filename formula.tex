@@ -1,0 +1,79 @@
+\section{Computing Symbolic Representations}
+\label{sec:formula}
+
+TODO MOTIVATE THIS SECTION
+
+Let $h = \tup{O,<,c,f,m}$ be a history with operations $O = \set{ o_1, \ldots,
+o_n }$. Without loss of generality, we assume the match targets $\set{o_1,
+\ldots, o_k}$ are indexed consecutively from $1$ to $k$, for some $k < n$. We
+define the macro $\textsc{Embed}_o(x,Y,z)$:
+\begin{align*}
+  & (c(o) \implies {\sf c}(x)) \land {\sf f}(x) = f(o) \\
+  & \land (o \in \dom(m) \implies \lnot{\sf um}(x) \land {\sf m}(x) = z) \\
+  & \land (o \not\in \dom(m) \implies {\sf um}(x)) \land \bigwedge_{y \in Y} x < y
+\end{align*}
+capturing the correspondence between the logical variable $x$ and operation
+$o$. The variables $Y$ and $z$ represent the operations ordered after $x$, and
+the operation which $x$ matches. The macro $\textsc{Identical}(x,y)$, defined as
+\begin{align*}
+  ({\sf c}(x) \Leftrightarrow {\sf c}(y))
+  \land {\sf f}(x) = {\sf f}(y)
+  \land {\sf m}(x) = {\sf m}(y)
+\end{align*}
+captures whether the operations bound to $x$ and $y$ are identical.
+To express the constraints among the matches of an embedded history, we define
+the macro $\textsc{Match}(Y,z)$:
+\begin{align*}
+  \forall x.\ {\sf m}(x) = z \implies
+  \textsc{ReadOnly}(x) \lor \bigvee_{y \in Y} \textsc{Identical}(x,y)
+\end{align*}
+which requires any operation which matches $z$ to be either read-only, or
+identical to some operation in $Y$, which represents the operations of $h$
+which match $z$. Finally, we express the embedding of $h$ with the macro
+$\textsc{Embed}_h$:
+\begin{align*}
+  \exists x_1, \ldots, x_n.\ \bigwedge_{i=1}^{n} \textsc{Embed}_{o_i}(x_i,Y_i,z_i)
+  \land \bigwedge_{i=1}^{k} \textsc{Match}(M_i, x_i)
+\end{align*}
+where $Y_i = \set{ x_j : o_i < o_j }$ are the variables corresponding to
+operations ordered after $o_i$, and $z_i$ is the variable corresponding to
+$m(o_i)$, if defined, and $M_i = \set{ x_j : m(o_j) = o_i }$ are the variables
+corresponding to operations matching $o_i$.
+
+\begin{example}
+
+  TODO EXAMPLE FORMULÆ FROM PREVIOUS PATTERNS
+
+\end{example}
+
+\begin{lemma}
+
+  $h_1 \models \textsc{Embed}_{h_2}$ if{f} $h_1 \succeq h_2$.
+
+\end{lemma}
+
+We obtain a formula representing an ADT $A$ by taking the conjunction of the
+negative embedding formulæ $\set{ \lnot\textsc{Embed}_h : h \in H }$ from any
+set $H$ that generates the complement of $A$.
+
+\begin{lemma}
+
+  The formula $\bigwedge_{h \in H} \neg \textsc{Embed}_h$ represents $A$,
+  for any set $H$ which generates the compliment of $A$.
+
+\end{lemma}
+
+\begin{example}
+
+  TODO EXAMPLE OF COMPLETE FORMULA FROM PREVIOUS COMPLETE PATTERNS/FORMULÆ
+  
+\end{example}
+
+For normal and predictable ADTs, such sets are computable, and so our inference
+problem is also computable.
+
+\begin{theorem}
+
+  The symbolic ADT inference problem is computable for normal and predictable ADTs.
+
+\end{theorem}
