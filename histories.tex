@@ -1,3 +1,4 @@
+%!TEX root = draft.tex
 \section{Histories of ADT Implementations}
 \label{sec:histories}
 
@@ -65,7 +66,9 @@ set is the maximum width of its elements. Width-$1$ histories are
 \emph{sequential}.
 Two operations $o, o'$ are \emph{identical}, written $o \sim o'$, when they
 have the same labels: $c(o) = c(o')$, $f(o) = f(o')$, and matching: $m(o) =
-m(o')$. The \emph{frequency} of an operation $o$ is the number $\freq(o) =
+m(o')$ (TODO: if matching is defined). 
+
+The \emph{frequency} of an operation $o$ is the number $\freq(o) =
 |\set{ o' \in O : o \sim o' }|$ of operations identical to $o$, and $o$ has
 \emph{duplicates} when $\freq(o) > 1$. An operation $o \in \rng(m)$ is a
 \emph{match target}, and the set $\set{ o' \in O : m(o') = o}$ of operations
