@@ -5,8 +5,8 @@ TODO MOTIVATE THIS SECTION
 
 Let $h = \tup{O,<,c,f,m}$ be a history with operations $O = \set{ o_1, \ldots,
 o_n }$. Without loss of generality, we assume the match targets $\set{o_1,
-\ldots, o_k}$ are indexed consecutively from $1$ to $k$, for some $k \le n$. 
-For each $o \in O$, we define the macro $\textsc{Embed}_o(x,Y,z)$:
+\ldots, o_k}$ of $h$ are indexed consecutively from $1$ to $k$, for some $k \le
+n$. For each $o \in O$, we define the macro $\textsc{Embed}_o(x,Y,z)$:
 \begin{align*}
   & \big(c(o) \implies {\sf c}(x)\big) \land {\sf f}(x) = f(o) \\
   & \land \big(o \in \dom(m)
@@ -27,7 +27,8 @@ captures whether the operations bound to $x$ and $y$ are identical.
 To express the constraints among the matches of embedded operations, we define
 the macro $\textsc{Match}(Y,z)$:
 \begin{align*}
-  \forall x.\ {\sf m}(x) = z \implies
+  \forall x.
+  {\sf m}(x) = z \implies
   \textsc{ReadOnly}(x) \lor \bigvee_{y \in Y} \textsc{Identical}(x,y)
 \end{align*}
 which requires any operation which matches $z$ to be either read-only, or
@@ -35,12 +36,13 @@ identical to some operation in $Y$, which represents the operations of $h$
 which match $z$. Finally, we express the embedding of $h$ with the macro
 $\textsc{Embed}_h$:
 \begin{align*}
-  \exists x_1, \ldots, x_n.\ \bigwedge_{i=1}^{n} \textsc{Embed}_{o_i}(x_i,Y_i,z_i)
-  \land \bigwedge_{i=1}^{k} \textsc{Match}(M_i, x_i)
+  \exists x_1, \ldots, x_n.
+  \bigwedge_{i=1}^{n} \textsc{Embed}_{o_i}(x_i,Y_i,z_i)
+  \land \bigwedge_{i=1}^{k} \textsc{Match}(W_i, x_i)
 \end{align*}
 where $Y_i = \set{ x_j : o_i < o_j }$ are the variables corresponding to
 operations ordered after $o_i$, and $z_i$ is the variable corresponding to
-$m(o_i)$, if defined, and $M_i = \set{ x_j : m(o_j) = o_i }$ are the variables
+$m(o_i)$, if defined, and $W_i = \set{ x_j : m(o_j) = o_i }$ are the variables
 corresponding to operations matching $o_i$.
 
 \begin{example}
