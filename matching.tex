@@ -1,9 +1,47 @@
 \section{Computing Matching Schemes}
 \label{sec:matching}
 
-TODO SHOW HOW TO COMPUTE MATCHING FUNCTIONS FROM THE SPECIFICATION THAT OBJECTS
-SHOULD BE MATCH-REMOVAL/EMBEDDING CLOSED WRT A GIVEN MATCHING FUNCTION
+TODO MOTIVATE THIS SECTION
+
+When $P$ is a $k$-length sequence of $n$-ary predicates, we write $P(x_1,
+\ldots, x_n)$ to denote the sequence
+\begin{align*}
+  P_1(x_1, \ldots, x_n) \ldots P_k(x_1, \ldots, x_n)
+\end{align*}
+Given finite predicate sequences $P$ and $Q$ and a set $E$ of executions, a
+matching scheme $M$ is \emph{simple} when there exists an $n$-ary Boolean
+function $G$, for $n = 2\cdot|P|+|Q|$, such that for each execution $e \in E$
+\begin{itemize}
+
+  \item $G(P(e,o_1),P(e,o_2),Q(e,o_1,o_2))$ is satisfied for at most one
+  operation $o_1$, for any operation $o_2$,
+
+  \item $M(e)(o_2)$ is undefined unless there exists an operation $o_1$
+  for which $G(P(e,o_1),P(e,o_2),Q(e,o_1,o_2))$, and
+
+  \item $M(e)(o_2) = o_1$ if{f} $G(P(e,o_1),P(e,o_2),P(e,o_1,o_2))$,
+
+\end{itemize}
+where $o_1$ and $o_2$ range over the operations of $e$.
+
+TODO QUALIFY THE EXECUTION SETS, E.G., TO HAVE UNIQUE VALUES, AND SO ON
+
+\begin{example}
+
+  TODO SHOW A FINITARY SIMPLE MATCHING SCHEME
+  
+\end{example}
+
+\begin{definition}
+
+  The \emph{matching scheme inference problem} is to compute a faithful, simple
+  matching scheme $M$ for a given set $E$ of executions and finite predicate
+  sequences $P$ and $Q$.
+
+\end{definition}
 
 \begin{theorem}
-  “Our algorithm is sound; maybe it is also complete under certain conditions.”
+
+  The matching scheme inference problem is computable for \ldots
+
 \end{theorem}
