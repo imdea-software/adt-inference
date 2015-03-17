@@ -30,10 +30,9 @@ where $o_1$ and $o_2$ range over the operations of $e$.
 
 \begin{example}
 
-  We say an execution with methods $\set{\mathsf{write}, \mathsf{read}}$
-  \emph{writes unique values} if the argument value to each write operation is
-  unique. Consider the language $L$ whose executions write unique values, with
-  the following predicates:
+  We say an execution of read and write methods \emph{writes unique values} if
+  the argument value to each write operation is unique. Consider the language
+  whose executions write unique values, with the following predicates:
   \begin{align*}
     & \mathsf{write}(e,o) & \text{$o$ is a {\sf write} operation in $e$}, \\
     & \mathsf{read}(e,o) & \text{$o$ is a {\sf read} operation in $e$,} \\
@@ -48,12 +47,10 @@ where $o_1$ and $o_2$ range over the operations of $e$.
     ( x_\mathsf{w} \land z_\mathsf{=} )
     \lor ( x_\mathsf{w} \land y_\mathsf{r} \land z_\mathsf{v} )
   \end{align*}
-  Intuitively, this defines a simple matching scheme for $L$ for which write
+  Intuitively, this defines a simple matching scheme for which write
   operations match themselves, and read operations match the write which wrote
   the value read. In the case such a write exists, it is unique in any
   execution which writes unique values. The match is otherwise undefined.
-
-  TODO ARGUE THAT THIS IS A FAITHFUL MATCHING SCHEME 
 
 \end{example}
 
