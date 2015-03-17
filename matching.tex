@@ -4,9 +4,9 @@
 TODO MOTIVATE THIS SECTION
 
 When $P$ is a $k$-length sequence of $n$-ary predicates, we write $P(x_1,
-\ldots, x_n)$ to denote the sequence
+\ldots, x_n)$ to denote the valuation sequence
 \begin{align*}
-  P_1(x_1, \ldots, x_n) \ldots P_k(x_1, \ldots, x_n)
+  P_1(x_1, \ldots, x_n) \ldots P_k(x_1, \ldots, x_n).
 \end{align*}
 Given finite predicate sequences $P$ and $Q$ and a set $E$ of executions, a
 matching scheme $M$ is \emph{simple} when there exists an $n$-ary Boolean
@@ -28,8 +28,30 @@ TODO QUALIFY THE EXECUTION SETS, E.G., TO HAVE UNIQUE VALUES, AND SO ON
 
 \begin{example}
 
-  TODO SHOW A FINITARY SIMPLE MATCHING SCHEME
-  
+  We say an execution of the atomic register ADT \emph{writes unique values}
+  if the argument value to each write operation is unique. Consider the set $E$
+  of executions which write unique values, and the following predicates:
+  \begin{align*}
+    & \mathsf{write}(e,o) & \text{$o$ is a {\sf write} operation in $e$}, \\
+    & \mathsf{read}(e,o) & \text{$o$ is a {\sf read} operation in $e$,} \\
+    & \mathsf{eq}(e,o_1,o_2) & \text{$o_1$ and $o_2$ the same operation, and} \\
+    & \mathsf{veq}(e,o_1,o_2) & \text{$o_1$ and $o_2$ read/write the same values.}
+  \end{align*}
+  Given a valuation $\tup{x_\mathsf{w}, x_\mathsf{r}, y_\mathsf{w},
+  y_\mathsf{r}, z_\mathsf{=}, z_\mathsf{v}}$ of the predicates above, we define
+  the function $G(x_\mathsf{w}, x_\mathsf{r}, y_\mathsf{w}, y_\mathsf{r},
+  z_\mathsf{=}, z_\mathsf{v})$ to be satisfied if and only if:
+  \begin{align*}
+    \big( x_\mathsf{w} \land z_\mathsf{=} \big)
+    \lor \big( x_\mathsf{w} \land y_\mathsf{r} \land z_\mathsf{v} \big)
+  \end{align*}
+  Intuitively, this defines a simple matching scheme for which write operations
+  match themselves, and read operations match the write which wrote the value
+  read. In the case such a write exists, it is unique in any execution which
+  writes unique values. The match is otherwise undefined.
+
+  TODO ARGUE THAT THIS IS A FAITHFUL MATCHING SCHEME 
+
 \end{example}
 
 \begin{definition}
