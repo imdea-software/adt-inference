@@ -3,14 +3,18 @@
 
 TODO MOTIVATE THIS SECTION
 
-When $P$ is a $k$-length sequence of $n$-ary predicates, we write $P(x_1,
-\ldots, x_n)$ to denote the valuation sequence
+A \emph{language} $L = \tup{E,P,Q}$ is a set $E$ of executions, along with
+finite sequences $P = P_1 P_2 \ldots$ and $Q = Q_1 Q_2 \ldots$ of binary and
+ternary predicates $P_i(e,o_1)$ and $Q_i(e,o_1,o_2)$ ranging over the
+executions of $E$ and their operations. When $P$ is a $k$-length sequence of
+$n$-ary predicates, we write $P(x_1, \ldots, x_n)$ to denote the valuation
+sequence
 \begin{align*}
   P_1(x_1, \ldots, x_n) \ldots P_k(x_1, \ldots, x_n).
 \end{align*}
-Given finite predicate sequences $P$ and $Q$ and a set $E$ of executions, a
-matching scheme $M$ is \emph{simple} when there exists an $n$-ary Boolean
-function $G$, for $n = 2\cdot|P|+|Q|$, such that for each execution $e \in E$
+Given a language $L = \tup{E,P,Q}$, we say a matching scheme $M$ is
+\emph{simple} when there exists an $n$-ary Boolean function $G$, for $n =
+2\cdot|P|+|Q|$, such that for each execution $e \in E$
 \begin{itemize}
 
   \item $G(P(e,o_1),P(e,o_2),Q(e,o_1,o_2))$ is satisfied for at most one
@@ -24,17 +28,16 @@ function $G$, for $n = 2\cdot|P|+|Q|$, such that for each execution $e \in E$
 \end{itemize}
 where $o_1$ and $o_2$ range over the operations of $e$.
 
-TODO QUALIFY THE EXECUTION SETS, E.G., TO HAVE UNIQUE VALUES, AND SO ON
-
 \begin{example}
 
-  We say an execution of the atomic register ADT \emph{writes unique values}
-  if the argument value to each write operation is unique. Consider the set $E$
-  of executions which write unique values, and the following predicates:
+  We say an execution with methods $\set{\mathsf{write}, \mathsf{read}}$
+  \emph{writes unique values} if the argument value to each write operation is
+  unique. Consider the language $L$ whose executions write unique values, with
+  the following predicates:
   \begin{align*}
     & \mathsf{write}(e,o) & \text{$o$ is a {\sf write} operation in $e$}, \\
     & \mathsf{read}(e,o) & \text{$o$ is a {\sf read} operation in $e$,} \\
-    & \mathsf{eq}(e,o_1,o_2) & \text{$o_1$ and $o_2$ the same operation, and} \\
+    & \mathsf{eq}(e,o_1,o_2) & \text{$o_1$ and $o_2$ are the same operation, and} \\
     & \mathsf{veq}(e,o_1,o_2) & \text{$o_1$ and $o_2$ read/write the same values.}
   \end{align*}
   Given a valuation $\tup{x_\mathsf{w}, x_\mathsf{r}, y_\mathsf{w},
@@ -42,25 +45,34 @@ TODO QUALIFY THE EXECUTION SETS, E.G., TO HAVE UNIQUE VALUES, AND SO ON
   the function $G(x_\mathsf{w}, x_\mathsf{r}, y_\mathsf{w}, y_\mathsf{r},
   z_\mathsf{=}, z_\mathsf{v})$ to be satisfied if and only if:
   \begin{align*}
-    \big( x_\mathsf{w} \land z_\mathsf{=} \big)
-    \lor \big( x_\mathsf{w} \land y_\mathsf{r} \land z_\mathsf{v} \big)
+    ( x_\mathsf{w} \land z_\mathsf{=} )
+    \lor ( x_\mathsf{w} \land y_\mathsf{r} \land z_\mathsf{v} )
   \end{align*}
-  Intuitively, this defines a simple matching scheme for which write operations
-  match themselves, and read operations match the write which wrote the value
-  read. In the case such a write exists, it is unique in any execution which
-  writes unique values. The match is otherwise undefined.
+  Intuitively, this defines a simple matching scheme for $L$ for which write
+  operations match themselves, and read operations match the write which wrote
+  the value read. In the case such a write exists, it is unique in any
+  execution which writes unique values. The match is otherwise undefined.
 
   TODO ARGUE THAT THIS IS A FAITHFUL MATCHING SCHEME 
 
 \end{example}
 
+An implementation $\mathcal{I}$ \emph{adheres} to a language $L = \tup{E,P,Q}$
+if $\mathcal{I} \subseteq E$. A match scheme $M$ \emph{normalizes} an
+implementation $\mathcal{I}$ when $M$ is faithful to $\mathcal{I}$ and
+$H(\mathcal{I},M)$ is normal.
+
 \begin{definition}
 
-  The \emph{matching scheme inference problem} is to compute a faithful, simple
-  matching scheme $M$ for a given set $E$ of executions and finite predicate
-  sequences $P$ and $Q$.
+  The \emph{matching scheme inference problem} is to compute a simple matching
+  scheme $M$ which normalizes a given implementation $\mathcal{I}$ adhering to
+  a given language $L$.
 
 \end{definition}
+
+TODO ARGUE THAT SIMPLE NORMALIZING MATCHING SCHEMES CAN BE
+COMPUTED/APPROXIMATED BY CHECKING WHETHER FINITE SETS OF EXECUTIONS AND THEIR
+PROJECTIONS ARE MATCH-REMOVAL CLOSED
 
 \begin{theorem}
 
