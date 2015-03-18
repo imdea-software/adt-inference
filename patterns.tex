@@ -1,3 +1,4 @@
+%!TEX root = draft.tex
 \section{Computing ADT Complements}
 \label{sec:patterns}
 
@@ -65,6 +66,73 @@ of this section.
   $\preceq$ is a wqo on width-bounded histories.
 
 \end{lemma}
+
+\begin{proof}
+
+%We prove that $\preceq$ is well-founded, i.e., there is no infinite strictly decreasing sequence $h_1 \succ h_2\succ \ldots$\footnote{We define $\succ$ as usual by $h\succ h'$ iff $h\succeq h'$ and $h\neq h'$.},
+%and that $\preceq$ has no infinite antichain, i.e., there is no infinite set $\{h_1,h_2,\ldots\}$ of mutually incomparable elements 
+%$h_i\not\preceq h_j$ and $h_j\not\preceq h_i$ when $i\neq j$.
+%
+%Concerning well-foundedness, note that a given history $h_1$ can be weaken only finitely many times by removing matches, duplicates in a match, or happens-before ordering constraints, or by turning completed operations into pending operations. Since we restrict ourselves to width-bounded histories, $h_1$ can also be weaken only finitely many times by adding pending operations (adding a pending operation increases the width of a history by 1).
+%
+%TODO PROBLEM WITH PENDING OPS
+
+%To prove that $\preceq$ has no infinite antichain, 
+%we use the following definitions.
+Let $h_1 h_2\ldots $ be an infinite sequence of histories. We prove that there exists $i<j$ such that $h_i\preceq h_j$.
+
+The \emph{signature} of an operation $o$ in a history $h$ is the pair $\sigma(o)=(c(o),f(o))$.
+Then, the \emph{signature} of a match $\mu=\set{ o' \in O : m(o') = o}$ is the pair 
+\[
+\sigma(\mu)=(\sigma(o),\set{\sigma(o') : m(o')=o, o'\neq o})
+\]
+containing the signature of the match target and the set of the signatures of the other operations.
+The \emph{signature} of a history $h$ is the set 
+\[
+\sigma(h)=\set{\sigma(\mu): \mu\mbox{ a match of $h$}}\cup\set{\sigma(o): o\mbox{ unmatched}}.
+\]
+of match signatures and signatures of unmatched operations.
+
+%Assume by contradiction that $\preceq$ has an infinite antichain.
+Since the set of history signatures is bounded (because the set of methods is bounded)
+and the set of pending operations is also bounded (since we consider only bounded width histories),
+the sequence $h_1 h_2\ldots $ contains an infinite sequence of histories $h_1' h_2' \ldots$ that have 
+the same signature and the same number of pending operations with the same signature.
+
+%The \emph{vector} of a match $\mu$ is the pair
+%\[
+%\nu(\mu)=(\sigma(o),\mset{\sigma(o') : m(o')=o, o'\neq o})
+%\]
+%containing the signature of the match target and the multiset of the signatures of the other operations.
+%Also, 
+The \emph{vector} of a history $h$ is the multiset 
+\[
+\nu(h)=\mset{\sigma(\mu): \mu\mbox{ a match of $h$}}
+\]
+of match signatures in $h$.
+
+Given a finite alphabet $\Sigma$, a domain $\mathbb{D}$ enhanced with a wqo $\leq$, and two functions 
+$\alpha,\beta:\Sigma\rightarrow \mathbb{D}$, let $\sqsubseteq$ be an order relation defined by
+\[
+\alpha\sqsubseteq\beta\mbox{ iff for every $a\in \Sigma$, $\alpha(a)\leq\beta(a)$}.
+\]
+Note that $\sqsubseteq$ is a wqo.
+
+The relation $\sqsubseteq$ on history vectors (mappings from the alphabet $\Sigma$ of match signatures to $\mathbb{N}$), 
+where $\leq$ is the order relation on natural numbers, is a wqo.
+Hence, the set $H$ contains an infinite sequence $h_1',h_2',\ldots$ such that $\nu(h_1')\sqsubseteq \nu(h_2')\sqsubseteq \ldots$.
+
+A \emph{nested vector} of a history $h$ is the nested multiset
+\[
+\nu^2(h)=\mset{\mset{\nu(\mu): \sigma(\mu)=\sigma} : \sigma\mbox{ the signature of a match in $h$}}.
+\]
+
+
+Again using the fact that $\leq$ is a wqo, the sequence $h_1',h_2',\ldots$ contains a history $h'_k$ and an infinite set of histories 
+$\set{h_1'',h_2'',\ldots}$ such that for every $i$ and every match $\mu$ of $h_i''$,
+$\nu(\mu_k)\leq \nu(\mu)$, for some match $\mu_k$ of $h_k$ such that $\sigma(\mu_k)=\sigma(\mu)$.
+
+\end{proof}
 
 For the remainder of this section, we fix an ADT $A$, and let $B$ be the
 complement of $\ker A$. When $\ker A$ has bounded width, so does $B$, and thus
