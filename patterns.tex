@@ -94,50 +94,76 @@ Then, the \emph{signature} of a match $\mu=\set{ o' \in O : m(o') = o}$ is the p
 \sigma(\mu)=(\sigma(o),\set{\sigma(o') : m(o')=o, o'\neq o})
 \]
 containing the signature of the match target and the set of the signatures of the other operations.
-The \emph{signature} of a history $h$ is the set 
-\[
-\sigma(h)=\set{\sigma(\mu): \mu\mbox{ a match of $h$}}\cup\set{\sigma(o): o\mbox{ unmatched}}.
-\]
-of match signatures and signatures of unmatched operations.
+The \emph{signature} of a history $h$ is the tuple 
+\begin{align*}
+\sigma(h)&=&(\set{\sigma(\mu): \mu\mbox{ a match}}, \set{\sigma(o): o\mbox{ read-only}}, \\
+&& \set{\sigma(o): o\mbox{ completed and unmatched}}, \\
+&& \mset{\sigma(o): o\mbox{ pending and unmatched}}).
+\end{align*}
+
+The history signature contains sets of signatures 
+(for matches, read-only and respectively, completed and unmatched operations) 
+and the multiset of signatures of the pending and unmatched operations.
 
 %Assume by contradiction that $\preceq$ has an infinite antichain.
 Since the set of history signatures is bounded (because the set of methods is bounded)
 and the set of pending operations is also bounded (since we consider only bounded width histories),
 the sequence $h_1 h_2\ldots $ contains an infinite sequence of histories $h_1' h_2' \ldots$ that have 
-the same signature and the same number of pending operations with the same signature.
+the same signature. 
 
-%The \emph{vector} of a match $\mu$ is the pair
-%\[
-%\nu(\mu)=(\sigma(o),\mset{\sigma(o') : m(o')=o, o'\neq o})
-%\]
-%containing the signature of the match target and the multiset of the signatures of the other operations.
+%
 %Also, 
-The \emph{vector} of a history $h$ is the multiset 
+
+The \emph{vector} of a history $h$ is the tuple
+\begin{align*}
+\nu(h)&=&(\mset{\sigma(\mu): \mu\mbox{ a match of $h$}}, \mset{\sigma(o): o\mbox{ read-only}}, \\
+&& \mset{\sigma(o): o\mbox{ completed and unmatched}}).
+\end{align*}
+
+Let $\leq$ be an order relation on multisets $\alpha:\Sigma\rightarrow\mathbb{N}$ of (match or operation) signatures from a finite set $\Sigma$ 
+defined by $\alpha\leq\alpha'$ iff $\alpha(\sigma)\leq\alpha'(\sigma)$, for every $\sigma\in\Sigma$.
+Clearly, $\leq$ is a wqo and so is the component-wise extension of $\leq$ to history vectors.
+Therefore, by known results, the sequence of histories $h_1' h_2' \ldots$ contains 
+an infinite sequence $h_1'',h_2'',\ldots$ such that $\nu(h_1'')\leq \nu(h_2'')\leq \ldots$.
+
+The \emph{vector} of a match $\mu$ is the pair
 \[
-\nu(h)=\mset{\sigma(\mu): \mu\mbox{ a match of $h$}}
+\nu(\mu)=(\sigma(o),\mset{\sigma(o') : m(o')=o, o'\neq o})
 \]
-of match signatures in $h$.
+containing the signature of the match target and the multiset of the signatures of the other operations.
 
-Given a finite alphabet $\Sigma$, a domain $\mathbb{D}$ enhanced with a wqo $\leq$, and two functions 
-$\alpha,\beta:\Sigma\rightarrow \mathbb{D}$, let $\sqsubseteq$ be an order relation defined by
+For every history $h$ and match signature $\sigma$, the \emph{$\sigma$-vector} of a history $h$ is the multiset
 \[
-\alpha\sqsubseteq\beta\mbox{ iff for every $a\in \Sigma$, $\alpha(a)\leq\beta(a)$}.
+\nu_\sigma(h)=\mset{\nu(\mu): \sigma(\mu)=\sigma}
 \]
-Note that $\sqsubseteq$ is a wqo.
+of match vectors of signature $\sigma$.
 
-The relation $\sqsubseteq$ on history vectors (mappings from the alphabet $\Sigma$ of match signatures to $\mathbb{N}$), 
-where $\leq$ is the order relation on natural numbers, is a wqo.
-Hence, the set $H$ contains an infinite sequence $h_1',h_2',\ldots$ such that $\nu(h_1')\sqsubseteq \nu(h_2')\sqsubseteq \ldots$.
+Let $\leq_v$ be an order relation on $\sigma$-vectors defined by $\nu_\sigma(h)\leq_v \nu_\sigma(h')$ iff
+\begin{itemize}
+	\item for every match vector $\nu$ in $\nu_\sigma(h)$ there exists a match vector $\nu'$ in $\nu_\sigma(h')$
+	such that $\nu\leq \nu'$ (here, $\leq$ is the order on multisets defined above).
+\end{itemize}
+By known results, $\leq_v$ is a wqo.
 
-A \emph{nested vector} of a history $h$ is the nested multiset
-\[
-\nu^2(h)=\mset{\mset{\nu(\mu): \sigma(\mu)=\sigma} : \sigma\mbox{ the signature of a match in $h$}}.
-\]
+Let $\sigma_1$, $\sigma_2$,$\ldots$, $\sigma_n$ be the match signatures defined over a set of methods $\mathbb{M}$.
+Since $\leq_v$ is a wqo, the sequence of histories $h_1'',h_2'',\ldots$ contains an 
+infinite sequence $h_{1}^1,h_{2}^1,\ldots$ such that 
+$\nu_{\sigma_1}(h_{1}^1)\leq_v \nu_{\sigma_1}(h_{2}^1)\leq_v \ldots$.
+Then, the sequence $h_{1}^1,h_{2}^1,\ldots$ contains 
+an infinite sequence $h_{1}^2,h_{2}^2,\ldots$ such that 
+$\nu_{\sigma_2}(h_{1}^2)\leq_v \nu_{\sigma_2}(h_{2}^2)\leq_v \ldots$.
+Applying a similar reasoning for the rest of the match signatures, 
+we obtain that $h_1'',h_2'',\ldots$ contains an 
+infinite sequence $h_{1}^n,h_{2}^n,\ldots$
+such that 
+$\nu_{\sigma}(h_{1}^n)\leq_v \nu_{\sigma}(h_{2}^n)\leq_v \ldots$, for every signature $\sigma$.
+Recall that we also have that
+$\nu(h_1^n)\leq\nu(h_2^n)\leq\ldots$ since $h_{1}^n,h_{2}^n,\ldots$ is a sub-sequence of $h_1'',h_2'',\ldots$.
+
+Since the sequence of histories $h_{1}^n,h_{2}^n,\ldots$ is infinite there must exist
 
 
-Again using the fact that $\leq$ is a wqo, the sequence $h_1',h_2',\ldots$ contains a history $h'_k$ and an infinite set of histories 
-$\set{h_1'',h_2'',\ldots}$ such that for every $i$ and every match $\mu$ of $h_i''$,
-$\nu(\mu_k)\leq \nu(\mu)$, for some match $\mu_k$ of $h_k$ such that $\sigma(\mu_k)=\sigma(\mu)$.
+
 
 \end{proof}
 
