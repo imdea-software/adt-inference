@@ -45,7 +45,7 @@ return actions~\cite{conf/popl/BouajjaniEEH15}.
 In this work, histories are abstractions of executions which retain method
 names yet lose the exact argument and return values, and retain the relative
 order of operations yet lose the exact sequence of call and return actions.
-Formally, a \emph{history} is a tuple $h = \tup{O,<,c,f,m}$ where
+Formally, a \emph{history} is a tuple $h = \tup{O,<,c,f,m,r}$ where
 \begin{itemize}
 
   \item $O \subseteq \mathbb{O}$ is a set of \emph{operations},
@@ -54,20 +54,23 @@ Formally, a \emph{history} is a tuple $h = \tup{O,<,c,f,m}$ where
 
   \item $c: O \to \mathbb{B}$ labels operations as \emph{completed}, or not,
 
-  \item $f: O \to \mathbb{M}$ labels operations with method names, and
+  \item $f: O \to \mathbb{M}$ labels operations with method names,
 
-  \item $m: O \rightharpoonup O$ is a partial \emph{matching} function.
+  \item $m: O \rightharpoonup O$ is a partial \emph{matching} function, and
+
+  \item $r: O \to \mathbb{B}$ labels operations as \emph{read-only}, or not.
 
 \end{itemize}
 Non-completed operations are \emph{pending}, and are maximal in the
 happens-before order. 
 
-Two operations $o_1, o_2 \in O$ are \emph{identical} when they have
+Two operations $o_1, o_2 \in O$ are \emph{identical} when
 \begin{itemize}
 
-  \item the same labels: $c(o_1) = c(o_2)$, $f(o_1)= f(o_2)$, and
+  \item they have the same labels: $c(o_1) = c(o_2)$, $f(o_1)= f(o_2)$, and
+  $r(o_1) = r(o_2)$, and
 
-  \item the same matching: either $m(o_1) = m(o_2)$, or both $m(o_1)$
+  \item they have the same matching: either $m(o_1) = m(o_2)$, or both $m(o_1)$
   and $m(o_2)$ are undefined.
 
 \end{itemize} 
@@ -95,8 +98,9 @@ identifiers.
 Our abstraction of executions relies on correlating the operations associated
 with the same values in an execution via the partial matching function of a
 history. We construct partial matching functions systematically. A
-\emph{matching scheme} $M$ associates to each execution $e$ with operations $O$
-a partial matching function $M(e): O \rightharpoonup O$.
+\emph{matching scheme} $\tup{M,R}$ associates to each execution $e$ with
+operations $O$ a partial matching function $M(e): O \rightharpoonup O$ and a
+read-only operation labeling $R(e): O \to \mathbb{B}$.
 
 \begin{example}
 
@@ -104,8 +108,8 @@ a partial matching function $M(e): O \rightharpoonup O$.
 
 \end{example}
 
-The history $H(e,M)$ of an execution $e$ under matching scheme $M$ is the tuple
-$\tup{O,<,c,f,M(e)}$ where
+The history $H(e,M,R)$ of an execution $e$ under matching scheme $\tup{M,R}$ is
+the tuple $\tup{O,<,c,f,M(e),R(e)}$ where
 \begin{itemize}
 
   \item $O$ are the operations of $e$,
@@ -117,8 +121,8 @@ $\tup{O,<,c,f,M(e)}$ where
   \item $f(o)$ is the name of the method executed by $o$ in $e$.
 
 \end{itemize}
-We denote the set $\set{H(e,M) : e \in E}$ of histories of an execution set $E$
-by $H(E,M)$.
+We denote the set $\set{H(e,M,R) : e \in E}$ of histories of an execution set
+$E$ by $H(E,M,R)$.
 
 \begin{example}
 
@@ -126,17 +130,18 @@ by $H(E,M)$.
 
 \end{example}
 
-A matching scheme $M$ is \emph{faithful} to a set $E$ of executions when $e \in
-E$ if{f} $e' \in E$ for any two executions $e$ and $e'$ such that $H(e,M) =
-H(e',M)$. A set of executions $E$ is \emph{data independent}\footnote{TODO NOTE
-THAT THIS IS NOT THE STANDARD DEFINITION…} when there exists a faithful
-matching scheme. By definition, our abstraction of executions incurs no loss of
-precision for data-independent execution sets.
+A matching scheme $\tup{M,R}$ is \emph{faithful} to a set $E$ of executions
+when $e \in E$ if{f} $e' \in E$ for any two executions $e$ and $e'$ such that
+$H(e,M,R) = H(e',M,R)$. A set of executions $E$ is \emph{data
+independent}\footnote{TODO NOTE THAT THIS IS NOT THE STANDARD DEFINITION…} when
+there exists a faithful matching scheme. By definition, our abstraction of
+executions into histories incurs no loss of precision for data-independent
+execution sets.
 
 \begin{lemma}
 
-  $H(e,M) \in H(E,M)$ if and only if $e \in E$, for any faithful matching
-  scheme $M$.
+  $H(e,M,R) \in H(E,M,R)$ if and only if $e \in E$, for any faithful matching
+  scheme $\tup{M,R}$.
 
 \end{lemma}
 
@@ -144,7 +149,7 @@ In Section~\ref{sec:nature} we demonstrate faithful matching schemes for the
 executions of naturally-occurring ADTs, and in Section~\ref{sec:matching} we
 demonstrate how to infer faithful matching schemes. Otherwise, for the
 remainder of this work, we assume each set of executions comes equipped with a
-faithful matching scheme $M$, and abbreviate $H(E,M)$ by $H(E)$.
+faithful matching scheme $\tup{M,R}$, and abbreviate $H(E,M,R)$ by $H(E)$.
 
 Two histories $h_1$ and $h_2$ are related by $\to_x$, for $x = \mathrm{o},
 \mathrm{c}, \mathrm{p}$, when $h_2$ is obtained from $h_1$ by:
