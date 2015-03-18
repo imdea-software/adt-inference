@@ -7,23 +7,30 @@ TODO MOTIVATE THIS SECTION; ALSO, RETHINK THE TITLE OF THIS SECTION
 In addition to the relations $\to_\mathrm{o}$, $\to_\mathrm{p}$, and
 $\to_\mathrm{c}$ of Section~\ref{sec:histories} under which all ADTs are
 closed, the ADTs we consider in this work are also closed under additional
-relations which remove matches, and duplicate operations. The relations
-$\to_\mathrm{m}$ and $\to_\mathrm{d}$ relate two histories $h_1$ and $h_2$ when
-$h_2$ is obtained from $h_1$ by
+relations which remove read-only operations, unmatched operations, entire
+matches, and duplicate operations. The relations $\to_\mathrm{r}$,
+$\to_\mathrm{u}$, $\to_\mathrm{m}$ and $\to_\mathrm{d}$ relate two histories
+$h_1$ and $h_2$ when $h_2$ is obtained from $h_1$ by
 \begin{itemize}
+
+  \item removing a read-only operation (r),
+
+  \item removing an unmatched operation (u),
 
   \item removing a match (m), or
 
   \item removing a duplicate operation (d).
 
 \end{itemize}
-We say an ADT closed under $\to_\mathrm{m}$ and $\to_\mathrm{d}$ is
-\emph{normal}. In Section~\ref{sec:nature} we demonstrate that
-naturally-occurring ADTs are normal. Defining the relation $\succeq$ as the
-reflexive and transitive closure of the above relations,
+We say an ADT closed under $\to_\mathrm{r}$, $\to_\mathrm{u}$, $\to_\mathrm{m}$
+and $\to_\mathrm{d}$ is \emph{normal}. In Section~\ref{sec:nature} we
+demonstrate that naturally-occurring ADTs are normal. Defining the relation
+$\succeq$ as the reflexive and transitive closure of the above relations,
 \begin{align*}
-  \succeq = (\to_\mathrm{o} \cup \to_\mathrm{p} \cup \to_\mathrm{c} \cup 
-  \to_\mathrm{m} \cup \to_\mathrm{d})^\ast
+  \mathord{\succeq} = (
+    \to_\mathrm{o} \cup \to_\mathrm{p} \cup \to_\mathrm{c} \cup 
+    \to_\mathrm{r} \cup \to_\mathrm{u} \cup \to_\mathrm{m} \cup \to_\mathrm{d}
+  )^\ast
 \end{align*}
 closure under $\succeq$ follows immediately.
 
