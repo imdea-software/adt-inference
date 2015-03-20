@@ -73,11 +73,11 @@ $H(\mathcal{I},M)$ is normal.
 
 We automate the computation of matching schemes by considering the function
 ${\sf g}$ underlying a simple matching scheme as an uninterpreted function in a
-logical satisfiability problem, and constrain ${\sf g}$ to normalize the
-executions of an implementation. To this end, we fix an implementation
-$\mathcal{I}$ and a language $L = \tup{E,P,Q}$ to which $\mathcal{I}$ adheres,
-then consider any enumeration $F$ of execution pairs $\tup{e,e'} \in E^2$ such
-that
+logical satisfiability problem which uniquely determines the match of each
+operation, and constrain ${\sf g}$ to normalize the executions of an
+implementation. To this end, we fix an implementation $\mathcal{I}$ and a
+language $L = \tup{E,P,Q}$ to which $\mathcal{I}$ adheres, then consider any
+enumeration $F$ of execution pairs $\tup{e,e'} \in E^2$ such that
 \begin{itemize}
 
   \item $e \in \mathcal{I}$ and $e' \not\in \mathcal{I}$, and
@@ -114,6 +114,14 @@ the given language $L$, we define the macro $\textsc{IsMatch}_{e,o_1,o_2}$:
 \begin{align*}
   \mathsf{g}\big( P(e,o_1), P(e,o_2), Q(e,o_1,o_2) \big).
 \end{align*}
+To enforce that each operation of an execution $e$ will have a unique match,
+we define the macro $\textsc{UniqueMatch}_e$:
+\begin{align*}
+  \bigwedge_{o_1,o_2 \in O_e} \Big(
+    \textsc{IsMatch}_{e,o_2,o_2} \implies
+    \bigwedge_{o_1' \neq o_1} \lnot \textsc{IsMatch}_{e,o_1',o_2}
+  \Big).
+\end{align*}
 Then a given set $O \subseteq O_e$ constitutes a match according to
 ${\sf g}$ when all operations $o_2 \in O$ target some operation $o_1 \in O$,
 and no other operation $o_2 \in O \setminus O_e$ does. We express this with the
@@ -131,7 +139,10 @@ ${\sf g}$ normalized $\mathcal{I}$, and $e \in \mathcal{I}$, then $e'$ should
 also be in $\mathcal{I}$. We express this exclusion for all pairs of $F$
 with the macro $\textsc{Normalizes}_{F}$:
 \begin{align*}
-  \bigwedge_{\tup{e,e'}\in F} \lnot \textsc{EntireMatch}_{e,(O_e \setminus O_{e'})}
+  \bigwedge_{\tup{e,e'}\in F} \Big(
+    \lnot \textsc{EntireMatch}_{e,(O_e \setminus O_{e'})}
+    \land \textsc{UniqueMatch}_{e}
+  \Big).
 \end{align*}
 We thus check satisfiability for the conjunction of non-matches $O_e \setminus
 O_{e'}$ over all pairs $\tup{e,e'} \in F$.
