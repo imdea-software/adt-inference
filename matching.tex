@@ -140,8 +140,8 @@ also be in $\mathcal{I}$. We express this exclusion for all pairs of $F$
 with the macro $\textsc{Normalizes}_{F}$:
 \begin{align*}
   \bigwedge_{\tup{e,e'}\in F} \Big(
-    \lnot \textsc{EntireMatch}_{e,(O_e \setminus O_{e'})}
-    \land \textsc{UniqueMatch}_{e}
+    \textsc{UniqueMatch}_{e}
+    \land \lnot \textsc{EntireMatch}_{e,(O_e \setminus O_{e'})}
   \Big).
 \end{align*}
 We thus check satisfiability for the conjunction of non-matches $O_e \setminus
@@ -219,7 +219,7 @@ to refine the given language, for example, by adding additional predicates.
     \end{tabular}
   \end{center}
   Thus any enumeration $F$ including the executions above excludes every
-  possible valuations of $\tup{x_{\sf w}, y_{\sf w}}$, resulting in an
+  possible valuation of $\tup{x_{\sf w}, y_{\sf w}}$, resulting in an
   unsatisfiable $\textsc{Normalize}_F$.
 
 \end{example}
