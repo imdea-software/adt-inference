@@ -30,23 +30,20 @@ Given a language $L = \tup{E,P,Q}$, we say a matching scheme $M$ is
 where $o_1$ and $o_2$ range over the operations of $e$.
 
 \begin{example}
+  \label{ex:register-language}
 
   We say an execution of read and write methods \emph{writes unique values} if
   the argument value to each write operation is unique. Consider the language
+  $L_\mathrm{reg}$
   whose executions write unique values, with the following predicates:
   \begin{align*}
-    & \mathsf{write}(e,o) & \text{$o$ is a {\sf write} operation in $e$}, \\
-    & \mathsf{read}(e,o) & \text{$o$ is a {\sf read} operation in $e$,} \\
-    & \mathsf{eq}(e,o_1,o_2) & \text{$o_1$ and $o_2$ are the same operation, and} \\
-    & \mathsf{veq}(e,o_1,o_2) & \text{$o_1$ and $o_2$ read/write the same values.}
+    & \mathsf{w}(e,o) & \text{$o$ is a {\sf write} operation in $e$, and}, \\
+    & \mathsf{v}(e,o_1,o_2) & \text{$o_1$ and $o_2$ read/write the same values.}
   \end{align*}
-  Given a valuation $\tup{x_\mathsf{w}, x_\mathsf{r}, y_\mathsf{w},
-  y_\mathsf{r}, z_\mathsf{=}, z_\mathsf{v}}$ of the predicates above, we define
-  the function $G(x_\mathsf{w}, x_\mathsf{r}, y_\mathsf{w}, y_\mathsf{r},
-  z_\mathsf{=}, z_\mathsf{v})$ to be satisfied if and only if:
+  We define the function $G(x_\mathsf{w}, y_\mathsf{w}, z_\mathsf{v})$ over
+  valuations to the predicates above to be satisfied if and only if:
   \begin{align*}
-    ( x_\mathsf{w} \land z_\mathsf{=} )
-    \lor ( x_\mathsf{w} \land y_\mathsf{r} \land z_\mathsf{v} )
+    x_\mathsf{w} \land z_\mathsf{v}
   \end{align*}
   Intuitively, this defines a simple matching scheme for which write
   operations match themselves, and read operations match the write which wrote
@@ -139,6 +136,45 @@ with the macro $\textsc{Normalizes}_{F}$:
 We thus check satisfiability for the conjunction of non-matches $O_e \setminus
 O_{e'}$ over all pairs $\tup{e,e'} \in F$.
 
+\begin{example}
+
+  Consider again the language $L_\mathrm{reg}$ of read and write methods of
+  Example~\ref{ex:register-language} with predicates ${\sf w}(e,o)$ and ${\sf
+  v}(e,o_1,o_2)$ whose executions write unique values. The following table
+  lists all possible predicate valuations $\tup{x_{\sf w}, y_{\sf w}, z_{\sf
+  v}}$, and for each valuation a valid execution which excludes the positive
+  valuation of ${\sf g}(x_{\sf w}, y_{\sf w}, z_{\sf v})$ in the satisfaction
+  of $\textsc{Normalize}_F$, in the case such an execution exists.
+  \begin{center}
+    \begin{tabular}{ccc|ll}
+      $x_\mathsf{w}$ & $y_\mathsf{w}$ & $z_\mathsf{v}$ & counterexample & reason \\
+      \hline
+      $0$ & $0$ & $0$ & ${\rm w}(1) \ {\rm r}(1) \ {\rm r}(1) \ {\rm w}(2) \ {\rm r}(2)$ & not unique \\
+      $0$ & $0$ & $1$ & ${\rm w}(1) \ {\rm r}(1) \ {\rm r}(1)$ & not unique \\
+      $0$ & $1$ & $0$ & ${\rm w}(1) \ \underline{{\rm r}(1) \ {\rm w}(2)} \ {\rm r}(2)$ & $\to_\mathrm{m}$ \\
+      $0$ & $1$ & $1$ & $\underline{{\rm w}(1) \ {\rm r}(1)} \ {\rm r}(1)$ & $\to_\mathrm{m}$ \\
+      $1$ & $0$ & $0$ & ${\rm w}(1) \ {\rm w}(2) \ {\rm w}(3) \ {\rm r}(3)$ & not unique \\
+      $1$ & $0$ & $1$ & & \\
+      $1$ & $1$ & $0$ & ${\rm w}(1) \ {\rm w}(2) \ {\rm w}(3)$ & not unique \\
+      $1$ & $1$ & $1$ & & \\
+    \end{tabular}
+  \end{center}
+  For example, the first valuation $000$ must be excluded since it allows the
+  read ${\rm r}(2)$ to match both reads ${\rm r}(1)$, violating
+  $\textsc{UniqueMatch}$. The second valuation $001$ must also be excluded,
+  since it allows either read ${\rm r}(1)$ to match both itself and the other
+  read ${\rm r}(1)$. The third valuation $010$ must be excluded since it allows
+  the write ${\rm w}(2)$ to match the read ${\rm r}(1)$, in which case removing
+  the match $\set{ {\rm r}(1), {\rm w}(2) }$ results in the invalid execution
+  ${\rm w}(1)\ {\rm r}(2)$. Reasoning follows similarly for the other rows.
+  In this way, any enumeration $F$ which includes the above executions
+  will exclude all valuations except for $101$ and $111$, ultimately resulting
+  in a satisfiable $\textsc{Normalize}_F$ in which ${\sf g}(x_{\sf w}, y_{\sf
+  w}, z_{\sf v})$ is the same Boolean function $x_{\sf w} \land z_{\sf v}$
+  given in Example~\ref{ex:register-language}.
+
+\end{example}
+
 On the one hand, checking satisfiability of $\textsc{Normalizes}_F$ can be used
 to conclude the impossibility of a good matching scheme — at least for the
 given language.
@@ -155,8 +191,25 @@ to refine the given language, for example, by adding additional predicates.
 
 \begin{example}
 
-  TODO SHOW THAT THE REGISTER LANGUAGE EXAMPLE WITHOUT ONE OF THE PREDICATES
-  WILL LEAD TO UNSAT.
+  Consider again the language $L_\mathrm{reg}$ of read and write methods of
+  Example~\ref{ex:register-language}, yet this time without the predicate ${\sf
+  v}(e,o_1,o_2)$. The following table lists all possible predicate valuations
+  $\tup{x_{\sf w}, y_{\sf w}}$, and for each valuation a valid execution which
+  excludes the positive valuation of ${\sf g}(x_{\sf w}, y_{\sf w})$ in the
+  satisfaction of $\textsc{Normalize}_F$.
+  \begin{center}
+    \begin{tabular}{cc|ll}
+      $x_{\sf w}$ & $y_{\sf w}$ & counterexample & reason \\
+      \hline
+      0 & 0 & ${\rm w}(1)\ {\rm r}(1)\ {\rm r}(1)$ & not unique \\
+      0 & 1 & $\underline{{\rm w}(1)\ {\rm r}(1)}\ {\rm r}(1)$ & $\to_\mathrm{m}$ \\
+      1 & 0 & ${\rm w}(1)\ {\rm w}(2)\ {\rm r}(2)$ & not unique \\
+      1 & 1 & ${\rm w}(1)\ {\rm w}(2)$ & not unique \\
+    \end{tabular}
+  \end{center}
+  Thus any enumeration $F$ including the executions above excludes every
+  possible valuations of $\tup{x_{\sf w}, y_{\sf w}}$, resulting in an
+  unsatisfiable $\textsc{Normalize}_F$.
 
 \end{example}
 
