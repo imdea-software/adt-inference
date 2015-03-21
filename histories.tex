@@ -38,7 +38,30 @@ return actions~\cite{conf/popl/BouajjaniEEH15}.
 
 \begin{example}
 
-  TODO EXAMPLE EXECUTION
+  Consider the following three executions of a single-value register object
+  with read and write methods
+  \begin{center}
+    \setlength{\tabcolsep}{1em}
+    \begin{tabular}{l|l|l}
+      $e_1$                           & $e_2$                           & $e_3$ \\
+      $1:\mathrm{write}(a)$           & $1:\mathrm{write}(a)$           & $1:\mathrm{write}(a)$ \\
+      $1:\mathbf{ret}$                & $2:\mathrm{write}(b)$           & $1:\mathbf{ret}$ \\
+      $2:\mathrm{write}(b)$           & $1:\mathbf{ret}$                & $2:\mathrm{write}(b)$ \\
+      $2:\mathbf{ret}$                & $2:\mathbf{ret}$                & $3:\mathrm{read}$ \\
+      $3:\mathrm{read}$               & $3:\mathrm{read}$               & $2:\mathbf{ret}$ \\
+      $3:\mathbf{ret} \Rightarrow a$  & $3:\mathbf{ret} \Rightarrow a$  & $3:\mathbf{ret} \Rightarrow a$ \\
+    \end{tabular}
+  \end{center}
+  in which actions are preceded by their operation identifiers. Executions
+  $e_2$ and $e_3$ are obtained from $e_1$ by permuting the return actions of
+  operations $1$ and $2$, respectively, forward, or symmetrically, the call
+  actions of operations $2$ and $3$, respectively, backward. Thus while the
+  operations of Execution $e_1$ are sequential, each following the previous in
+  time, those of $e_2$ and $e_3$ overlap. While $e_1$ should not be admitted
+  by an \emph{atomic} register, since the read of Operation~$3$ does not
+  return the most-recently-written value, both $e_2$ and $e_3$ could be
+  admitted, since there exist linearizations of the partially-ordered operations
+  such that Operation~$3$ does return the most-recently-written value.
 
 \end{example}
 
