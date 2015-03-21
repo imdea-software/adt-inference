@@ -37,6 +37,7 @@ induce arbitrary delay between implementation code and the associated call and
 return actions~\cite{conf/popl/BouajjaniEEH15}.
 
 \begin{example}
+  \label{ex:executions}
 
   Consider the following three executions of a single-value register object
   with read and write methods
@@ -149,7 +150,14 @@ $E$ by $H(E,M,R)$.
 
 \begin{example}
 
-  TODO HISTORY OF AN EXECUTION
+  The histories of the Executions $e_1$, $e_2$, and $e_3$ of
+  Example~\ref{ex:executions} are
+  \begin{align*}
+    & H(e_3) = \big( \underline{\mathrm{write}:1} \big) \big( \underline{\mathrm{write}:2} \big) \big( \mathrm{read}:1 \big) \\
+    & H(e_2) = \big( \underline{\mathrm{write}:1} \parallel \underline{\mathrm{write}:2} \big) \big( \mathrm{read}:1 \big) \\
+    & H(e_3) = \big( \underline{\mathrm{write}:1} \big) \big( \underline{\mathrm{write}:2} \parallel \mathrm{read}:1 \big)
+  \end{align*}
+  TODO IS THIS NOTATION GOOD ENOUGH?
 
 \end{example}
 
