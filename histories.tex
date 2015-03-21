@@ -125,15 +125,16 @@ identifiers.
 \end{verbatim}
   Operation~$1$ is a write operation which matches itself, and precedes a
   read-only read operation which also targets Operation~$1$. Note that we
-  only label method argument and return values for illustrative purposes;
+  only label method argument and return values for illustrative purposes only;
   histories do not keep them. In the following history, Operations~$1$ and~$2$
   execute concurrently
 \begin{verbatim}
     [1:1] write(a)        #
     [2:1] read => a (RO)  #
     [3:X] read => b (RO)    #
+    [4:_] read*     (RO)      #
 \end{verbatim}
-  and Operation~$3$ has no match.
+  Operation~$3$ is unmatched, and Operation~$4$ is pending.
 
 \end{example}
 
