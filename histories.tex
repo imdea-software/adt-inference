@@ -115,7 +115,25 @@ identifiers.
 
 \begin{example}
 
-  TODO HISTORY EXAMPLE
+  We draw histories by writing one operation per line, starting with its
+  operation identifier and match target, followed by its method label,
+  possibly a read-only marker, and its happens-before interval. For instance,
+  in the history
+\begin{verbatim}
+    [1:1] write(a)        #
+    [2:1] read => a (RO)    #
+\end{verbatim}
+  Operation~$1$ is a write operation which matches itself, and precedes a
+  read-only read operation which also targets Operation~$1$. Note that we
+  only label method argument and return values for illustrative purposes;
+  histories do not keep them. In the following history, Operations~$1$ and~$2$
+  execute concurrently
+\begin{verbatim}
+    [1:1] write(a)        #
+    [2:1] read => a (RO)  #
+    [3:X] read => b (RO)    #
+\end{verbatim}
+  and Operation~$3$ has no match.
 
 \end{example}
 
@@ -150,15 +168,26 @@ $E$ by $H(E,M,R)$.
 
 \begin{example}
 
-  The histories of the Executions $e_1$, $e_2$, and $e_3$ of
-  Example~\ref{ex:executions} are
-  \begin{align*}
-    & H(e_3) = \big( \underline{\mathrm{write}:1} \big) \big( \underline{\mathrm{write}:2} \big) \big( \mathrm{read}:1 \big) \\
-    & H(e_2) = \big( \underline{\mathrm{write}:1} \parallel \underline{\mathrm{write}:2} \big) \big( \mathrm{read}:1 \big) \\
-    & H(e_3) = \big( \underline{\mathrm{write}:1} \big) \big( \underline{\mathrm{write}:2} \parallel \mathrm{read}:1 \big)
-  \end{align*}
-  TODO IS THIS NOTATION GOOD ENOUGH?
-
+  The histories of the Executions of Example~\ref{ex:executions} are
+\begin{verbatim}
+    [1:1] write(a)        #
+    [2:2] write(b)          #
+    [3:1] read => a (RO)      #
+\end{verbatim}
+  in which all three operations are sequential,
+\begin{verbatim}
+    [1:1] write(a)        #
+    [2:2] write(b)        #
+    [3:1] read => a (RO)    #
+\end{verbatim}
+  in which the first two operations overlap, and
+\begin{verbatim}
+    [1:1] write(a)        #
+    [2:2] write(b)          #
+    [3:1] read => a (RO)    #
+\end{verbatim}
+  in which the last two operations overlap.
+  TODO SAY SOMETHING INTERESTING IN THIS EXAMPLE
 \end{example}
 
 A matching scheme $\tup{M,R}$ is \emph{faithful} to a set $E$ of executions
