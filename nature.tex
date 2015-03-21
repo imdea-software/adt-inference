@@ -4,6 +4,62 @@
 TODO DEMONSTRATE FAITHFUL MATCHING SCHEMES, UNIQUE AND WIDTH-BOUNDED KERNELS,
 NORMALITY, AND PREDICTABILITY FOR EACH NATURALLY-OCCURRING ADT
 
+TODO EXPLAIN “ATOMIC”
+
+\subsection{The Atomic Register}
+
+Atomic register objects implement an atomic single-value store, and provide two
+methods:
+\begin{itemize}
+
+  \item write$(v)$ stores the value $v$, and
+
+  \item read $\Rightarrow v$ returns the last-stored value $v$, or $\perp$
+  if no value has been stored.
+
+\end{itemize}
+We say an execution of read and write methods \emph{writes unique values} if
+the argument value to each write operation is unique. A faithful matching
+scheme is given over the set of executions which write unique values as follows:
+\begin{itemize}
+
+  \item write$(v)$ operations match themselves, and
+
+  \item read $\Rightarrow v$ operations are read-only, and match themselves if
+  $v = \perp$, or the unique write$(v)$ operation, if one exists, and otherwise 
+  have no match.
+
+\end{itemize}
+The kernel of atomic registers is the set of sequential histories given by
+sequences
+\begin{align*}
+  \bigcup_{0 \le k \le n < \omega}
+  \Big( \underline{\mathrm{read}:i} \Big)_{i=1}^{k}\ 
+  \Big( \underline{\mathrm{write}:i}\ (\mathrm{read}:i)^\ast \Big)_{i=k}^{n}
+\end{align*}
+in which the initial read operations match themselves, write operations match
+themselves, and each subsequent read operation matches the nearest preceding
+write operation.
+
+TODO ARGUE THAT THIS IS FAITHFUL
+
+It is easy to see that the histories of atomic registers normal. They are
+closed under removal of read-only and duplicate operations, since the each
+match can contain an arbitrary number of read operations. Since the histories
+of atomic registers do not contain unmatched operations, they are also closed
+under their removal. Finally, since the kernel contains an arbitrary number of
+sequenced matches, atomic register histories are also closed under match
+removal.
+
+THIS IS THE SET OF PATTERNS
+\begin{align*}
+  & \mathrm{read}:\_ \\
+  & \underline{\mathrm{write}:1}\ \underline{\mathrm{read}:2} \\
+  & \mathrm{read}:1\ \underline{\mathrm{write}:1} \\
+  & \underline{\mathrm{write}:1}\ \underline{\mathrm{write}:2}\ \mathrm{read}:1
+\end{align*}
+The atomic register ADT is predictable \ldots
+
 \subsection{The Atomic Queue}
 
 \subsection{The Atomic Stack}
@@ -11,8 +67,6 @@ NORMALITY, AND PREDICTABILITY FOR EACH NATURALLY-OCCURRING ADT
 \subsection{The Atomic Set}
 
 \subsection{The Priority Queue (?)}
-
-\subsection{The Atomic Register}
 
 \subsection{The Atomic Lock}
 
