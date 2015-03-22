@@ -68,6 +68,67 @@ this restriction comes at no loss of completeness when considering only the
 histories of bounded-width ADT kernels, which is the subject of the remainder
 of this section.
 
+We first prove that the embedding order, defined hereafter, is a wqo on width-bounded
+labeled interval orders.
+
+Let $\Sigma$ be a finite alphabet. A labeled interval order is a triple $(A,\leq,\ell)$, where $(A,\leq)$ is an interval 
+order, and $\ell:A\rightarrow \Sigma$ is a labeling function. The embedding order $\subseteq$ between labeled interval orders is defined as
+usual by:
+\begin{itemize}
+	\item $(A_1,\leq_1,\ell_1)\subseteq (A_2,\leq_2,\ell_2)$ iff there exists an injective function $h:A_1\rightarrow A_2$ that 
+	preserves the labeling, i.e., $\ell_1(x)=\ell_2(h(x))$, for every $x\in A_1$, and the order constraints, i.e.,
+	for every $x,y\in A_1$, if $x \leq_1 y$, then $h(x)\leq_2 h(y)$.
+\end{itemize}
+
+The width of an interval order $(A,\leq,\ell)$ is the maximum number of elements which are mutually unordered.
+
+\begin{lemma}
+$\subseteq$ is a wqo on width-bounded interval orders.
+\end{lemma}
+\begin{proof}
+By definition, for every interval order $(A,\leq,\ell)$, there exists a mapping $I$ from elements of $A$ to intervals over $\mathbb{N}$ such that for every $x,y\in A$, if $x\leq y$, then the interval $I(x)$ ends before the interval $I(y)$ (i.e., the upper bound of $I(x)$ is strictly smaller than the lower bound of $I(y)$). %In general, there are more than one mappings $I_A$ that satisfy these constraints. In the following, we assume that the mapping $I_A$ is arbitrary but fixed.
+Therefore, in the following, we assume that an interval order is a multiset $\Gamma$ of triples of the form $[i,j,a]$ where $[i,j]$ is an interval on the integer line and $a$ is a symbol in $\Sigma$.
+
+We prove that another order on interval orders, denoted by $\subseteqq$, which is stronger than the embedding order $\subseteq$, is a wqo. The order $\subseteqq$ is defined by: $\Gamma_1\subseteqq \Gamma_2$ iff there exists an injective function $h:\Gamma_1\rightarrow \Gamma_2$ such that 
+\begin{enumerate}
+	\item $h$ preserves the labeling, i.e., for any triple $[i,j,a]$, $h([i,j,a])=[i',j',a]$, for some $i'$, $j'$, 
+	\item $h$ preserves the ordering constraints, i.e., for every two triples $[i,j,a]$ and $[k,l,b]$ such that $j< k$, $h([i,j,a])=[i',j',a]$, $h([k,l,b])=[k',l',b]$, and $j'< k'$.
+	\item for every two incomparable elements $x$ and $y$ of $\Gamma_1$, if the interval of $x$ starts before the interval of $y$, then the interval of $h(x)$ also starts before the interval of $h(y)$. Formally, for every two triples $[i,j,a]$ and $[k,l,b]$ such that $i\leq k$ (i.e., the first interval starts before the second interval), $h([i,j,a])=[i',j',a]$, $h([k,l,b])=[k',l',b]$, and $i'\leq k'$.
+\end{enumerate}
+		
+Assume $\Gamma_1$, $\Gamma_2$,$\ldots$ is a \emph{bad} sequence, i.e., an infinite sequence of interval orders s.t. there exists no $i < j$ with $\Gamma_i\subseteqq \Gamma_j$. Also, assume that $\Gamma_1$ is the minimal size interval order that can start a bad sequence, $\Gamma_2$ is the minimal interval order that can continue a bad sequence starting with $\Gamma_1$, and so on.
+
+For each $\Gamma_k$, let $Min(\Gamma_k)$ be a triple $[i,j,a]$ such that 
+\begin{itemize}
+	\item $i$ is the minimal lower bound of an interval in $\Gamma_k$, and 
+	\item $j$ is the minimal upper bound of an interval in $\Gamma_k$ with lower bound $i$.
+\end{itemize}
+%In general, this triple is not unique but it’s not important which one we choose.
+
+Also, let $Init(\Gamma_k) = (Min(\Gamma_k), P_k)$, where $P_k$ is the multiset of symbols labeling elements of $\Gamma_k$ that are incomparable to $Min(\Gamma_k)$. Note that $P_k$ is bounded since we assume width-bounded interval orders.
+
+The infinite sequence $\Gamma_1$, $\Gamma_2$,$\ldots$ contains an infinite sequence $\Gamma_{k_1}$, $\Gamma_{k_2}$,$\ldots$ which, ignoring the integer interval, have the same value for $Init$.
+
+For each $\Gamma_k$, let $\Lambda_k$ be the interval order obtained from $\Gamma_k$ by removing the triple $Min(\Gamma_k)$.
+
+By the minimality assumptions, the infinite sequence $\Gamma_1$, $\Gamma_2$,$\ldots$,$\Gamma_{k_1-1}$, $\Lambda_{k_1}$, $\Lambda_{k_2}$,$\ldots$ is not bad. 
+Therefore, there exists $m<n$ such that $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$. 
+
+It remains to prove that:
+\begin{itemize}
+	\item if $Init(\Gamma_{k_m})=Init(\Gamma_{k_n})$ and $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$, then $\Gamma_{k_m}\subseteqq \Gamma_{k_n}$.
+\end{itemize}
+
+Let $h$ be the injective function witnessing $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$. We prove that the extension $h'$ of $h$ between $\Gamma_{k_m}$ and $\Gamma_{k_n}$, defined by $h'(Min(\Gamma_{k_m}))=Min(\Gamma_{k_n}$ and $h'(t)=h(t)$, for all $t\in \Lambda_{k_m}$ witnesses $\Gamma_{k_m}\subseteqq \Gamma_{k_n}$. Clearly, $h'$ preserves the labeling. 
+
+To prove that $h'$ preserves the ordering constraints, let $Min(\Gamma_{k_m})=[i,j,a]$ and $[k,l,b]\in \Gamma_{k_m}$ such that $j< k$. Also, let $Min(\Gamma_{k_n})=[i',j',a]$ and $h'([k,l,b])=h([k,l,b])=[k',l',b]$. Assume by contradiction that $k'\leq j'$. Since $h$ is injective, there exists an element $[x,y,c]\in \Gamma_{k_m}$ incomparable to $Min(\Gamma_{k_m})$ which is mapped to an element $[x',y',c]$ greater than $Min(\Gamma_{k_n})$ (by definition, $\Gamma_{k_m}$ and $\Gamma_{k_n}$ have the same number of elements incomparable to $Min(\Gamma_{k_m})$ and respectively, $Min(\Gamma_{k_n})$). 
+Since $[x,y,c]$ is incomparable to $[i,j,a]$, we obtain that $x\leq j< k$. Also, by the current assumptions, $k'<j'<x'$. Therefore, there exist two elements $[x,y,c]$ and $[k,l,b]$ such that the interval $[x,y]$ starts before $[k,l]$ which are mapped by $h$ to the elements $[x',y',c]$ and $[k',l',b]$ such that the interval $[x',y']$ starts after $[k',l']$. This contradicts the fact that $h$ witnesses $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$.
+
+The properties of $Min(\Gamma_{k_m})$ and $Min(\Gamma_{k_n})$ imply that $h'$ also satisfies the third property in the definition of $\subseteqq$.
+
+Finally, since $\subseteqq$ is stronger than $\subseteq$, we get that $\subseteq$ is a wqo on width-bounded labeled interval orders.
+\end{proof} 
+
 \begin{lemma}
 
   $\preceq$ is a wqo on width-bounded histories.
@@ -160,11 +221,10 @@ $\nu_{\sigma}(h_{1}^n)\leq_v \nu_{\sigma}(h_{2}^n)\leq_v \ldots$, for every sign
 Recall that we also have that
 $\nu(h_1^n)\leq\nu(h_2^n)\leq\ldots$ since $h_{1}^n,h_{2}^n,\ldots$ is a sub-sequence of $h_1'',h_2'',\ldots$.
 
-Since the sequence of histories $h_{1}^n,h_{2}^n,\ldots$ is infinite there must exist
-
-
-
-
+Viewing histories as labeled interval orders, where the label of an element $o$ is the triple $(c(o),f(o),r(o))$,
+we get that the embedding order $\subseteq$ is a wqo on histories. Therefore, the infinite sequence
+$h_{1}^n,h_{2}^n,\ldots$  contains two elements $h_{i}^n$ and $h_j^n$ with $i<j$ such that $h_{i}^n\subseteq h_j^n$.
+This implies that $h_i^n\preceq h_j^n$, which ends our proof.
 \end{proof}
 
 For the remainder of this section, we fix an ADT $A$, and let $B$ be the
