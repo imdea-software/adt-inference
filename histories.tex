@@ -74,7 +74,11 @@ Formally, a \emph{history} is a tuple $h = \tup{O,<,c,f,m,r}$ where
 
   \item $O \subseteq \mathbb{O}$ is a set of \emph{operations},
 
-  \item $<$ is a partial \emph{happens-before} order on $O$,
+  \item $<$ is a \emph{happens-before} interval order\footnote{An interval
+  order~\cite{books/Fishburn85} is a partial order whose elements can be mapped
+  to integral intervals preserving the order relation, or equivalently, a
+  partial order for which $w < x$ and $y < z$ implies $w < z$ or $y < x$.} on
+  $O$,
 
   \item $c: O \to \mathbb{B}$ labels operations as \emph{completed}, or not,
 
@@ -114,6 +118,7 @@ meaning, we consider equality between histories up to renaming of operation
 identifiers.
 
 \begin{example}
+  \label{ex:histories}
 
   We draw histories by writing one operation per line, starting with its
   operation identifier and match target, followed by its method label,
@@ -134,7 +139,8 @@ identifiers.
     [3:X] read => b (RO)    #
     [4:_] read*     (RO)      #
 \end{verbatim}
-  Operation~$3$ is unmatched, and Operation~$4$ is pending.
+  Operation~$3$ is unmatched, indicated by the {\tt X}, and Operation~$4$ is
+  pending, indicated by the {\tt *} on its label.
 
 \end{example}
 
@@ -146,8 +152,23 @@ operations $O$ a partial matching function $M(e): O \rightharpoonup O$ and a
 read-only operation labeling $R(e): O \to \mathbb{B}$.
 
 \begin{example}
+  \label{ex:matching}
 
-  TODO MATCHING SCHEME EXAMPLE
+  Consider the following matching scheme for the read and write operations of
+  a single-value register object:
+  \begin{itemize}
+
+    \item write$(v)$ operations match themselves, and
+
+    \item read $\Rightarrow v$ operations are read-only, and match themselves
+    when they return $v = \mathord\perp$, or a write$(v)$ operation, if one
+    exists, and otherwise have no match,
+    
+  \end{itemize}
+  which is well defined when each value $v \in \mathbb{V}$ appears as the
+  argument of at most one write operation in any execution. This matching
+  scheme corresponds to the matching functions in the histories of
+  Example~\ref{ex:histories}.
 
 \end{example}
 
@@ -165,30 +186,32 @@ the tuple $\tup{O,<,c,f,M(e),R(e)}$ where
 
 \end{itemize}
 We denote the set $\set{H(e,M,R) : e \in E}$ of histories of an execution set
-$E$ by $H(E,M,R)$.
+$E$ by $H(E,M,R)$. When the matching scheme $\tup{M,E}$ is clear from the
+context, we abbreviate $H(e,M,R)$ and $H(E,M,R)$ by $H(e)$ and $H(E)$.
 
 \begin{example}
 
-  The histories of the Executions of Example~\ref{ex:executions} are
+  The histories of the executions of Example~\ref{ex:executions} according to
+  the matching scheme of Example~\ref{ex:matching} are $H(e_1)$:
 \begin{verbatim}
     [1:1] write(a)        #
     [2:2] write(b)          #
     [3:1] read => a (RO)      #
 \end{verbatim}
-  in which all three operations are sequential,
+  in which all three operations are sequential, $H(e_2)$:
 \begin{verbatim}
     [1:1] write(a)        #
     [2:2] write(b)        #
     [3:1] read => a (RO)    #
 \end{verbatim}
-  in which the first two operations overlap, and
+  in which the first two operations overlap, and $H(e_3)$:
 \begin{verbatim}
     [1:1] write(a)        #
     [2:2] write(b)          #
     [3:1] read => a (RO)    #
 \end{verbatim}
   in which the last two operations overlap.
-  TODO SAY SOMETHING INTERESTING IN THIS EXAMPLE
+
 \end{example}
 
 A matching scheme $\tup{M,R}$ is \emph{faithful} to a set $E$ of executions
@@ -210,7 +233,7 @@ In Section~\ref{sec:nature} we demonstrate faithful matching schemes for the
 executions of naturally-occurring ADTs, and in Section~\ref{sec:matching} we
 demonstrate how to infer faithful matching schemes. Otherwise, for the
 remainder of this work, we assume each set of executions comes equipped with a
-faithful matching scheme $\tup{M,R}$, and abbreviate $H(E,M,R)$ by $H(E)$.
+faithful matching scheme $\tup{M,R}$.
 
 Two histories $h_1$ and $h_2$ are related by $\to_x$, for $x = \mathrm{o},
 \mathrm{c}, \mathrm{p}$, when $h_2$ is obtained from $h_1$ by:
