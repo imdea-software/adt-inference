@@ -34,7 +34,7 @@ the number of operations, per execution.} for checking observational
 refinement~\cite{conf/popl/BouajjaniEEH15, conf/pldi/EmmiEH15}, yet rely on
 hand-written symbolic ADT representations. In order to frame the problem of
 computing these automatically, we fix a language for symbolic representation. A
-\emph{history formula} $F$ is a first-order logic formula with
+\emph{history formula} is a first-order logic formula with
 \begin{itemize}
 
   \item variables ranging over operation identifiers,
@@ -57,12 +57,12 @@ model of $F$, and $h \not\models F$ otherwise.
   The following history formula is satisfied by histories in which no write
   operation happens between a pair of matching write and read operations:
   \begin{align*}
-    \forall x, y, z.\ 
-    & {\sf c}(x) \land {\sf f}(x) = \mathrm{write} \land {\sf m}(x) = x \\
-    & \land {\sf c}(y) \land {\sf f}(y) = \mathrm{write} \land {\sf m}(y) = y \\
-    & \land {\sf c}(z) \land {\sf f}(z) = \mathrm{read} \land {\sf m}(z) = x \\
-    & \land x < y 
-      \implies z < y
+    \forall x_1, x_2, x_3.\ 
+    & {\sf c}(x_1) \land {\sf f}(x_1) = \mathrm{write} \land {\sf m}(x_1) = x_1 \\
+    & \land {\sf c}(x_2) \land {\sf f}(x_2) = \mathrm{write} \land {\sf m}(x_2) = x_2 \\
+    & \land {\sf c}(x_3) \land {\sf f}(x_3) = \mathrm{read} \land {\sf m}(x_3) = x_1 \\
+    & \land x_1 < x_2 
+      \implies x_3 < x_2
   \end{align*}
   This is one of several requirements of atomic single-value register ADTs,
   which is satisfied by certain linearizations of histories $H(e_2)$ and
