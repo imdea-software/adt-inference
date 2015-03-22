@@ -52,30 +52,160 @@ sequenced matches, atomic register histories are also closed under match
 removal.
 
 THIS IS THE SET OF PATTERNS
-\begin{align*}
-  & \mathrm{read}:\_ \\
-  & \underline{\mathrm{write}:1}\ \underline{\mathrm{read}:2} \\
-  & \mathrm{read}:1\ \underline{\mathrm{write}:1} \\
-  & \underline{\mathrm{write}:1}\ \underline{\mathrm{write}:2}\ \mathrm{read}:1
-\end{align*}
+
+\begin{verbatim}
+  [1:X] read => 1 (RO)  #
+  --
+  [1:1] write(1)            #
+  [2:2] read => empty (RO)    #
+  --
+  [1:2] read => 1 (RO)  #
+  [2:2] write(1)          #
+  --
+  [1:1] write(1)        #
+  [2:2] write(2)          #
+  [3:1] read => 1 (RO)      #
+\end{verbatim}
+
 The atomic register ADT is predictable \ldots
 
 \subsection{The Atomic Queue}
 
+\begin{verbatim}
+  [1:_] remove => 1  #
+  --
+  [1:1] add(1)                #
+  [2:2] remove => empty (RO)    #
+  --
+  [1:2] remove => 1  #
+  [2:2] add(1)         #
+  --
+  [1:1] add(1)       #
+  [2:2] add(2)         #
+  [3:2] remove => 2      #
+  --
+  [1:1] add(1)       #
+  [2:1] remove => 1    #
+  [3:1] remove => 1      #
+  --
+  [1:1] add(1)                #
+  [2:2] remove => empty (RO)    #
+  [3:1] remove => 1               #
+  --
+  [1:1] add(1)       #
+  [2:2] add(2)         #
+  [3:2] remove => 2      #
+  [4:1] remove => 1        #
+\end{verbatim}
+
 \subsection{The Atomic Stack}
+
+\begin{verbatim}
+  [1:_] remove => 1  #
+  --
+  [1:1] add(1)                #
+  [2:2] remove => empty (RO)    #
+  --
+  [1:2] remove => 1  #
+  [2:2] add(1)         #
+  --
+  [1:1] add(1)       #
+  [2:2] add(2)         #
+  [3:1] remove => 1      #
+  --
+  [1:1] add(1)       #
+  [2:1] remove => 1    #
+  [3:1] remove => 1      #
+  --
+  [1:1] add(1)                #
+  [2:2] remove => empty (RO)    #
+  [3:1] remove => 1               #
+  --
+  [1:1] add(1)       #
+  [2:2] add(2)         #
+  [3:1] remove => 1      #
+  [4:2] remove => 2        #
+\end{verbatim}
 
 \subsection{The Atomic Set}
 
-\subsection{The Priority Queue (?)}
+\begin{verbatim}
+  [1:_] insert(1) => 1 (RO)  #
+  --
+  [1:_] remove(1) => 1  #
+  --
+  [1:_] contains(1) => 1 (RO)  #
+  --
+  [1:1] insert(1) => empty       #
+  [2:2] remove(1) => empty (RO)    #
+  --
+  [1:1] insert(1) => empty         #
+  [2:2] contains(1) => empty (RO)    #
+  --
+  [1:1] insert(1) => empty  #
+  [2:1] remove(1) => 1        #
+  [3:1] remove(1) => 1          #
+  --
+  [1:1] insert(1) => empty     #
+  [2:1] remove(1) => 1           #
+  [3:1] contains(1) => 1 (RO)      #
+  --
+  [1:1] insert(1) => empty       #
+  [2:2] remove(1) => empty (RO)    #
+  [3:1] remove(1) => 1               #
+  --
+  [1:1] insert(1) => empty         #
+  [2:2] contains(1) => empty (RO)    #
+  [3:1] remove(1) => 1                 #
+\end{verbatim}
 
 \subsection{The Atomic Lock}
 
-\subsection{The Atomic Semaphore}
+\begin{verbatim}
+  [1:_] lock(1) => 1 (RO)  #
+  --
+  [1:_] unlock => 1  #
+  --
+  [1:1] lock(1) => empty  #
+  [2:2] lock(2) => empty    #
+  --
+  [1:1] lock(1) => empty      #
+  [2:2] unlock => empty (RO)    #
+  --
+  [1:1] lock(1) => empty  #
+  [2:2] lock(2) => empty    #
+  [3:1] unlock => 1           #
+  --
+  [1:1] lock(1) => empty  #
+  [2:2] lock(2) => empty    #
+  [3:2] unlock => 2           #
+  --
+  [1:1] lock(1) => empty   #
+  [2:1] unlock => 1          #
+  [3:1] lock(2) => 1 (RO)      #
+  --
+  [1:1] lock(1) => empty  #
+  [2:1] unlock => 1         #
+  [3:1] unlock => 1           #
+  --
+  [1:1] lock(1) => empty      #
+  [2:2] unlock => empty (RO)    #
+  [3:1] unlock => 1               #
+  --
+  [1:1] lock(1) => empty  #
+  [2:2] lock(2) => empty    #
+  [3:1] unlock => 1           #
+  [4:2] unlock => 2             #
+  --
+  [1:1] lock(1) => empty  #
+  [2:2] lock(2) => empty    #
+  [3:2] unlock => 2           #
+  [4:1] unlock => 1             #
+\end{verbatim}
 
-\subsection{The Rendezvous Synchronizer}
+\subsection{Work-Stealing Queue}
 
-\subsection{The Exchanger}
+TODO THERE ARE 24 PATTERNS FOR EACH OF THE 4 VARIATIONS
 
-\subsection{The Barrier}
-
-ANY OTHERS??
+NOTE LIMITATIONS: PRIORITY QUEUE, SEMAPHORE, RENDEZVOUS SYNCHRONIZER,
+EXCHANGER, BARRIER, …
