@@ -1,7 +1,16 @@
 \section{Computing Symbolic Representations}
 \label{sec:formula}
 
-TODO MOTIVATE THIS SECTION
+While Section~\ref{sec:patterns} demonstrates that (the complements) of
+naturally-occurring ADTs can be represented finitely, in this section we
+demonstrate that such finite representations have logical interpretations,
+allowing us to derive the formulas representing ADTs. In what follows, we
+describe how to obtain a formula which is satisfied by the histories which
+embed a given history, via $\preceq$. Then, using the finite set of histories
+which represent the complement of a given ADT, we represent the ADT itself as
+the conjunction of negations of these embedding formulas. The resulting formula
+is satisfied only on the histories which do not embed the generators of a given
+ADT’s complement.
 
 Let $h = \tup{O,<,c,f,m,r}$ be a history with operations $O = \set{ o_1, \ldots,
 o_n }$. Without loss of generality, we assume the match targets $\set{o_1,
