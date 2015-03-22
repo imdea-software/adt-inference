@@ -231,16 +231,28 @@ resulting symbolic ADT representation would still be sound in only identifying
 
 \begin{example}
 
-  TODO EXAMPLE OF COMPLETE PATTERNS
-
-  \begin{figure}[t]
-    \centering
-    \includegraphics[scale=0.2]{figures/register-pattern-1},
-    \includegraphics[scale=0.2]{figures/register-pattern-2},
-    \includegraphics[scale=0.2]{figures/register-pattern-3}
-    \caption{Three histories which generate the complement of the atomic
-      register ADT kernel.}
-    \label{fig:register-patterns}
-  \end{figure}
-
+  The following four histories generate the complement of the atomic
+  single-value register ADT, witnessing either an unmatched read operation:
+\begin{verbatim}
+  [1:X] read => 1 (RO)  #
+\end{verbatim}
+  a read of an uninitialized register occurring after some write:
+\begin{verbatim}
+  [1:1] write(1)            #
+  [2:2] read => empty (RO)    #
+\end{verbatim}
+  a read which happens before its matching write operation:
+\begin{verbatim}
+  [1:2] read => 1 (RO)  #
+  [2:2] write(1)          #
+\end{verbatim}
+  and a read matching a write which is not the most recent:
+\begin{verbatim}
+  [1:1] write(1)        #
+  [2:2] write(2)          #
+  [3:1] read => 1 (RO)      #
+\end{verbatim}
+  Every sequential history not admitted by the atomic register ADT embeds at
+  least one of these four histories.
+  
 \end{example}
