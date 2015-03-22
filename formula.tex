@@ -3,12 +3,12 @@
 
 TODO MOTIVATE THIS SECTION
 
-Let $h = \tup{O,<,c,f,m}$ be a history with operations $O = \set{ o_1, \ldots,
+Let $h = \tup{O,<,c,f,m,r}$ be a history with operations $O = \set{ o_1, \ldots,
 o_n }$. Without loss of generality, we assume the match targets $\set{o_1,
 \ldots, o_k}$ of $h$ are indexed consecutively from $1$ to $k$, for some $k \le
 n$. For each $o \in O$, we define the macro $\textsc{Embed}_o(x,Y,z)$:
 \begin{align*}
-  & \big(c(o) \implies {\sf c}(x)\big) \land {\sf f}(x) = f(o) \\
+  & \big(c(o) \implies {\sf c}(x)\big) \land {\sf f}(x) = f(o) \land {\sf r}(x) = r(o) \\
   & \land \big(o \in \dom(m)
     \implies \lnot{\sf um}(x) \land {\sf m}(x) = z\big) \\
   & \land \big(o \not\in \dom(m) \implies {\sf um}(x)\big)
@@ -20,9 +20,10 @@ ordered after $x$, and the operation which $x$ matches. The macro
 $\textsc{Identical}(x,y)$:
 \begin{align*}
   & \big({\sf c}(x) \Leftrightarrow {\sf c}(y)\big)
-  \land {\sf f}(x) = {\sf f}(y) \\
+    \land {\sf f}(x) = {\sf f}(y) 
+    \land \big({\sf r}(x) \Leftrightarrow {\sf r}(y)\big) \\
   & \land \big({\sf um}(x) \Leftrightarrow {\sf um}(y)\big)
-  \land {\sf m}(x) = {\sf m}(y)
+    \land {\sf m}(x) = {\sf m}(y)
 \end{align*}
 captures whether the operations bound to $x$ and $y$ are identical.
 To express the constraints among the matches of embedded operations, we define
@@ -30,7 +31,7 @@ the macro $\textsc{Match}(Y,z)$:
 \begin{align*}
   \forall x.
   {\sf m}(x) = z \implies
-  \textsc{ReadOnly}(x) \lor \bigvee_{y \in Y} \textsc{Identical}(x,y)
+  {\sf r}(x) \lor \bigvee_{y \in Y} \textsc{Identical}(x,y)
 \end{align*}
 which requires any operation which matches $z$ to be either read-only, or
 identical to some operation in $Y$, which represents the operations of $h$
@@ -47,8 +48,34 @@ $m(o_i)$, if defined, and $W_i = \set{ x_j : m(o_j) = o_i }$ are the variables
 corresponding to operations matching $o_i$.
 
 \begin{example}
+  \label{ex:formulas}
 
-  TODO EXAMPLE FORMULÆ FROM PREVIOUS PATTERNS
+  Consider again the histories of Example~\ref{ex:patterns} which generate the
+  complement of the atomic register ADT. The $\textsc{Embed}$ formula for the
+  first history,
+\begin{verbatim}
+  [1:X] read => 1 (RO)  #
+\end{verbatim}
+  after simplifications, like replacing $\mathrm{true} \implies p$ with $p$, is
+  \begin{align*}
+    \exists x_1.\ {\sf c}(x_1) \land {\sf f}(x_1) = \mathrm{read} \land {\sf um}(x_1).
+  \end{align*}
+  The $\textsc{Embed}$ formula for second history,
+\begin{verbatim}
+  [1:1] write(1)            #
+  [2:2] read => empty (RO)    #    
+\end{verbatim}
+  is similarly given by
+  \begin{align*}
+    & \exists x_1, x_2.\ x_1 < x_2 \\
+    & \quad \land {\sf c}(x_1) \land {\sf f}(x_1) = \mathrm{write}
+      \land \lnot{\sf um}(x_1) \land {\sf m}(x_1) = x_1 \\
+    & \quad \land {\sf c}(x_2) \land {\sf f}(x_2) = \mathrm{read}
+      \land \lnot{\sf um}(x_2) \land {\sf m}(x_2) = x_2 \\
+    & \quad \land \big(\forall x.\ {\sf m}(x) = x_1 \implies {\sf r}(x) \lor \textsc{Identical}(x,x_1)\big) \\
+    & \quad \land \big(\forall x.\ {\sf m}(x) = x_2 \implies {\sf r}(x) \lor \textsc{Identical}(x,x_2)\big).
+  \end{align*}
+  The formulas for the other histories are similarly obtained.
 
 \end{example}
 
@@ -59,7 +86,7 @@ corresponding to operations matching $o_i$.
 \end{lemma}
 
 We obtain a formula representing an ADT $A$ by taking the conjunction of the
-negative embedding formulæ $\set{ \lnot\textsc{Embed}_h : h \in H }$ from any
+negative embedding formulas $\set{ \lnot\textsc{Embed}_h : h \in H }$ from any
 set $H$ that generates the complement of $A$.
 
 \begin{lemma}
@@ -71,7 +98,9 @@ set $H$ that generates the complement of $A$.
 
 \begin{example}
 
-  TODO EXAMPLE OF COMPLETE FORMULA FROM PREVIOUS COMPLETE PATTERNS/FORMULÆ
+  The conjunction of negations of the $\textsc{Embed}$ formula for the
+  histories of Example~\ref{ex:patterns}, which are partially written in
+  Example~\ref{ex:formulas}, represents the atomic register ADT.
   
 \end{example}
 
