@@ -54,7 +54,19 @@ model of $F$, and $h \not\models F$ otherwise.
 
 \begin{example}
 
-  TODO HISTORY FORMULA EXAMPLE
+  The following history formula is satisfied by histories in which no write
+  operation happens between a pair of matching write and read operations:
+  \begin{align*}
+    \forall x, y, z.\ 
+    & {\sf c}(x) \land {\sf f}(x) = \mathrm{write} \land {\sf m}(x) = x \\
+    & \land {\sf c}(y) \land {\sf f}(y) = \mathrm{write} \land {\sf m}(y) = y \\
+    & \land {\sf c}(z) \land {\sf f}(z) = \mathrm{read} \land {\sf m}(z) = x \\
+    & \land x < y 
+      \implies z < y
+  \end{align*}
+  This is one of several requirements of atomic single-value register ADTs,
+  which is satisfied by certain linearizations of histories $H(e_2)$ and
+  $H(e_3)$ of Example~\ref{ex:histories-of-executions}, yet not $H(e_1)$.
 
 \end{example}
 
