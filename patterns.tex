@@ -1,8 +1,13 @@
-%!TEX root = draft.tex
-\section{Computing ADT Complements}
+\section{Computing Finite ADT Representations}
 \label{sec:patterns}
 
-TODO MOTIVATE THIS SECTION; ALSO, RETHINK THE TITLE OF THIS SECTION
+In this section we demonstrate that naturally-occurring ADTs can be precisely
+represented by finite sets of histories, despite the fact that these ADTs admit
+infinite sets of histories. This results is nontrivial, and relies on the
+identification of certain algebraic properties of the sets of histories
+admitted by ADTs. In particular, we find that these sets of histories are
+closed under the removal of certain operations, and that sets of histories
+adhere to a well-founded ordering under the relation induced by such removals.
 
 In addition to the relations $\to_\mathrm{o}$, $\to_\mathrm{p}$, and
 $\to_\mathrm{c}$ of Section~\ref{sec:histories} under which all ADTs are
@@ -40,9 +45,9 @@ closure under $\succeq$ follows immediately.
 
 \end{lemma}
 
-TODO MOTIVATE WQO
-
-A \emph{well-quasi-ordering (wqo)} $R$ on a set $X$ is a reflexive, transitive
+Besides this closure property, the $\preceq$ relation enjoys a certain notion
+of well-foundedness (when restricted to certain class of histories): a
+\emph{well-quasi-ordering (wqo)} $R$ on a set $X$ is a reflexive, transitive
 binary relation on $X$ for which in every infinite sequence $x_0 x_1 \ldots$ of
 elements from $X$, there exists indices $i < j$ such that $R(x_i,x_j)$.
 
