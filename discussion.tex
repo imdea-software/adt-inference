@@ -1,6 +1,41 @@
-\section{Discussion of Limitations}
+\section{Discussion}
 \label{sec:discussion}
 
-NOTE LIMITATIONS: PRIORITY QUEUE, SEMAPHORE, RENDEZVOUS SYNCHRONIZER,
-EXCHANGER, BARRIER, …
+While the theoretical foundation proposed in this work covers the majority of
+naturally-occurring ADTs, it is worth mentioning a few conceptual limitations
+and possible solutions to overcome them.
 
+First, while our theoretical foundation does cover “concurrency-aware” ADT
+specifications~\cite{conf/podc/HemedR14}, i.e.,~non-atomic ADTs like the
+\emph{rendezvous synchronizer}, \emph{barrier}, and \emph{exchanger}, whose
+kernels have bounded width greater than $1$, our current implementation only
+handles atomic ADTs. In principle, this limitation is not fundamental. The key
+difference is in the enumeration of kernel histories. For a given ADT,
+determining whether a given history is in the kernel or its complement reduces
+to checking whether there exists an execution of which the history is an
+abstraction. For atomic ADTs, only a single sequential execution need be
+examined, in which no two operations overlap. For non-atomic ADTs, every
+possible interleaving of the internal actions of operations need be examined.
+While we expect this calculation to remain feasible given that ADT complements
+are normally represented with histories with few operations, we do expect it to
+incur a noticeable cost.
+
+Second, ADTs whose specifications rely on relations (besides equality) on
+method argument and return values cannot be expressed with our notion of
+histories based on matching schemes. A notable example of such an ADT is the
+\emph{priority queue}, whose \emph{dequeue} operations return the
+smallest/largest \emph{enqueue}d value which has not yet been dequeued. It
+appears that such ADTs are rare in practice. Overcoming this limitation would
+require a refinement to matching schemes which can track additional relations
+among data values.
+
+Finally, in some cases it is unclear how to express matching schemes
+deterministically. For example, each \emph{wait} operation of \emph{semaphore}
+ADT should naturally match the \emph{notify} operation which enabled it.
+However, it is not possible to determine this based on operation labels alone,
+and it is not clear whether all implementations effectively keep track of this
+correspondence. Furthermore, choosing matches arbitrarily would be unsound, and
+result in inferring ADTs with artificial constraints, e.g.,~that the notify and
+wait operations behave according to a FIFO discipline, each wait matching the
+oldest unmatched notify. Overcoming this limitation may require introducing a
+notion of nondeterminism into matching schemes.
