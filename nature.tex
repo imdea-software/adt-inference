@@ -134,10 +134,10 @@ atomic queue ADT:
 The histories computed for the atomic stack ADT are nearly identical,
 substituting only the bottom two histories for the following:
 \begin{verbatim}
-  [1:1] add(1)       #        [1:1] add(1)       #
-  [2:2] add(2)         #      [2:2] add(2)         #
-  [3:1] remove => 1      #    [3:1] remove => 1      #
-                              [4:2] remove => 2        #
+  [1:1] add(1)       #           [1:1] add(1)       #
+  [2:2] add(2)         #         [2:2] add(2)         #
+  [3:1] remove => 1      #       [3:1] remove => 1      #
+                                 [4:2] remove => 2        #
 \end{verbatim}
 As new generators are discovered for $n=1$ and $n=2$ matches only, these ADTs
 are predictable.

@@ -41,31 +41,31 @@ The fundamental challenge is in identifying the algebraic properties of ADTs
 which allow us to characterize an infinite set of violating executions with a
 finite set of patterns. This characterization is non-trivial since an execution
 with more operations than a given violating execution is not necessarily a
-violation itself. For instance, an execution which contains only a single {\tt
-pop} operation returning the value {\tt 1} is a violation to the atomic stack
-ADT, whereas an execution containing an additional {\tt push(1)} operation,
-overlapping in time with the {\tt pop}, is not. Further complication arises
+violation itself. For instance, an execution which contains only a single
+pop operation returning the value $1$ is a violation to the atomic stack
+ADT, whereas an execution containing an additional push$(1)$ operation,
+overlapping in time with the pop, is not. Further complication arises
 from the infinite set of possible data values, i.e.,~method argument and return
 values. Our patterns must be sensitive to the \emph{relation} among data values
 without being sensitive to the data values themselves. For instance, a
-sequential execution in which {\tt 1} and {\tt 2} are pushed and subsequently
+sequential execution in which $1$ and $2$ are pushed and subsequently
 popped in the same order violates the atomic stack ADT. Yet, while replacing
-both values {\tt 1} and {\tt 2} with the value {\tt 1} results in a
-\emph{valid} stack execution, replacing them with {\tt 3} and {\tt 4} results
+both values $1$ and $2$ with the value $1$ results in a
+\emph{valid} stack execution, replacing them with $3$ and $4$ results
 in a violation.
 
 Our algebraic insight is based on grouping the operations of an execution into
 \emph{matchings}. Intuitively, operations which refer to the same instances of
-values belong to the same matching. For example, a {\tt pop} operation
-returning the value {\tt 1} matches a preceding {\tt push(1)} operation. By
+values belong to the same matching. For example, a pop operation
+returning the value $1$ matches a preceding push$(1)$ operation. By
 comparing executions by the characteristics of their matchings, rather than the
 actual data values they use, we capture the relation among data values
 independently of the data values themselves. Furthermore, the notion of
 matchings provides a key algebraic property of ADTs: the executions of
 naturally-occurring concurrent object ADTs are closed under the removal of
-matchings. For example, any execution of the atomic stack ADT using values {\tt
-1}, {\tt 2}, and {\tt 3} would remain a valid execution were all operations
-using the value {\tt 2} deleted. Conversely, any execution which extends a
+matchings. For example, any execution of the atomic stack ADT using values
+$1$, $2$, and $3$ would remain a valid execution were all operations
+using the value $2$ deleted. Conversely, any execution which extends a
 violating execution with additional matchings is itself a violation. This
 property, along with analogous algebraic properties concerning operation order
 and completion, allow us to compare executions via a violation-preserving
@@ -89,26 +89,45 @@ patterns emerging from executions with few operations are complete in
 characterizing all violations of naturally-occurring concurrent object ADTs,
 thus allowing us to compute complete symbolic ADT representations in practice.
 
+Although our approach does require annotating the operations of concurrent
+object executions with a matching relation, and we demonstrate that these
+relations can be given for naturally-occurring ADTs, we also provide an
+automatic means for computing such \emph{matching schemes}. Again by sampling
+executions, we leverage automated symbolic reasoning engines to synthesize
+matching schemes for which given implementations are closed under the removal
+of matches. This further lowers the burden of automated verification. Rather
+than providing formal ADT specifications, or even matching schemes, users need
+only provide the predicates relevant in the logic of matching schemes, and we
+could automatically compute effective matching schemes, and ultimately,
+effective symbolic ADT representations.
+
 The contributions and outline of this work are as follows:
 \begin{itemize}
 
+  \item An abstract notion of execution histories based on groups of matching
+  operations (§\ref{sec:histories}).
+
   \item The statement of the ADT inference problem (§\ref{sec:inference}).
 
-  \item Identification of algebraic properties allowing finite characterization
-  and computability of infinite ADT violations sets
-  (§\ref{sec:patterns}–\ref{sec:formula}).
+  \item Identification of the algebraic properties allowing finite
+  characterization and computability of infinite ADT violations sets
+  (§\ref{sec:patterns}).
 
-  \item An algorithm to infer the matching functions required for our algebraic
+  \item The computability of symbolic ADT representations (§\ref{sec:formula}).
+
+  \item An algorithm to infer the matching schemes required for our algebraic
   characterization of ADTs (§\ref{sec:matching}).
 
-  \item Empirical validation that our ADT-inference approximation is complete
-  in practice, and effective for the detection of observational-refinement
-  violations~(§\ref{sec:empirical}).
+  \item An empirical study validating that naturally-occurring ADTs satisfy the
+  properties required for completeness of our inference algorithm, and that our
+  algorithm computes precise symbolic representations thereof
+  (§\ref{sec:nature}).
 
 \end{itemize}
-We conclude with a discussion of related work (§\ref{sec:related}).
+We conclude with a discussion of the limitations of our approach
+(§\ref{sec:discussion}) and related work (§\ref{sec:related}).
 
-As far as we are aware, this work is the first to suggest the automatic
+To the best of our knowledge, this work is the first to suggest the automatic
 generation of symbolic ADT representations for concurrent objects. By removing
 the burden of writing formal ADT specifications manually, this work broadens
 the scope of efficient symbolic refinement-checking algorithms to

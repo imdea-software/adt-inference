@@ -63,22 +63,26 @@
 
 \begin{abstract}
 
-  Checking that efficient implementations of concurrent objects adhere to their
-  abstract data types (ADTs) can be made tractable when ADTs are given by
-  symbolic, logical representations. Obtaining these symbolic representations,
-  however, is a complex task requiring rare expertise. In practice, concurrent
-  objects are specified indirectly by imperative reference implementations.
+  Formal specifications are a vital component to the automated verification of
+  software systems. In the case of efficient implementations of concurrent
+  objects like atomic registers, queues, and locks, checking adherence to their
+  abstract data types (ADTs) is a difficult problem, yet can be made tractable
+  when the ADT specifications are given by symbolic, logical representations.
+  Obtaining these symbolic representations, however, is a complex task
+  requiring rare expertise. In practice, concurrent objects are specified
+  indirectly by imperative reference implementations.
 
   In this work we demonstrate that effective symbolic ADT representations can
   be automatically generated from the executions of reference implementations.
-  Our approach exploits key features of naturally-occurring ADTs: violations
+  Our approach exploits two key features of naturally-occurring ADTs: violations
   can be decomposed into a small set of representative patterns, and these
   patterns manifest in executions with few operations. By identifying certain
   algebraic properties of naturally-occurring ADTs, and exhaustively sampling
   executions up to a small number of operations, we generate concise symbolic
   ADT representations which are complete in practice, enabling the application
   of efficient symbolic verification algorithms without the burden of manual
-  specification.
+  specification. Furthermore, the concise ADT violation patterns we generate
+  are human-readable, and can serve as useful, formal documentation.
 
 \end{abstract}
 
