@@ -220,10 +220,12 @@ context, we abbreviate $H(e,M,R)$ and $H(E,M,R)$ by $H(e)$ and $H(E)$.
 A matching scheme $\tup{M,R}$ is \emph{faithful} to a set $E$ of executions
 when $e \in E$ if{f} $e' \in E$ for any two executions $e$ and $e'$ such that
 $H(e,M,R) = H(e',M,R)$. A set of executions $E$ is \emph{data
-independent}\footnote{TODO NOTE THAT THIS IS NOT THE STANDARD DEFINITION…} when
-there exists a faithful matching scheme. By definition, our abstraction of
-executions into histories incurs no loss of precision for data-independent
-execution sets.
+independent}\footnote{Our definition of \emph{data independence} formalizes an
+existing informal notion, which stipulates that the implementation generating a
+set of executions does not predicate its actions on the data values passed as
+method arguments.} when there exists a faithful matching scheme. By definition,
+our abstraction of executions into histories incurs no loss of precision for
+data-independent execution sets.
 
 \begin{lemma}
 
