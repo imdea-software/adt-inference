@@ -1,16 +1,18 @@
-%!TEX root = draft.tex
 \section{Histories of ADT Implementations}
 \label{sec:histories}
 
-TODO MOTIVATE THIS SECTION
+Implementations of abstract data types (ADTs) provide methods which are called,
+possibly concurrently, by client programs. We capture the possible logs of
+method calls and returns in executions of client programs abstractly, in order
+to facilitate the development of symbolic ADT representations.
 
-We fix an arbitrary infinite set $\mathbb{O}$ of operation identifiers, and
-given sets $\mathbb{M}$ and $\mathbb{V}$ of method names and values. A
-\emph{call action} binds an operation $o \in \mathbb{O}$ with a method name $p
-\in \mathbb{M}$ and argument value $v \in \mathbb{V}$, while a \emph{return
-action} binds an operation $o \in \mathbb{O}$ with a return value $v \in
-\mathbb{V}$. An \emph{execution} $e$ is a sequence of call and return actions
-where
+To this end, we fix an arbitrary infinite set $\mathbb{O}$ of operation
+identifiers, and given sets $\mathbb{M}$ and $\mathbb{V}$ of method names and
+values. A \emph{call action} binds an operation $o \in \mathbb{O}$ with a
+method name $p \in \mathbb{M}$ and argument value $v \in \mathbb{V}$, while a
+\emph{return action} binds an operation $o \in \mathbb{O}$ with a return value
+$v \in \mathbb{V}$. An \emph{execution} $e$ is a sequence of call and return
+actions where
 \begin{itemize}
 
   \item each operation identifier is used in at most one call action, and in at

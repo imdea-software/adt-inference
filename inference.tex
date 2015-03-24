@@ -1,7 +1,9 @@
 \section{The Symbolic ADT Inference Problem}
 \label{sec:inference}
 
-TODO MOTIVATE THIS SECTION
+In this section we formalize a notion of abstract data type and define the
+corresponding refinement and inference problems. These are the foundational
+problems addressed in this work.
 
 An \emph{abstract data type (ADT)} $A$ is the set $H(\mathcal{I})$ of histories
 of an implementation $\mathcal{I}$. A \emph{kernel} of an ADT $A$ is a minimal
@@ -9,11 +11,11 @@ set $H$ of histories generating $A$, i.e.,~such that
 \begin{align*}
   A = \set{ h' : \exists h \in H.\ h \to^\ast h' }
 \end{align*}
-where $\to = (\to_\mathrm{o} \cup \to_\mathrm{p} \cup \to_\mathrm{c})$. In
-Section~\ref{sec:nature} we demonstrate that naturally-occurring ADTs have
+where $\mathord\to = (\to_\mathrm{o} \cup \to_\mathrm{p} \cup \to_\mathrm{c})$.
+In Section~\ref{sec:nature} we demonstrate that naturally-occurring ADTs have
 unique, bounded-width kernels. For the remainder of this work, we assume ADTs
-have unique, bounded-width kernels, denoting \emph{the kernel} of $A$ by
-$\ker A$. When $\ker A$ has width $1$, we say $A$ is \emph{atomic}.
+have unique, bounded-width kernels, denoting \emph{the kernel} of $A$ by $\ker
+A$. When $\ker A$ has width $1$, we say $A$ is \emph{atomic}.
 
 We define \emph{observational refinement} between implementations and ADTs as
 history-set inclusion. Although this refinement is typically defined with
@@ -85,7 +87,7 @@ The inference problem is thus to compute a formula representing an ADT.
 
 \begin{definition}
 
-  The \emph{symbolic ADT inference problem} is to compute a history formula $F$
+  The \emph{symbolic ADT inference problem} is to compute a history formula
   representing the ADT $H(\mathcal{I})$ of a given implementation $\mathcal{I}$.
 
 \end{definition}
