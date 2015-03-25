@@ -9,10 +9,8 @@ problems addressed in this work.
 An \emph{abstract data type (ADT)} $A$ is the set $H(\mathcal{I})$ of histories
 of an implementation $\mathcal{I}$. A \emph{kernel} of an ADT $A$ is a minimal
 set $H$ of histories generating $A$, i.e.,~such that
-  \vspace{-1mm}
 \begin{align*}
   A = \set{ h' : \exists h \in H.\ h \to^\ast h' }
-    \vspace{-1mm}
 \end{align*}
 where $\mathord\to = (\to_\mathrm{o} \cup \to_\mathrm{p} \cup \to_\mathrm{c})$.
 In Section~\ref{sec:nature} we demonstrate that naturally-occurring ADTs have
@@ -25,14 +23,13 @@ history-set inclusion. Although this refinement is typically defined with
 respect to the admissibility of program executions, recent work demonstrates
 that these definitions are equivalent~\cite{conf/popl/BouajjaniEEH15}.
 
-  \vspace{-1mm}
 \begin{definition}
 
   We say an implementation $\mathcal{I}$ \emph{refines} an ADT $A$ when
   $H(\mathcal{I}) \subseteq A$. We say an implementation $\mathcal{I}_1$
   \emph{refines} another implementation $\mathcal{I}_2$ when $\mathcal{I}_1$
   refines $H(\mathcal{I}_2)$.
-  \vspace{-1mm}
+
 \end{definition}
 
 Recent works demonstrate efficient algorithms\footnote{In time polynomial in
@@ -41,7 +38,6 @@ refinement~\cite{conf/popl/BouajjaniEEH15, conf/pldi/EmmiEH15}, yet rely on
 hand-written symbolic ADT representations. In order to frame the problem of
 computing these automatically, we fix a language for symbolic representation. A
 \emph{history formula} is a first-order logic formula with
-  \vspace{-1mm}
 \begin{itemize}
 
   \item variables ranging over operation identifiers,
@@ -52,7 +48,7 @@ computing these automatically, we fix a language for symbolic representation. A
 
   \item predicate symbols ${\sf c}$, ${\sf um}$, {\sf r}, and ${\sf <}$ for completion,
   non-matching (operations which are not in the domain of the matching function), read-only, and order.
-  \vspace{-1mm}
+
 \end{itemize}
 A history formula $F$ is interpreted over a history $h$ in the natural way, by
 binding variables to the operations of $h$, and binding function and predicate
@@ -63,7 +59,6 @@ model of $F$, and $h \not\models F$ otherwise.
 
   The following history formula is satisfied by histories in which no write
   operation happens between a pair of matching write and read operations:
-  \vspace{-1mm}
   \begin{align*}
     \forall x_1, x_2, x_3.\ 
     & {\sf c}(x_1) \land {\sf f}(x_1) = \mathrm{write} \land {\sf m}(x_1) = x_1 \\
@@ -71,7 +66,6 @@ model of $F$, and $h \not\models F$ otherwise.
     & \land {\sf c}(x_3) \land {\sf f}(x_3) = \mathrm{read} \land {\sf m}(x_3) = x_1 \\
     & \land x_1 < x_2 
       \implies x_3 < x_2
-        \vspace{-1mm}
   \end{align*}
 
   This is one of several requirements of atomic single-value register ADTs,

@@ -252,13 +252,11 @@ minimals~\cite{conf/lics/AbdullaCJT96, journals/tcs/FinkelS01}. In our case, we
 recognize a condition on the weight-increasing enumeration of $B$ which
 guarantees coverage by the current set of minimals. Formally, for all $i \in
 \mathbb{N}$, we define
-  \vspace{-1mm}
 \begin{align*}
   B_i &= \set{ h \in B : \weight(h) \le i } \\
   B_i' &= \set{ h' \in B :
     \exists h \in B_i.\ h \preceq h' \text{ and } \weight(h') \le i+1
   }
-    \vspace{-1mm}
 \end{align*}
 as, respectively, the histories of $B$ with at most $i$ matches and duplicates,
 and those derived from $B_i$ with at most $i\!+\!1$ matches and duplicates. We
@@ -297,32 +295,25 @@ resulting symbolic ADT representation would still be sound in only identifying
 
   The following four histories generate the complement of the atomic
   single-value register ADT, witnessing either an unmatched read operation:
-  \vspace{-1mm}
 \begin{verbatim}
   [1:X] read => 1 (RO)  #
 \end{verbatim}
-  \vspace{-1mm}
   a read of an uninitialized register occurring after some write:
 \begin{verbatim}
   [1:1] write(1)            #
   [2:2] read => - (RO)    #
 \end{verbatim}
-    \vspace{-1mm}
   a read which happens before its matching write operation:
-      \vspace{-1mm}
 \begin{verbatim}
   [1:2] read => 1 (RO)  #
   [2:2] write(1)          #
 \end{verbatim}
-    \vspace{-1mm}
   and a read matching a write which is not the most recent:
-      \vspace{-1mm}
 \begin{verbatim}
   [1:1] write(1)        #
   [2:2] write(2)          #
   [3:1] read => 1 (RO)      #
 \end{verbatim}
-    \vspace{-1mm}
   Every sequential history not admitted by the atomic register ADT embeds at
   least one of these four histories.
   
