@@ -14,6 +14,7 @@ method name $p \in \mathbb{M}$ and argument value $v \in \mathbb{V}$, while a
 \emph{return action} binds an operation $o \in \mathbb{O}$ with a return value
 $v \in \mathbb{V}$. An \emph{execution} $e$ is a sequence of call and return
 actions where
+  \vspace{-1mm}
 \begin{itemize}
 
   \item each operation identifier is used in at most one call action, and in at
@@ -21,7 +22,7 @@ actions where
 
   \item each return action is preceded by a call action with the same operation
   identifier.
-
+  \vspace{-1mm}
 \end{itemize}
 An \emph{implementation} $\mathcal{I}$ is a prefix-closed set of executions
 which is additionally closed under
@@ -98,6 +99,7 @@ Non-completed operations are \emph{pending}, and are maximal in the
 happens-before order. 
 
 Two operations $o_1, o_2 \in O$ are \emph{identical} when
+  \vspace{-1mm}
 \begin{itemize}
 
   \item they have the same labels: $c(o_1) = c(o_2)$, $f(o_1)= f(o_2)$, and
@@ -105,7 +107,7 @@ Two operations $o_1, o_2 \in O$ are \emph{identical} when
 
   \item they have the same matching: either $m(o_1) = m(o_2)$, or both $m(o_1)$
   and $m(o_2)$ are undefined.
-
+  \vspace{-1mm}
 \end{itemize} 
 The \emph{frequency} of an operation $o$ is the number of operations identical
 to $o$, denoted $\freq(o)$. We say that $o$ has \emph{duplicates} when
@@ -129,21 +131,25 @@ identifiers.
   operation identifier and match target, followed by its method label,
   possibly a read-only marker, and its happens-before interval. For instance,
   in the history
+  \vspace{-1mm}
 \begin{verbatim}
     [1:1] write(a)        #
     [2:1] read => a (RO)    #
 \end{verbatim}
+  \vspace{-1mm}
   Operation~$1$ is a write operation which matches itself, and precedes a
   read-only read operation which also targets Operation~$1$. Note that we
   label method argument and return values for illustrative purposes only;
   histories do not keep them. In the following history, Operations~$1$ and~$2$
   execute concurrently
+    \vspace{-1mm}
 \begin{verbatim}
     [1:1] write(a)        #
     [2:1] read => a (RO)  #
     [3:X] read => b (RO)    #
     [4:_] read*     (RO)      #
 \end{verbatim}
+  \vspace{-1mm}
   Operation~$3$ is unmatched, indicated by the {\tt X}, and Operation~$4$ is
   pending, indicated by the {\tt *} on its label.
 
@@ -199,23 +205,29 @@ context, we abbreviate $H(e,M,R)$ and $H(E,M,R)$ by $H(e)$ and $H(E)$.
 
   The histories of the executions of Example~\ref{ex:executions} according to
   the matching scheme of Example~\ref{ex:matching} are $H(e_1)$:
+    \vspace{-1mm}
 \begin{verbatim}
     [1:1] write(a)        #
     [2:2] write(b)          #
     [3:1] read => a (RO)      #
 \end{verbatim}
+  \vspace{-1mm}
   in which all three operations are sequential, $H(e_2)$:
+    \vspace{-1mm}
 \begin{verbatim}
     [1:1] write(a)        #
     [2:2] write(b)        #
     [3:1] read => a (RO)    #
 \end{verbatim}
+  \vspace{-1mm}
   in which the first two operations overlap, and $H(e_3)$:
+    \vspace{-1mm}
 \begin{verbatim}
     [1:1] write(a)        #
     [2:2] write(b)          #
     [3:1] read => a (RO)    #
 \end{verbatim}
+  \vspace{-1mm}
   in which the last two operations overlap.
 
 \end{example}
@@ -254,15 +266,53 @@ Two histories $h_1$ and $h_2$ are related by $\to_x$, for $x = \mathrm{o},
   \item adding a pending operation (p).
 
 \end{itemize}
+
+\begin{example}
+  The history
+    \vspace{-1mm}
+\begin{verbatim}
+    [1:1] write(a)        #
+    [2:2] write(b)          #
+    [3:2] read => b (RO)      #
+\end{verbatim}
+  \vspace{-1mm}
+  is related by $\to_\mathrm{o}$ to 
+    \vspace{-1mm}
+\begin{verbatim}
+    [1:1] write(a)        #
+    [2:2] write(b)        #
+    [3:2] read => b (RO)    #
+\end{verbatim}
+  \vspace{-1mm}
+which is related by $\to_\mathrm{c}$ to
+  \vspace{-1mm}
+\begin{verbatim}
+    [1:1] write(a)        #
+    [2:2] write(b)        #
+    [3:-] read* (RO)        #
+\end{verbatim}
+  \vspace{-1mm}
+which is related by $\to_\mathrm{p}$ to
+  \vspace{-1mm}
+\begin{verbatim}
+    [1:1] write(a)        #
+    [2:2] write(b)        #
+    [3:-] read* (RO)        #
+    [4:4] write(c)*         #
+\end{verbatim}
+  \vspace{-1mm}
+\end{example}
+
 A set of histories $H$ is \emph{closed} under a relation $\to$ when $h_2 \in H$
 whenever $h_1 \to h_2$ and $h_1 \in H$. A fundamental property of
 implementations is that their histories are closed under weakening via less
 ordering, fewer operations completed, and additional pending
 operations~\cite{conf/popl/BouajjaniEEH15}.
 
+  \vspace{-1mm}
 \begin{lemma}
 
   $H(\mathcal{I})$ is closed under $\to_\mathrm{o}$, $\to_\mathrm{p}$, 
   $\to_\mathrm{c}$.
-
+  \vspace{-1mm}
 \end{lemma}
