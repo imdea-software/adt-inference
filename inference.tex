@@ -1,3 +1,4 @@
+%!TEX root = draft.tex
 \section{The Symbolic ADT Inference Problem}
 \label{sec:inference}
 
@@ -45,8 +46,8 @@ computing these automatically, we fix a language for symbolic representation. A
 
   \item function symbols ${\sf f}$ and ${\sf m}$ for labels and matching, and
 
-  \item predicate symbols ${\sf c}$, ${\sf um}$, and ${\sf <}$ for completion,
-  non-matching, and order.
+  \item predicate symbols ${\sf c}$, ${\sf um}$, {\sf r}, and ${\sf <}$ for completion,
+  non-matching (operations which are not in the domain of the matching function), read-only, and order.
 
 \end{itemize}
 A history formula $F$ is interpreted over a history $h$ in the natural way, by

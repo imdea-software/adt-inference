@@ -1,3 +1,4 @@
+%!TEX root = draft.tex
 \section{Computing Finite ADT Representations}
 \label{sec:patterns}
 
@@ -75,7 +76,6 @@ of this section.
 
 We first prove that the embedding order, defined hereafter, is a wqo on width-bounded
 labeled interval orders.
-
 Let $\Sigma$ be a finite alphabet. A labeled interval order is a triple $(A,\leq,\ell)$, where $(A,\leq)$ is an interval 
 order, and $\ell:A\rightarrow \Sigma$ is a labeling function. The embedding order $\subseteq$ between labeled interval orders is defined as
 usual by:
@@ -91,31 +91,27 @@ The width of an interval order $(A,\leq,\ell)$ is the maximum number of elements
 $\subseteq$ is a wqo on width-bounded interval orders.
 \end{lemma}
 \begin{proof}
-By definition, for every interval order $(A,\leq,\ell)$, there exists a mapping $I$ from elements of $A$ to intervals over $\mathbb{N}$ such that for every $x,y\in A$, if $x\leq y$, then the interval $I(x)$ ends before the interval $I(y)$ (i.e., the upper bound of $I(x)$ is strictly smaller than the lower bound of $I(y)$). %In general, there are more than one mappings $I_A$ that satisfy these constraints. In the following, we assume that the mapping $I_A$ is arbitrary but fixed.
-Therefore, in the following, we assume that an interval order is a multiset $\Gamma$ of triples of the form $[i,j,a]$ where $[i,j]$ is an interval on the integer line and $a$ is a symbol in $\Sigma$.
+By definition, for every interval order $(A,\leq,\ell)$, there exists a mapping $I$ from elements of $A$ to intervals on $\mathbb{N}$ such that for every $x,y\in A$, if $x\leq y$, then the interval $I(x)$ ends before the interval $I(y)$ (i.e., the upper bound of $I(x)$ is strictly smaller than the lower bound of $I(y)$). %In general, there are more than one mappings $I_A$ that satisfy these constraints. In the following, we assume that the mapping $I_A$ is arbitrary but fixed.
+Therefore, in the following, we assume that an interval order is a multiset $\Gamma$ of triples of the form $[i,j,a]$ where $[i,j]$ is an interval on $\mathbb{N}$ and $a$ is a symbol in $\Sigma$.
 
-We prove that another order on interval orders, denoted by $\subseteqq$, which is stronger than the embedding order $\subseteq$, is a wqo. The order $\subseteqq$ is defined by: $\Gamma_1\subseteqq \Gamma_2$ iff there exists an injective function $h:\Gamma_1\rightarrow \Gamma_2$ such that 
+We actually prove that another order on interval orders, denoted by $\subseteqq$, which is stronger than the embedding order $\subseteq$, is a wqo. The order $\subseteqq$ is defined by: $\Gamma_1\subseteqq \Gamma_2$ iff there exists an injective function $h:\Gamma_1\rightarrow \Gamma_2$ such that 
 \begin{enumerate}
-	\item $h$ preserves the labeling, i.e., for any triple $[i,j,a]$, $h([i,j,a])=[i',j',a]$, for some $i'$, $j'$, 
+	\item $h$ preserves the labeling, i.e., for any triple $[i,j,a]$, $h([i,j,a])=[i',j',a]$, for some $i'$ and $j'$, 
 	\item $h$ preserves the ordering constraints, i.e., for every two triples $[i,j,a]$ and $[k,l,b]$ such that $j< k$, $h([i,j,a])=[i',j',a]$, $h([k,l,b])=[k',l',b]$, and $j'< k'$.
 	\item for every two incomparable elements $x$ and $y$ of $\Gamma_1$, if the interval of $x$ starts before the interval of $y$, then the interval of $h(x)$ also starts before the interval of $h(y)$. Formally, for every two triples $[i,j,a]$ and $[k,l,b]$ such that $i\leq k$ (i.e., the first interval starts before the second interval), $h([i,j,a])=[i',j',a]$, $h([k,l,b])=[k',l',b]$, and $i'\leq k'$.
 \end{enumerate}
+We say that $h$ \emph{witnesses} $\Gamma_1\subseteqq \Gamma_2$.
 		
-Assume $\Gamma_1$, $\Gamma_2$,$\ldots$ is a \emph{bad} sequence, i.e., an infinite sequence of interval orders s.t. there exists no $i < j$ with $\Gamma_i\subseteqq \Gamma_j$. Also, assume that $\Gamma_1$ is the minimal size interval order that can start a bad sequence, $\Gamma_2$ is the minimal interval order that can continue a bad sequence starting with $\Gamma_1$, and so on.
+Assume $\Gamma_1$, $\Gamma_2$,$\ldots$ is a \emph{bad} sequence, i.e., an infinite sequence of interval orders s.t. there exists no $i < j$ with $\Gamma_i\subseteqq \Gamma_j$. Also, assume that $\Gamma_1$ is the minimal size interval order that can start a bad sequence, $\Gamma_2$ is the minimal order that can continue a bad sequence starting with $\Gamma_1$, and so on.
 
 For each $\Gamma_k$, let $Min(\Gamma_k)$ be a triple $[i,j,a]$ such that 
-\begin{itemize}
-	\item $i$ is the minimal lower bound of an interval in $\Gamma_k$, and 
-	\item $j$ is the minimal upper bound of an interval in $\Gamma_k$ with lower bound $i$.
-\end{itemize}
+(1) $i$ is the minimal lower bound of an interval in $\Gamma_k$, and 
+(2) $j$ is the minimal upper bound of an interval in $\Gamma_k$ with lower bound $i$.
 %In general, this triple is not unique but it’s not important which one we choose.
+Also, let $Init(\Gamma_k) = (a_k, P_k)$, where $Min(\Gamma_k)=[i,j,a_k]$, for some $i$ and $j$, and $P_k$ is the multiset of symbols labeling elements of $\Gamma_k$ that are incomparable to $Min(\Gamma_k)$. Note that $P_k$ is bounded since we assume width-bounded interval orders.
 
-Also, let $Init(\Gamma_k) = (Min(\Gamma_k), P_k)$, where $P_k$ is the multiset of symbols labeling elements of $\Gamma_k$ that are incomparable to $Min(\Gamma_k)$. Note that $P_k$ is bounded since we assume width-bounded interval orders.
-
-The infinite sequence $\Gamma_1$, $\Gamma_2$,$\ldots$ contains an infinite sequence $\Gamma_{k_1}$, $\Gamma_{k_2}$,$\ldots$ which, ignoring the integer interval, have the same value for $Init$.
-
+The infinite sequence $\Gamma_1$, $\Gamma_2$,$\ldots$ contains an infinite sequence $\Gamma_{k_1}$, $\Gamma_{k_2}$,$\ldots$ which have the same value for $Init$.
 For each $\Gamma_k$, let $\Lambda_k$ be the interval order obtained from $\Gamma_k$ by removing the triple $Min(\Gamma_k)$.
-
 By the minimality assumptions, the infinite sequence $\Gamma_1$, $\Gamma_2$,$\ldots$,$\Gamma_{k_1-1}$, $\Lambda_{k_1}$, $\Lambda_{k_2}$,$\ldots$ is not bad. 
 Therefore, there exists $m<n$ such that $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$. 
 
@@ -124,12 +120,13 @@ It remains to prove that:
 	\item if $Init(\Gamma_{k_m})=Init(\Gamma_{k_n})$ and $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$, then $\Gamma_{k_m}\subseteqq \Gamma_{k_n}$.
 \end{itemize}
 
-Let $h$ be the injective function witnessing $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$. We prove that the extension $h'$ of $h$ between $\Gamma_{k_m}$ and $\Gamma_{k_n}$, defined by $h'(Min(\Gamma_{k_m}))=Min(\Gamma_{k_n}$ and $h'(t)=h(t)$, for all $t\in \Lambda_{k_m}$ witnesses $\Gamma_{k_m}\subseteqq \Gamma_{k_n}$. Clearly, $h'$ preserves the labeling. 
+Let $h$ be the injective function witnessing $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$. We prove that the extension $h'$ of $h$ between $\Gamma_{k_m}$ and $\Gamma_{k_n}$, defined by $h'(Min(\Gamma_{k_m}))=Min(\Gamma_{k_n})$ and $h'(t)=h(t)$, for all $t\in \Lambda_{k_m}$, witnesses $\Gamma_{k_m}\subseteqq \Gamma_{k_n}$. 
 
-To prove that $h'$ preserves the ordering constraints, let $Min(\Gamma_{k_m})=[i,j,a]$ and $[k,l,b]\in \Gamma_{k_m}$ such that $j< k$. Also, let $Min(\Gamma_{k_n})=[i',j',a]$ and $h'([k,l,b])=h([k,l,b])=[k',l',b]$. Assume by contradiction that $k'\leq j'$. Since $h$ is injective, there exists an element $[x,y,c]\in \Gamma_{k_m}$ incomparable to $Min(\Gamma_{k_m})$ which is mapped to an element $[x',y',c]$ greater than $Min(\Gamma_{k_n})$ (by definition, $\Gamma_{k_m}$ and $\Gamma_{k_n}$ have the same number of elements incomparable to $Min(\Gamma_{k_m})$ and respectively, $Min(\Gamma_{k_n})$). 
-Since $[x,y,c]$ is incomparable to $[i,j,a]$, we obtain that $x\leq j< k$. Also, by the current assumptions, $k'<j'<x'$. Therefore, there exist two elements $[x,y,c]$ and $[k,l,b]$ such that the interval $[x,y]$ starts before $[k,l]$ which are mapped by $h$ to the elements $[x',y',c]$ and $[k',l',b]$ such that the interval $[x',y']$ starts after $[k',l']$. This contradicts the fact that $h$ witnesses $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$.
+Clearly, $h'$ preserves the labeling. 
+To prove that $h'$ preserves the ordering constraints, let $Min(\Gamma_{k_m})=[i,j,a]$ and $[k,l,b]\in \Gamma_{k_m}$ such that $j< k$. Also, let $Min(\Gamma_{k_n})=[i',j',a]$ and $h'([k,l,b])=h([k,l,b])=[k',l',b]$. Assume by contradiction that $k'\leq j'$. Since $h$ is injective, there exists an element $[e,f,c]\in \Gamma_{k_m}$ incomparable to $Min(\Gamma_{k_m})$ which is mapped to an element $[e',f',c]$ greater than $Min(\Gamma_{k_n})$ (because, by definition, $\Gamma_{k_m}$ and $\Gamma_{k_n}$ have the same number of elements incomparable to $Min(\Gamma_{k_m})$ and respectively, $Min(\Gamma_{k_n})$). 
+Since $[e,f,c]$ is incomparable to $[i,j,a]$, we obtain that $e\leq j< k$. Also, by the current assumptions, $k'\leq j'<e'$. Therefore, there exist two elements $[e,f,c]$ and $[k,l,b]$ such that the interval $[e,f]$ starts before $[k,l]$ which are mapped by $h$ to the elements $[e',f',c]$ and $[k',l',b]$ such that the interval $[e',f']$ starts after $[k',l']$. This contradicts the fact that $h$ witnesses $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$.
 
-The properties of $Min(\Gamma_{k_m})$ and $Min(\Gamma_{k_n})$ imply that $h'$ also satisfies the third property in the definition of $\subseteqq$.
+The properties of $Min(\Gamma_{k_m})$ and $Min(\Gamma_{k_n})$ imply that $h'$ satisfies also the third property in the definition of $\subseteqq$.
 
 Finally, since $\subseteqq$ is stronger than $\subseteq$, we get that $\subseteq$ is a wqo on width-bounded labeled interval orders.
 \end{proof} 
@@ -163,17 +160,17 @@ containing the signature of the match target and the set of the signatures of th
 The \emph{signature} of a history $h$ is the tuple 
 \begin{align*}
 \sigma(h)&=&(\set{\sigma(\mu): \mu\mbox{ a match}}, \set{\sigma(o): o\mbox{ read-only}}, \\
-&& \set{\sigma(o): o\mbox{ completed and unmatched}}, \\
-&& \mset{\sigma(o): o\mbox{ pending and unmatched}}).
+&& \set{\sigma(o): o\mbox{ unmatched}}, \\
+&& \mset{\sigma(o): o\mbox{ pending and non-matched}}).
 \end{align*}
 
 The history signature contains sets of signatures 
 (for matches, read-only and respectively, completed and unmatched operations) 
-and the multiset of signatures of the pending and unmatched operations.
+and the multiset of signatures of the pending and non-matched operations.
 
 %Assume by contradiction that $\preceq$ has an infinite antichain.
-Since the set of history signatures is bounded (because the set of methods is bounded)
-and the set of pending operations is also bounded (since we consider only bounded width histories),
+Since the set of history signatures is bounded (because the set of methods 
+and the set of pending operations are bounded),
 the sequence $h_1 h_2\ldots $ contains an infinite sequence of histories $h_1' h_2' \ldots$ that have 
 the same signature. 
 
@@ -183,12 +180,12 @@ the same signature.
 The \emph{vector} of a history $h$ is the tuple
 \begin{align*}
 \nu(h)&=&(\mset{\sigma(\mu): \mu\mbox{ a match of $h$}}, \mset{\sigma(o): o\mbox{ read-only}}, \\
-&& \mset{\sigma(o): o\mbox{ completed and unmatched}}).
+&& \mset{\sigma(o): o\mbox{ unmatched}}).
 \end{align*}
 
 Let $\leq$ be an order relation on multisets $\alpha:\Sigma\rightarrow\mathbb{N}$ of (match or operation) signatures from a finite set $\Sigma$ 
 defined by $\alpha\leq\alpha'$ iff $\alpha(\sigma)\leq\alpha'(\sigma)$, for every $\sigma\in\Sigma$.
-Clearly, $\leq$ is a wqo and so is the component-wise extension of $\leq$ to history vectors.
+The relation $\leq$ is a wqo and so is the component-wise extension of $\leq$ to history vectors.
 Therefore, by known results, the sequence of histories $h_1' h_2' \ldots$ contains 
 an infinite sequence $h_1'',h_2'',\ldots$ such that $\nu(h_1'')\leq \nu(h_2'')\leq \ldots$.
 
@@ -235,7 +232,8 @@ This implies that $h_i^n\preceq h_j^n$, which ends our proof.
 For the remainder of this section, we fix an ADT $A$, and let $B$ be the
 complement of $\ker A$. When $\ker A$ has bounded width, so does $B$, and thus
 $\preceq$ is a wqo on $B$. Furthermore, when $A$ normal, it is closed under
-$\succeq$, and thus $B$ is closed under $\preceq$. Closure under a wqo implies
+$\succeq$, and thus $B$ is closed under $\preceq$~\footnote{Actually, $B$ is closed under $\preceq$ when restricted to width-bounded histories, i.e., if $h_1 \preceq h_2$, $h_1 \in B$, and $h_2$ is width-bounded, then $h_2\in B$.}.
+Closure under a wqo implies
 representation by a finite set. Formally, we say a set $X$ is \emph{finitely
 representable} if there exists a finite set $Y$ and a relation $R \subseteq Y
 \times X$ such that $X = \set{ x : \exists y\in Y.\ R(y,x) }$. In our case, we
@@ -305,7 +303,7 @@ resulting symbolic ADT representation would still be sound in only identifying
   a read of an uninitialized register occurring after some write:
 \begin{verbatim}
   [1:1] write(1)            #
-  [2:2] read => empty (RO)    #
+  [2:2] read => - (RO)    #
 \end{verbatim}
   a read which happens before its matching write operation:
 \begin{verbatim}

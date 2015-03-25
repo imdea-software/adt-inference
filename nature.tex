@@ -1,3 +1,4 @@
+%!TEX root = draft.tex
 \section{Properties of Naturally-Occurring ADTs}
 \label{sec:nature}
 
@@ -29,7 +30,7 @@ methods:
   \item write$(v)$ stores the value $v$, and
 
   \item read $\Rightarrow v$ returns the last-stored value $v$, or the nil
-  value $\perp$ if no value has yet been stored.
+  value $-$ if no value has yet been stored.
 
 \end{itemize}
 As its name implies, its kernel is sequential.
@@ -42,7 +43,7 @@ scheme is given over the set of executions which write unique values as follows:
   \item write$(v)$ operations match themselves, and
 
   \item read $\Rightarrow v$ operations are read-only, and match themselves if
-  $v = \perp$, or the unique write$(v)$ operation, if one exists, and otherwise 
+  $v = -$, or the unique write$(v)$ operation, if one exists, and otherwise 
   have no match.
 
 \end{itemize}
@@ -50,15 +51,15 @@ This matching scheme is faithful since two executions with the same history
 are identical up to homomorphic renaming of data values, and the register ADT
 only relates data values via equality.
 
-It is easy to see that the histories of atomic registers normal. They are
-closed under removal of read-only and duplicate operations, since the each
+It is easy to see that the atomic register is normal. It is
+closed under removal of read-only and duplicate operations, since  each
 match can contain an arbitrary number of read operations. Since the histories
 of atomic registers do not contain unmatched operations, they are also closed
 under their removal. Finally, since the kernel contains an arbitrary number of
 sequenced matches, atomic register histories are also closed under match
 removal.
 
-Our inference algorithm computes following four histories to generate the
+Our inference algorithm computes the following four histories to generate the
 complement of the atomic register ADT:
 \begin{verbatim}
   [1:X] read => 1 (RO)  #        [1:1] write(1)        #
@@ -80,7 +81,7 @@ enqueue and dequeue, or push and pop.}
 
   \item add$(v)$ adds the value $v$ to the collection, and
 
-  \item remove $\Rightarrow v$ returns the nil value $v = \mathord\perp$ if the
+  \item remove $\Rightarrow v$ returns the nil value $v = -$ if the
   collection is empty, and otherwise removes and returns the least- or
   most-recently added value $v$, respectively.
 
@@ -95,7 +96,7 @@ add unique values as follows:
   \item add$(v)$ operations match themselves, and
 
   \item remove $\Rightarrow v$ operations are read-only, and match themselves
-  if $v = \mathord\perp$ is the nil value. If $v \neq \mathord\perp$, remove
+  if $v = -$ is the nil value. If $v \neq -$, remove
   $\Rightarrow v$ operations are not read-only, and match the unique add$(v)$
   operation, if one exists, and otherwise have no match.
 
@@ -104,9 +105,9 @@ This matching scheme is faithful since two executions with the same history are
 identical up to homomorphic renaming of data values, and the queue and stack
 ADTs only relate data values via equality.
 
-It is not hard to see that the histories of atomic queues and stacks are
+It is not hard to see that the atomic queues and stacks are
 normal. They are closed under removal of read-only operations: only empty
-removes, i.e.,~remove $\Rightarrow \mathord\perp$, are read-only. They are
+removes, i.e.,~remove $\Rightarrow -$, are read-only. They are
 closed under the removal of duplicate operations: only non-empty removes can be
 duplicates, and such duplicates are not admitted in the first place, since each
 value is added only once. Similarly, unmatched operations, i.e.,~removes that
@@ -156,19 +157,19 @@ providing three methods:
   \item contains$(u) \Rightarrow v$ checks whether the set contains $u$.
 
 \end{itemize}
-Each operation returns the nil value $v = \mathord\perp$ when $u$ is not yet
+Each operation returns the nil value $v = -$ when $u$ is not yet
 present, and otherwise returns $v = u$. As its name implies, its kernel is
 sequential.
 
 An execution \emph{inserts unique values} if the argument value to each insert
-operation which returns $\mathord\perp$ is unique. We give a faithful matching
+operation which returns $-$ is unique. We give a faithful matching
 scheme over executions which insert unique values as follows:
 \begin{itemize}
 
-  \item any operation returning $v = \mathord\perp$ matches itself, and
+  \item any operation returning $v = -$ matches itself, and
 
-  \item any operation returning $v \neq \mathord\perp$ matches the unique
-  insert$(u) \Rightarrow \mathord\perp$ operation, if one exists, and otherwise
+  \item any operation returning $v \neq -$ matches the unique
+  insert$(v) \Rightarrow -$ operation, if one exists, and otherwise
   has no match.
 
 \end{itemize}
@@ -205,20 +206,20 @@ methods
   \item unlock $\Rightarrow v$ releases the lock resource.
 
 \end{itemize}
-An operation returns the nil value $v = \mathord\perp$ when the lock is not
+An operation returns the nil value $v = -$ when the lock is not
 currently held, indicating success for lock, and failure for unlock. Otherwise,
 the operations return the value $u = v$ passed as an argument to the last
-successful lock$(v)$ operation.
+successful lock$(u)$ operation.
 
 An execution \emph{uses unique keys} if the argument value to each lock
 operation is unique. We give a faithful matching scheme over executions using
 unique keys as follows:
 \begin{itemize}
 
-  \item any operation returning $v = \mathord\perp$ matches itself, and
+  \item any operation returning $v = -$ matches itself, and
 
-  \item any operation returning $v \neq \mathord\perp$ matches the unique
-  lock$(u) \Rightarrow \mathord\perp$ operation, if one exists, and otherwise
+  \item any operation returning $v \neq -$ matches the unique
+  lock$(v) \Rightarrow -$ operation, if one exists, and otherwise
   has no match.
 
 \end{itemize}

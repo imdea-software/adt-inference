@@ -1,3 +1,4 @@
+%!TEX root = draft.tex
 \section{Computing Matching Schemes}
 \label{sec:matching}
 
@@ -85,10 +86,15 @@ $H(\mathcal{I},M)$ is normal.
 
 \end{definition}
 
-We automate the computation of matching schemes by considering the function
-${\sf g}$ underlying a simple matching scheme as an uninterpreted function in a
-logical satisfiability problem which uniquely determines the match of each
-operation, and constrain ${\sf g}$ to normalize the executions of an
+We automate the computation of matching schemes by constructing a logical
+formula that characterizes the boolean functions $G$ underlying a simple 
+matching scheme. These boolean functions are defined as the interpretation of 
+a function symbol ${\sf g}$. 
+%the function
+%symbol ${\sf g}$ underlying a simple matching scheme as an uninterpreted function in a
+%logical satisfiability problem which 
+The formula expresses the fact that the interpretations of ${\sf g}$ uniquely determine the match of each
+operation, and that they normalize the executions of an
 implementation. To this end, we fix an implementation $\mathcal{I}$ and a
 language $L = \tup{E,P,Q}$ to which $\mathcal{I}$ adheres, then consider any
 enumeration $F$ of execution pairs $\tup{e,e'} \in E^2$ such that

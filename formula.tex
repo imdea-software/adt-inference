@@ -1,13 +1,14 @@
+%!TEX root = draft.tex
 \section{Computing Symbolic Representations}
 \label{sec:formula}
 
-While Section~\ref{sec:patterns} demonstrates that (the complements) of
+While Section~\ref{sec:patterns} demonstrates that (the kernel complements) of
 naturally-occurring ADTs can be represented finitely, in this section we
 demonstrate that such finite representations have logical interpretations,
 allowing us to derive the formulas representing ADTs. In what follows, we
 describe how to obtain a formula which is satisfied by the histories which
 embed a given history, via $\preceq$. Then, using the finite set of histories
-which represent the complement of a given ADT, we represent the ADT itself as
+which represent the complement of a given ADT~\footnote{The complement of the kernel of an ADT $A$ is simply called the complement of $A$.}, we represent the ADT itself as
 the conjunction of negations of these embedding formulas. The resulting formula
 is satisfied only on the histories which do not embed the generators of a given
 ADT’s complement.
@@ -17,7 +18,7 @@ o_n }$. Without loss of generality, we assume the match targets $\set{o_1,
 \ldots, o_k}$ of $h$ are indexed consecutively from $1$ to $k$, for some $k \le
 n$. For each $o \in O$, we define the macro $\textsc{Embed}_o(x,Y,z)$:
 \begin{align*}
-  & \big(c(o) \implies {\sf c}(x)\big) \land {\sf f}(x) = f(o) \land {\sf r}(x) = r(o) \\
+  & \big(c(o) \implies {\sf c}(x)\big) \land {\sf f}(x) = f(o) \land {\sf r}(x) \Leftrightarrow r(o) \\
   & \land \big(o \in \dom(m)
     \implies \lnot{\sf um}(x) \land {\sf m}(x) = z\big) \\
   & \land \big(o \not\in \dom(m) \implies {\sf um}(x)\big)
@@ -67,12 +68,12 @@ corresponding to operations matching $o_i$.
 \end{verbatim}
   after simplifications, like replacing $\mathrm{true} \implies p$ with $p$, is
   \begin{align*}
-    \exists x_1.\ {\sf c}(x_1) \land {\sf f}(x_1) = \mathrm{read} \land {\sf um}(x_1).
+    \exists x_1.\ {\sf c}(x_1) \land {\sf f}(x_1) = \mathrm{read} \land {\sf um}(x_1) \land {\sf r}(x_1).
   \end{align*}
   The $\textsc{Embed}$ formula for second history,
 \begin{verbatim}
   [1:1] write(1)            #
-  [2:2] read => empty (RO)    #    
+  [2:2] read => - (RO)    #    
 \end{verbatim}
   is similarly given by
   \begin{align*}
@@ -80,7 +81,7 @@ corresponding to operations matching $o_i$.
     & \quad \land {\sf c}(x_1) \land {\sf f}(x_1) = \mathrm{write}
       \land \lnot{\sf um}(x_1) \land {\sf m}(x_1) = x_1 \\
     & \quad \land {\sf c}(x_2) \land {\sf f}(x_2) = \mathrm{read}
-      \land \lnot{\sf um}(x_2) \land {\sf m}(x_2) = x_2 \\
+      \land \lnot{\sf um}(x_2) \land {\sf m}(x_2) = x_2\land {\sf r}(x_2) \\
     & \quad \land \big(\forall x.\ {\sf m}(x) = x_1 \implies {\sf r}(x) \lor \textsc{Identical}(x,x_1)\big) \\
     & \quad \land \big(\forall x.\ {\sf m}(x) = x_2 \implies {\sf r}(x) \lor \textsc{Identical}(x,x_2)\big).
   \end{align*}
@@ -101,7 +102,7 @@ set $H$ that generates the complement of $A$.
 \begin{lemma}
 
   The formula $\bigwedge_{h \in H} \neg \textsc{Embed}_h$ represents $A$,
-  for any set $H$ which generates the compliment of $A$.
+  for any set $H$ which generates the complement of $A$.
 
 \end{lemma}
 

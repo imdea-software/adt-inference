@@ -1,3 +1,4 @@
+%!TEX root = draft.tex
 \section{Histories of ADT Implementations}
 \label{sec:histories}
 
@@ -91,6 +92,8 @@ Formally, a \emph{history} is a tuple $h = \tup{O,<,c,f,m,r}$ where
   \item $r: O \to \mathbb{B}$ labels operations as \emph{read-only}, or not.
 
 \end{itemize}
+The relation $<$ is an interval order because histories abstract executions where
+the set of call and return actions is totally ordered~\cite{conf/popl/BouajjaniEEH15}.
 Non-completed operations are \emph{pending}, and are maximal in the
 happens-before order. 
 
@@ -108,7 +111,7 @@ The \emph{frequency} of an operation $o$ is the number of operations identical
 to $o$, denoted $\freq(o)$. We say that $o$ has \emph{duplicates} when
 $\freq(o) > 1$. An operation $o \in \img(m)$ in the image of $m$ is a
 \emph{match target}, and the inverse set $m^{-1}(o)$ of a target is a
-\emph{match}. We assume $o \in m^{-1}(o)$. A operation $o$ is \emph{unmatched}
+\emph{match}. We assume $o \in m^{-1}(o)$ for every $o$. A operation $o$ is \emph{unmatched}
 when $o$ is completed and $m(o)$ is undefined.
 
 The \emph{width} of a history is the maximum number of its operations which are
@@ -163,7 +166,7 @@ read-only operation labeling $R(e): O \to \mathbb{B}$.
     \item write$(v)$ operations match themselves, and
 
     \item read $\Rightarrow v$ operations are read-only, and match themselves
-    when they return $v = \mathord\perp$, or a write$(v)$ operation, if one
+    when they return $v = -$, or a write$(v)$ operation, if one
     exists, and otherwise have no match,
     
   \end{itemize}
@@ -244,7 +247,7 @@ Two histories $h_1$ and $h_2$ are related by $\to_x$, for $x = \mathrm{o},
 \mathrm{c}, \mathrm{p}$, when $h_2$ is obtained from $h_1$ by:
 \begin{itemize}
 
-  \item removing an order constraint (o),
+  \item unordering a pair of ordered operations (o),
 
   \item making a completed operation pending (c), or
 
