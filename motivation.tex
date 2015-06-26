@@ -1,0 +1,66 @@
+\section{Motivation}
+\label{sec:motivation}
+
+TODO DISCUSS SCALABLE VERIFICATION, MODULAR REASONING, INTERFACE SPECIFICATIONS,
+DERIVING SPECIFICATIONS, CONCURRENCY, CONCURRENT ADTS, SYMBOLIC ADT SPECIFICATIONS
+
+TODO CLIENT-SIDE REASONING
+
+\begin{figure}
+  \begin{minipage}{0.49\linewidth}
+    \begin{verbatim}
+assume w < x
+( (q.add(<1,w>); q.add(<1,x>))
+||(q.add(<2,w>); q.add(<2,x>)))
+i, y := q.remove()
+j, z := q.remove()
+assert i == j ==> y < z
+    \end{verbatim}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.49\linewidth}
+    \begin{verbatim}
+( (while * do q.add(<1,w++>))
+||(while * do q.add(<2,x++>)))
+while * do q.remove() end
+i, y := q.remove()
+j, z := q.remove()
+assert i == j ==> y < z
+    \end{verbatim}
+  \end{minipage}
+  \caption{A atomic queue clients with six operations (left), and with
+  arbitrarily-many operations (right).}
+  \label{fig:clients}
+\end{figure}
+
+\begin{align*}
+  \forall w,x,y,z.\left(
+    \begin{array}{l}
+      {\sf add}(w) \land {\sf remove}(x) \land {\sf val}(w) = {\sf val}(x) \\
+      \land\ {\sf add}(y) \land {\sf remove}(z) \land {\sf val}(y) = {\sf val}(z) \\
+      \land\ {\sf before}(w,y) \implies {\sf before}(x,z)
+    \end{array}
+  \right)
+\end{align*}
+
+TODO IMPLEMENTATION-SIDE REASONING: EMP(6 < 4) AND TR(4 < 6)
+
+\begin{verbatim}
+    [1] add(1)        #
+    [2] remove => 3     #####
+    [3] remove => 1     #
+    [4] add(2)            #
+    [5] add(3)              #
+    [6] remove => EMPTY       #
+\end{verbatim}
+
+\begin{align*}
+  \forall x,y.\left(
+    \begin{array}{l}
+      {\sf remove}(x) \land {\sf val}(x) = {\sf empty} \\
+      \land\ {\sf add}(y) \land {\sf unmatched}(y) \implies {\sf before}(x,y)
+    \end{array}
+  \right)
+\end{align*}
+
+TODO AUTOMATIC INFERENCE

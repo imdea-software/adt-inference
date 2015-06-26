@@ -60,11 +60,11 @@ model of $F$, and $h \not\models F$ otherwise.
   The following history formula is satisfied by histories in which no write
   operation happens between a pair of matching write and read operations:
   \begin{align*}
-    \forall x_1, x_2, x_3.\ 
+    \forall x_1, x_2, x_3.\
     & {\sf c}(x_1) \land {\sf f}(x_1) = \mathrm{write} \land {\sf m}(x_1) = x_1 \\
     & \land {\sf c}(x_2) \land {\sf f}(x_2) = \mathrm{write} \land {\sf m}(x_2) = x_2 \\
     & \land {\sf c}(x_3) \land {\sf f}(x_3) = \mathrm{read} \land {\sf m}(x_3) = x_1 \\
-    & \land x_1 < x_2 
+    & \land x_1 < x_2
       \implies x_3 < x_2
   \end{align*}
 
