@@ -111,6 +111,69 @@ procedure INFER_ADT_FROM_REFERENCE_IMPL(I)
   \label{fig:abstract}
 \end{figure}
 
+\begin{figure}
+  \begin{minipage}[b]{0.49\linewidth}
+    \begin{verbatim}
+[1:X] remove => 1  #
+---
+[1:1] add(1)           #
+[2:2] remove => empty    #
+---
+[1:2] remove => 1  #
+[2:2] add(1)         #
+---
+[1:1] add(1)       #
+[2:2] add(2)         #
+[3:2] remove => 2      #
+---
+[1:1] add(1)       #
+[2:1] remove => 1    #
+[3:1] remove => 1      #
+---
+[1:1] add(1)           #
+[2:2] remove => empty    #
+[3:1] remove => 1          #
+---
+[1:1] add(1)       #
+[2:2] add(2)         #
+[3:2] remove => 2      #
+[4:1] remove => 1        #
+    \end{verbatim}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.49\linewidth}
+    \begin{verbatim}
+[1:1] add(1)       #
+[2:X] remove => 2    #
+---
+[1:X] remove => 1  #
+[2:X] remove => 1    #
+---
+[1:X] remove => 1      #
+[2:2] remove => empty    #
+---
+[1:1] remove => empty  #
+[2:X] remove => 1        #
+---
+[1:1] add(1)       #
+[2:2] add(2)         #
+[3:X] remove => 3      #
+---
+[1:1] add(1)           #
+[2:2] add(2)             #
+[3:3] remove => empty      #
+---
+[1:1] add(1)       #
+[2:1] remove => 1    #
+[3:X] remove => 2      #
+    \end{verbatim}
+  \end{minipage}
+  \caption{Invalid sequences according to the atomic queue ADT. The histories
+  on the right are each redundant with some history on the left, and those on
+  the left constitute a complete set.}
+  \label{fig:patterns}
+\end{figure}
+
 The key technical obstacle in realizing the abstract algorithm of
 Figure~\ref{fig:abstract}, overcome in Section~\ref{sec:patterns}, is the
 classification of violations into a finite set of patterns, rendering the
