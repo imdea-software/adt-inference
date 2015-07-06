@@ -1,4 +1,4 @@
-\section{Motivation}
+\section{Motivation \& Overview}
 \label{sec:motivation}
 
 Effective scalable reasoning about nontrivial software implementations generally
@@ -40,8 +40,8 @@ assert i == j ==> y < z
     \end{verbatim}
   \end{minipage}
   \caption{An execution history with six numbered operations (left),
-    and a parallel program invoking six operations (right). The hash symbols
-    “\#” depict the time interval spanned by each operation horizontally.}
+    and a parallel program invoking six operations (right). The “\#” symbols
+    depict the time intervals spanned by operations horizontally.}
   \label{fig:clients}
 \end{figure}
 
@@ -52,31 +52,76 @@ parallel branch each add occurs. Intuitively this program is correct since
 values with the same tag are added in increasing order, and, crucially, the
 values of the queue ADT are removed in the same order in which they are added.
 Among the six possible ways to linearize these operations, the comparison {\tt i ==
-j} of tags only holds for those two which begin with {\tt q.add(<1,$w$>);
-q.add(<1,$x$>)} and {\tt q.add(<2,$w$>); q.add(<2,$x$>)}. Since the queue ADT
-dictates that elements are removed in the order added, we conclude that $w$ and
-$x$ are removed in order when {\tt i == j}, and thus {\tt y < z} holds when {\tt
-i == j} holds.
+j} of tags only holds for those two beginning with
+\begin{quote}
+  \verb|q.add(<1,w>); q.add(<1,x>) | and \verb| q.add(<2,w>); q.add(<2,x>)|
+\end{quote}
+Since the queue ADT dictates that elements are removed in the order added, we
+conclude that $w$ and $x$ are removed in order when {\tt i == j}, and thus {\tt
+y < z} holds when {\tt i == j} holds.
 
 Although formal ADT specifications are indispensable for scalable program
 reasoning, formal-specification writing is a burden for which few programmers
 posses the required combination of expertise and willingness to overcome.
-According to current practices, programmers write obviously-correct ADT
-\emph{reference implementations}, e.g.,~an atomic queue whose methods are
-synchronized via a global lock, and refine them with more efficient fine-grained
-implementations, e.g.,~reducing synchronization overhead with specialized
-hardware instructions such as atomic compare and swap (CAS).
+Typically programmers write simple ADT \emph{reference implementations},
+e.g.,~whose methods are synchronized via a global lock, and refine them with
+more efficient fine-grained implementations, e.g.,~reducing synchronization
+bottlenecks using specialized hardware instructions such as atomic compare and
+swap (CAS).
 
 Our goal in this work is thus the automated generation of formal ADT
 specifications, derived from reference implementations, which are suitable for
 automated reasoning. In particular, we aim to generate \emph{symbolic
-representations} of the history linearizations which are valid, according to
-ADTs given implicitly by reference implementations. We target declarative
-symbolic representations rather than imperative state-based representations in
-order to exploit efficient symbolic reasoning engines such as SMT solvers.
-Previous work demonstrates that symbolic representations can offer orders of
-magnitude improvements over imperative state-based representations by averting
-the need to enumerate linearizations explicitly in order to check their
-validity~\cite{conf/pldi/EmmiEH15}.
+representations} of the valid history linearizations, according to ADTs given
+implicitly by reference implementations. We target declarative symbolic
+representations rather than imperative state-based representations in order to
+harness efficient symbolic reasoning algorithms: rather than enumerating
+linearizations explicitly, and checking their validity one by one, a symbolic
+reasoning engine may simultaneously rule out many possible linearizations,
+e.g.,~as in the example above. Previous work demonstrates that such symbolic
+reasoning can increase reasoning efficiency by orders of
+magnitude~\cite{conf/pldi/EmmiEH15}.
 
-TODO ALGORITHM OVERVIEW
+Our basic approach to inferring ADT specifications, as outlined by the abstract
+algorithm in Figure~\ref{fig:abstract}, is to identify a finite set of
+sequential execution histories which capture all of the reasons for which a
+sequence could be considered invalid, according to the ADT of a given reference
+implementation. These sequences thus serve as patterns indicating violations in
+the sequences which contain them. Thus the linearizations which exclude all
+violation patterns are considered valid.
+
+\begin{figure}
+  \begin{verbatim}
+procedure INFER_ADT_FROM_REFERENCE_IMPL(I)
+  PATTERNS := {}
+  for each sequential history H
+    if * then
+      break
+    else if H is EXECUTABLE with I then
+      continue
+    else if H is REDUNDANT with PATTERNS then
+      continue
+    else
+      add H to PATTERNS
+    end
+  end
+  return EXCLUSION of PATTERNS
+  \end{verbatim}
+  \caption{An abstract algorithm for symbolic ADT inference.}
+  \label{fig:abstract}
+\end{figure}
+
+The key technical obstacle in realizing the abstract algorithm of
+Figure~\ref{fig:abstract}, overcome in Section~\ref{sec:patterns}, is the
+classification of violations into a finite set of patterns, rendering the
+remaining invalid sequences redundant. The symbolic representation which
+excludes a given set of patterns is relatively straightforward to construct, and
+is given in Section~\ref{sec:formula}. Note however that the termination of this
+abstract algorithm is nondeterministic, and thus the inferred ADT specification
+is generally not the strongest possible in the sense that it may not exclude
+certain invalid linearizations. Nevertheless, specifications inferred by this
+algorithm are sound, in the sense that when modular program reasoning with
+inferred specifications succeeds, correctness follows. In any case, the
+specifications inferred by our refinement of this abstract algorithm in
+Section~\ref{sec:algorithm} are both sound and complete for the
+naturally-occurring ADTs of interest.
