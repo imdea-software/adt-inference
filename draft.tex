@@ -6,9 +6,15 @@
 \usepackage{hyperref}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{amsthm}
+\usepackage{amsthm,listings}
+
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
 
 \newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
 \newtheorem{lemma}{Lemma}
 \newtheorem{example}{Example}
 \newtheorem{definition}{Definition}
@@ -102,6 +108,7 @@ Concurrency; Refinement; Linearizability
 \input motivation
 \input histories
 \input inference
+\input algorithm
 \input patterns
 \input formula
 \input matching
