@@ -7,137 +7,76 @@ abstract specifications for other modules. When modules are objects whose
 methods may be called concurrently, their behavior is typically understood in
 terms of valid invocation sequences of atomic abstract data types (ADTs): any
 execution of overlapping method invocations can be \emph{linearized} into an
-invocation sequence admitted by the ADT~\cite{journals/toplas/HerlihyW90}. ADT
-specifications thus decouple reasoning about object implementations — is each
-concurrent execution linearizable? — from their clients’ invocations — does
-every valid linearization preserve client invariants?
-
-Consider the two parallel programs in Figure~\ref{fig:clients} invoking the add
-and remove methods of an atomic queue implementation. The clients add increasing
-integer values $w$ and $x$ tagged with the integers $\set{1,2}$ indicating on
-which parallel branch each add occurs. Intuitively both programs are correct
-since values with the same tag are added in increasing order, and, crucially,
-the values of the queue ADT are removed in the same order in which they are
-added. Thus considering the sequences of values added by all six possible
-linearizations of the add operations for the first program:
-\begin{align*}
-  & \texttt{<1,w> <1,x> <2,w> <2,x>}, \\
-  & \texttt{<1,w> <2,w> <1,x> <2,x>}, \\
-  & \texttt{<1,w> <2,w> <2,x> <1,x>}, \\
-  & \texttt{<2,w> <1,w> <1,x> <2,x>}, \\
-  & \texttt{<2,w> <1,w> <2,x> <1,x>}, \\
-  & \texttt{<2,w> <2,x> <1,w> <1,x>}
-\end{align*}
-we see that comparison {\tt i == j} of tags for the first two removes only holds
-for the first and last linearizations, which remove $w$ then $x$ according to
-the queue ADT specification, implying that {\tt y < z} holds when {\tt i == j}
-holds.
+invocation sequence admitted by the ADT~\cite{journals/toplas/HerlihyW90}. For
+example, consider the execution history depicted in Figure~\ref{fig:clients} in
+which the add operations numbered $2$ and $3$ overlap with each other, and,
+respectively, with operations $1$ and $4$. Among the five possible ways to
+linearize these six operations, the linearization~$1$; $3$; $2$; $4$; $5$; $6$
+does correspond to a valid sequence of the atomic queue ADT, and so this history
+is linearizable. ADT specifications thus decouple reasoning about object
+implementations — is each concurrent execution linearizable? — from their
+clients’ invocations — do all valid linearizations preserve client invariants?
 
 \begin{figure}
-  \begin{minipage}{0.49\linewidth}
+  \begin{minipage}{0.43\linewidth}
     \begin{verbatim}
-assume w < x
-( (q.add(<1,w>); q.add(<1,x>))
-||(q.add(<2,w>); q.add(<2,x>)))
-i, y := q.remove()
-j, z := q.remove()
-assert i == j ==> y < z
+1: add(a)       #
+2: add(b)       ###
+3: add(c)         ###
+4: add(d)           #
+5: remove => a        #
+6: remove => c          #
     \end{verbatim}
   \end{minipage}
   \hfill
-  \begin{minipage}{0.49\linewidth}
+  \begin{minipage}{0.55\linewidth}
     \begin{verbatim}
-( (while * do q.add(<1,w++>))
-||(while * do q.add(<2,x++>)))
-while * do q.remove() end
+assume w < x
+(  (q.add(<1,w>); q.add(<1,x>))
+|| (q.add(<2,w>); q.add(<2,x>)) )
 i, y := q.remove()
 j, z := q.remove()
 assert i == j ==> y < z
     \end{verbatim}
   \end{minipage}
-  \caption{A atomic queue clients with six operations (left), and with
-  arbitrarily-many operations (right).}
+  \caption{An execution history with six numbered operations (left),
+    and a parallel program invoking six operations (right). The hash symbols
+    “\#” depict the time interval spanned by each operation horizontally.}
   \label{fig:clients}
 \end{figure}
 
-ADTs are often defined in an imperative style using simple mathematical objects.
-For example, the atomic queue ADT can be specified via an abstract varaible $q$
-initialized to the empty sequence $\varepsilon$; add operations update $q$ to
-$q' = q \cdot x$ by appending the argument value $x$; when $q = x \cdot q'$,
-remove operations update $q$ to $q'$ and return $x$; otherwise, when $q =
-\varepsilon$, remove operations return a special value {\tt EMPTY}. Reasoning
-using such specifications requires the explicit consideration of possible
-linearizations one by one in order to determine valid return values, e.g.,~for
-the remove operations of queues.
+Consider the parallel program in Figure~\ref{fig:clients} invoking the add and
+remove methods of an atomic queue implementation, adding increasing integer
+values $w$ and $x$ tagged with the integers $\set{1,2}$ indicating on which
+parallel branch each add occurs. Intuitively this program is correct since
+values with the same tag are added in increasing order, and, crucially, the
+values of the queue ADT are removed in the same order in which they are added.
+Among the six possible ways to linearize these operations, the comparison {\tt i ==
+j} of tags only holds for those two which begin with {\tt q.add(<1,$w$>);
+q.add(<1,$x$>)} and {\tt q.add(<2,$w$>); q.add(<2,$x$>)}. Since the queue ADT
+dictates that elements are removed in the order added, we conclude that $w$ and
+$x$ are removed in order when {\tt i == j}, and thus {\tt y < z} holds when {\tt
+i == j} holds.
 
-In this work we advocate \emph{symbolic} ADT specifications which facilitate the
-use of efficient reasoning algorithms, e.g.,~via symbolic reasoning engines. For
-simplicity we consider simple first-order languages whose variables represent
-\emph{operations}, i.e.,~method invocations, with predicates indicating the
-method name and argument/return values of each operation, along with the
-linearization order of operations. For example, the following formula partially
-specifies the atomic queue ADT: the removes matching a pair of add operations
-occur in the same order as their corresponding adds:
-\begin{align*}
-  \forall w,x,y,z.\left(
-    \begin{array}{l}
-      {\sf add}(w) \land {\sf remove}(x) \land {\sf val}(w) = {\sf val}(x) \\
-      \land\ {\sf add}(y) \land {\sf remove}(z) \land {\sf val}(y) = {\sf val}(z) \\
-      \land\ {\sf before}(w,y) \implies {\sf before}(x,z)
-    \end{array}
-  \right).
-\end{align*}
-Such symbolic representations are more convenient than the aforementioned
-imperative style of ADT specification since they allow symbolic reasoning
-engines to prune redundant reasoning steps. For example, rather than enumerating
-the six linearizations above of the first program of Figure~\ref{fig:clients} to
-determine that the valid return values of remove operations are $w$ and $x$, a
-symbolic reasoning engine could eagerly rule out all but the first and last
-linearizations for which {\tt i == j} by looking at only the first two
-operations. Since the number of linearizations is generally exponential in the
-number of operations, such symbolic reasoning is of significant value.
+Although formal ADT specifications are indispensable for scalable program
+reasoning, formal-specification writing is a burden for which few programmers
+posses the required combination of expertise and willingness to overcome.
+According to current practices, programmers write obviously-correct ADT
+\emph{reference implementations}, e.g.,~an atomic queue whose methods are
+synchronized via a global lock, and refine them with more efficient fine-grained
+implementations, e.g.,~reducing synchronization overhead with specialized
+hardware instructions such as atomic compare and swap (CAS).
 
-TODO THE SECOND CLIENT?
+Our goal in this work is thus the automated generation of formal ADT
+specifications, derived from reference implementations, which are suitable for
+automated reasoning. In particular, we aim to generate \emph{symbolic
+representations} of the history linearizations which are valid, according to
+ADTs given implicitly by reference implementations. We target declarative
+symbolic representations rather than imperative state-based representations in
+order to exploit efficient symbolic reasoning engines such as SMT solvers.
+Previous work demonstrates that symbolic representations can offer orders of
+magnitude improvements over imperative state-based representations by averting
+the need to enumerate linearizations explicitly in order to check their
+validity~\cite{conf/pldi/EmmiEH15}.
 
-Symbolic ADT specifications also facilitate reasoning about the correctness of
-object \emph{implementations} by avoiding the redundant reasoning inherent in
-the explicit enumeration of linearizations~\cite{conf/pldi/EmmiEH15}. For
-example, consider the execution log of an erroneous queue implementation
-\begin{verbatim}
-    [1] add(1)        #
-    [2] remove => 3     #####
-    [3] remove => 1     #
-    [4] add(2)            #
-    [5] add(3)              #
-    [6] remove => EMPTY       #
-\end{verbatim}
-where each operation is prefixed by a unique operation identifier; the “\#”
-symbol denotes the time span of each operation, from left to right, indicating
-that Operation~$2$ overlaps in time with Operations~$3$, $4$, and~$5$, and that
-all other operations are ordered in time. While this execution can be identified
-as a violation of the atomic queue ADT by considering every possible
-linearization of Operation~$2$, this approach is intractible in general, as
-the number of linearizations is exponential in the number of operations.
-However, consider the following formula partially specifying the atomic
-queue ADT: that the adds of values which have not yet been removed must be
-ordered after empty remove operations:
-\begin{align*}
-  \forall x,y.\left(
-    \begin{array}{l}
-      {\sf remove}(x) \land {\sf val}(x) = {\sf empty} \\
-      \land\ {\sf add}(y) \land {\sf unmatched}(y) \implies {\sf before}(x,y)
-    \end{array}
-  \right).
-\end{align*}
-Combined with the transitivity of the {\sf before} relation, a symbolic
-reasoning engine could eagerly conclude that Operation~$4$ must be linearized
-both before Operation~$6$, due to transitivity, and after, due to the previous
-axiom. Such inconsistencies can be detected with great efficiency in
-practice~\cite{conf/pldi/EmmiEH15}.
-
-While (symbolic) ADT specifications are crucial to scalable reasoning about
-nontrivial software implementations, writing effective speciications is often a
-challenge for programmers. Towards fuller automation of scalable reasoning
-techniques, we focus in this work on the automatic inference of symbolic
-specifications which can be used directly in both client-side and
-implementation-side reasoning of concurrent objects.
+TODO ALGORITHM OVERVIEW
