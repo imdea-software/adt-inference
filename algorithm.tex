@@ -1,6 +1,5 @@
 %!TEX root = draft.tex
 \section{Solving the Symbolic ADT Inference Problem}
-\label{sec:algorithm}
 
 \begin{figure}
 \begin{lstlisting}
@@ -12,17 +11,17 @@ while (true) {
     break;
   Min := MinTemp
 }
-return $\neg$Formula(Min);
+return $F$(Min);
 \end{lstlisting}
-\caption{The algorithm solving the symbolic ADT inference problem for a given ADT $A$, where $B$ denotes the bounded complement of $\ker A$. The procedure $\texttt{Min}(X)$ returns the $\preceq$-minimal elements of the set of histories $X$ and $\texttt{Formula}(X)$ returns a history formula which holds exactly for the histories in the upward closure of $X$.}
+\caption{The algorithm solving the symbolic ADT inference problem for a given ADT $A$, where $B$ denotes the bounded complement of $\ker A$. The procedure $\texttt{Min}(X)$ returns the $\preceq$-minimal elements of the set of histories $X$ and $\texttt{Formula}(X)$ returns a history formula which holds exactly for the histories in the upward closure of $X$.} 
 \label{fig:algorithm}
 \end{figure}
 
-Figure~\ref{fig:algorithm} lists an algorithm for solving the symbolic ADT inference problem which is parametrized by
-an order relation $\preceq$ between histories such that the complement of the ADT
-is closed under $\preceq$. For a given set of elements $X$ and an order relation $\preceq$, the \emph{upward closure}
-of $X$ w.r.t. $\preceq$ is the set $\uparrow X=\set{y : \exists x\in X.\ x\preceq y}$. The algorithm performs an
-weight-increasing enumeration of $B$ while maintaining the
+Figure~\ref{fig:algorithm} lists the algorithm for solving the symbolic ADT inference problem which is based on the relation $\preceq$ 
+defined in Section~\ref{sec:patterns}.
+%For a given set of elements $X$ and an order relation $\preceq$, the \emph{upward closure}
+%of $X$ w.r.t. $\preceq$ is the set $\uparrow X=\set{y : \exists x\in X.\ x\preceq y}$. 
+The algorithm performs an weight-increasing enumeration of $B$ while maintaining the
 $\preceq$-minimal elements, and stops whenever each history of weight $i$ is bigger (w.r.t. $\preceq$) than some
 element of the collected set of minimals.
 
@@ -32,6 +31,8 @@ for all $i$,
 B_{i+1} \succeq \texttt{Min}(B_{\leq i}) \mbox{ implies } \texttt{Min}(B) = \texttt{Min}(B_{\leq i}),
 \end{align*}
 where $B_{\leq i}=\bigcup_{1\leq j\leq i}B_j$.
+Section~\ref{sec:nature} shows that many naturally-occurring ADTs are predictable.
+%Although we don't provide a general result concerning predictability, we prove that it holds for  (see ).
 
 \begin{theorem}\label{th:corr1}
 For any predictable ADT $A$, if the algorithm in Figure~\ref{fig:algorithm} terminates, then the returned formula represents $A$.
@@ -39,26 +40,31 @@ For any predictable ADT $A$, if the algorithm in Figure~\ref{fig:algorithm} term
 \begin{proof}
 %For a set $\Sigma$, let $\neg \Sigma$ denote its complement.
 Let $M$ be the value of \texttt{Min} at the end of the \texttt{while} loop.
-Since the complement of $A$ is closed under $\preceq$, and $M\subseteq B\subseteq  \neg \ker A \subseteq \neg A$, we have that $\uparrow M\subseteq \neg A$.
-Since $A$ is predictable, we have that $B \subseteq\, \uparrow M$.
-The formula $\varphi$ returned by the algorithm holds exactly for the set of histories $X$
-which is the complement of $\uparrow M$. By the previous inclusions, we have that $A\subseteq X\subseteq \neg B$.
-Therefore, $\varphi$ holds for all histories in $\ker A$ and doesn't hold for histories in $B$.
+%By Lemma~\ref{lem:ADT_closure}, the complement of $A$ is closed under $\preceq$. Since 
+%$M\subseteq B\subseteq  \neg \ker A \subseteq \neg A$, the closure of $M$, denoted by $Cl(M)$, satisfies $Cl(M)\subseteq \neg A$. 
+Since $A$ is predictable, we have that $B \subseteq Cl(M)$. % where $Cl(M)$ denotes the closure of 
+Therefore, by Lemma~\ref{lem:formula1}, the returned formula represents $A$.
 \end{proof}
 
 \begin{remark}
-Note that for non-predictable ADTs, the value of $\texttt{Min}$ at the end of the \texttt{while} loop
-is an under-approximation of $\texttt{Min}(B)$.
+Note that for non-predictable ADTs, the value of $\texttt{Min}$ at the end of the \texttt{while} loop 
+is an under-approximation of $\texttt{Min}(B)$. 
 The resulting symbolic ADT representation is still satisfied by all histories in $\ker A$, therefore it would still be sound in only identifying
 \emph{actual} violations, yet incomplete in identifying \emph{all} violations.
 \end{remark}
 
-The following result states the conditions under which the algorithm in Figure~\ref{fig:algorithm} terminates.
+The termination of the algorithm in Figure~\ref{fig:algorithm} is a direct consequence of Lemma~\ref{lem:wqo}.
+Also, since the number of weight-$i$ histories is finite\footnote{As
+noted in Section~\ref{sec:histories}, we consider equality between histories up
+to renaming of operation identifiers.} for each $i \in \mathbb{N}$, each $B_i$
+is computable.
+
 
 \begin{theorem}\label{th:corr2}
-If the set of $\preceq$-minimal elements of any (potentially-infinite) set of histories is finite, then the algorithm in Figure~\ref{fig:algorithm} terminates.
+The algorithm in Figure~\ref{fig:algorithm} terminates.
 \end{theorem}
 
-The following section provides a concrete instantiation for the order relation $\preceq$ satisfying the requirements in
-Theorem~\ref{th:corr1} and~\ref{th:corr2} except for predictability.
-Although we don't provide a general result concerning predictability, we prove that it holds for many naturally-occurring ADTs (see Section~\ref{sec:nature}).
+
+
+
+

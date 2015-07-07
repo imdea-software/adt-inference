@@ -89,7 +89,7 @@ corresponding to operations matching $o_i$.
 
 \end{example}
 
-\begin{lemma}
+\begin{lemma}\label{lem:formula1}
 
   $h_1 \models \textsc{Embed}_{h_2}$ if{f} $h_1 \succeq h_2$.
 
@@ -97,14 +97,25 @@ corresponding to operations matching $o_i$.
 
 We obtain a formula representing an ADT $A$ by taking the conjunction of the
 negative embedding formulas $\set{ \lnot\textsc{Embed}_h : h \in H }$ from any
-set $H$ that generates the complement of $A$.
+set $H$ that \emph{generates} the bounded complement $B$ of $\ker A$, i.e.,
+$H\subseteq B\subseteq Cl_\preceq(H)$ where $Cl_\preceq(H)$ is the closure of $H$ w.r.t. $\preceq$.
 
-\begin{lemma}
+\begin{lemma}\label{lem:formula2}
 
-  The formula $\bigwedge_{h \in H} \neg \textsc{Embed}_h$ represents $A$,
-  for any set $H$ which generates the complement of $A$.
+  The formula $F(H)=\bigwedge_{h \in H} \neg \textsc{Embed}_h$ represents $A$,
+  for any set $H$ which generates the bounded complement of $\ker A$.
 
 \end{lemma}
+\begin{proof}
+For a set $\Sigma$, let $\neg \Sigma$ denote its complement.
+By Lemma~\ref{lem:ADT_closure}, the complement of $A$ is closed under $\preceq$. Since 
+$H\subseteq B\subseteq  \neg \ker A \subseteq \neg A$, we have that $Cl(H)\subseteq \neg A$. 
+By Lemma~\ref{lem:formula1}, the formula $F(H)$ holds exactly for the set of histories $\neg Cl(H)$. 
+%which is the complement of $Cl(M)$. 
+By the previous inclusions, we have that $A\subseteq \neg Cl(H)\subseteq \neg B$.
+Therefore, $F(H)$ holds for all histories in $\ker A$ 
+and doesn't hold for histories in $B$, which concludes the proof.
+\end{proof}
 
 \begin{example}
 
@@ -114,11 +125,11 @@ set $H$ that generates the complement of $A$.
   
 \end{example}
 
-For normal and predictable ADTs, such sets are computable, and so our inference
-problem is also computable.
-
-\begin{theorem}
-
-  The symbolic ADT inference problem is computable for normal and predictable ADTs.
-
-\end{theorem}
+%For normal and predictable ADTs, such sets are computable, and so our inference
+%problem is also computable.
+%
+%\begin{theorem}
+%
+%  The symbolic ADT inference problem is computable for normal and predictable ADTs.
+%
+%\end{theorem}
