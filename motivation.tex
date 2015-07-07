@@ -131,17 +131,19 @@ most $4$ of an object with add and remove methods for which remove can return
 empty. The $31$ sequences which are executable by a correct reference
 implementation of an atomic queue implementation --- i.e.,~with matching return
 values for all invocations --- are discarded. The remaining $171$ sequences are
-invalid, $164$ of which are redundant with the seven {\tt PATTERNS} listed on the
-left-hand side of Figure~\ref{fig:patterns}. Seven of these redundant sequences
-are shown on the right-hand side of Figure~\ref{fig:patterns}. For example, the
-first five sequences on the right, as well as the last, are redundant with the
-first on the left since they each describe a violation in which a removed
-element was never added. The sixth sequence on the right is redundant with the
-second on the left since they both describe a violation in which remove returns
-empty before previously-added elements are removed. Finally, the exclusion of
-the computed pattern set can be expressed as a conjunction of formulas
-in first order logic describing the exclusion of each individual pattern. For
-example, the first pattern could be described by the formula
+invalid, $164$ of which are redundant with the seven {\tt PATTERNS} listed on
+the left-hand side of Figure~\ref{fig:patterns}. Seven of these redundant
+sequences are shown on the right-hand side of Figure~\ref{fig:patterns}. For
+example, the first five sequences on the right, as well as the last, are
+redundant with the first on the left since they each describe a violation in
+which a removed element was never added. The sixth sequence on the right is
+redundant with the second on the left since they both describe a violation in
+which remove returns empty before previously-added elements are removed. Other
+represented violations include removing an element before it is added, and
+removing elements in the opposite order in which they were added. Finally, the
+exclusion of the computed pattern set can be expressed as a conjunction of
+formulas in first order logic describing the exclusion of each individual
+pattern. For example, the first pattern could be described by the formula
 \begin{align*}
   \exists o.\
     {\sf method}(o) = {\tt remove} \land {\sf unmatched}(o)
