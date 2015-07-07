@@ -1,5 +1,5 @@
 %!TEX root = draft.tex
-\section{Computing Symbolic Representations}
+\section{Symbolic ADT Representations}
 \label{sec:formula}
 
 While Section~\ref{sec:patterns} demonstrates that (the kernel complements) of
@@ -8,7 +8,7 @@ demonstrate that such finite representations have logical interpretations,
 allowing us to derive the formulas representing ADTs. In what follows, we
 describe how to obtain a formula which is satisfied by the histories which
 embed a given history, via $\preceq$. Then, using the finite set of histories
-which represent the complement of a given ADT~\footnote{The complement of the kernel of an ADT $A$ is simply called the complement of $A$.}, we represent the ADT itself as
+which represent the complement of a given ADT, we represent the ADT itself as
 the conjunction of negations of these embedding formulas. The resulting formula
 is satisfied only on the histories which do not embed the generators of a given
 ADT’s complement.
@@ -30,7 +30,7 @@ ordered after $x$, and the operation which $x$ matches. The macro
 $\textsc{Identical}(x,y)$:
 \begin{align*}
   & \big({\sf c}(x) \Leftrightarrow {\sf c}(y)\big)
-    \land {\sf f}(x) = {\sf f}(y) 
+    \land {\sf f}(x) = {\sf f}(y)
     \land \big({\sf r}(x) \Leftrightarrow {\sf r}(y)\big) \\
   & \land \big({\sf um}(x) \Leftrightarrow {\sf um}(y)\big)
     \land {\sf m}(x) = {\sf m}(y)
@@ -73,7 +73,7 @@ corresponding to operations matching $o_i$.
   The $\textsc{Embed}$ formula for second history,
 \begin{verbatim}
   [1:1] write(1)            #
-  [2:2] read => - (RO)    #    
+  [2:2] read => - (RO)    #
 \end{verbatim}
   is similarly given by
   \begin{align*}
@@ -108,12 +108,12 @@ $H\subseteq B\subseteq Cl_\preceq(H)$ where $Cl_\preceq(H)$ is the closure of $H
 \end{lemma}
 \begin{proof}
 For a set $\Sigma$, let $\neg \Sigma$ denote its complement.
-By Lemma~\ref{lem:ADT_closure}, the complement of $A$ is closed under $\preceq$. Since 
-$H\subseteq B\subseteq  \neg \ker A \subseteq \neg A$, we have that $Cl(H)\subseteq \neg A$. 
-By Lemma~\ref{lem:formula1}, the formula $F(H)$ holds exactly for the set of histories $\neg Cl(H)$. 
-%which is the complement of $Cl(M)$. 
+By Lemma~\ref{lem:ADT_closure}, the complement of $A$ is closed under $\preceq$. Since
+$H\subseteq B\subseteq  \neg \ker A \subseteq \neg A$, we have that $Cl(H)\subseteq \neg A$.
+By Lemma~\ref{lem:formula1}, the formula $F(H)$ holds exactly for the set of histories $\neg Cl(H)$.
+%which is the complement of $Cl(M)$.
 By the previous inclusions, we have that $A\subseteq \neg Cl(H)\subseteq \neg B$.
-Therefore, $F(H)$ holds for all histories in $\ker A$ 
+Therefore, $F(H)$ holds for all histories in $\ker A$
 and doesn't hold for histories in $B$, which concludes the proof.
 \end{proof}
 
@@ -122,7 +122,7 @@ and doesn't hold for histories in $B$, which concludes the proof.
   The conjunction of negations of the $\textsc{Embed}$ formula for the
   histories of Example~\ref{ex:patterns}, which are partially written in
   Example~\ref{ex:formulas}, represents the atomic register ADT.
-  
+
 \end{example}
 
 %For normal and predictable ADTs, such sets are computable, and so our inference

@@ -1,5 +1,5 @@
 %!TEX root = draft.tex
-\section{Computing Matching Schemes}
+\section{Matching Scheme Inference}
 \label{sec:matching}
 
 Our solution to the ADT inference problem relies on identifying faithful
@@ -87,12 +87,12 @@ $H(\mathcal{I},M)$ is normal.
 \end{definition}
 
 We automate the computation of matching schemes by constructing a logical
-formula that characterizes the boolean functions $G$ underlying a simple 
-matching scheme. These boolean functions are defined as the interpretation of 
-a function symbol ${\sf g}$. 
+formula that characterizes the boolean functions $G$ underlying a simple
+matching scheme. These boolean functions are defined as the interpretation of
+a function symbol ${\sf g}$.
 %the function
 %symbol ${\sf g}$ underlying a simple matching scheme as an uninterpreted function in a
-%logical satisfiability problem which 
+%logical satisfiability problem which
 The formula expresses the fact that the interpretations of ${\sf g}$ uniquely determine the match of each
 operation, and that they normalize the executions of an
 implementation. To this end, we fix an implementation $\mathcal{I}$ and a
