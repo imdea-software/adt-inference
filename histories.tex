@@ -1,5 +1,5 @@
 %!TEX root = draft.tex
-\section{Histories of ADT Implementations}
+\section{Implementations \& Histories}
 \label{sec:histories}
 
 Implementations of abstract data types (ADTs) provide methods which are called,
@@ -288,7 +288,7 @@ operations~\cite{conf/popl/BouajjaniEEH15}.
 
 \begin{example}
 
-  By unordering the first two operations of the history
+  By un-ordering the first two operations of the history
 \begin{verbatim}
     [1:1] write(a)        #
     [2:2] write(b)          #
@@ -318,10 +318,9 @@ operations~\cite{conf/popl/BouajjaniEEH15}.
 
 \end{example}
 
-Since implementations only dictate methods' executions between their respective
-calls and returns, for any execution they admit, they must also admit executions
-with weaker inter-operation ordering, in which calls may happen earlier, and/or
-returns later. Thus any weakening of an admitted history must also be admitted.
+As these weakening operations align with the environment-capturing closure
+properties on executions, the set of histories of an implementation is also
+closed.
 
 \begin{lemma}
 
