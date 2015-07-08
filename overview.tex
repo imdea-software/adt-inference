@@ -1,22 +1,5 @@
-\section{Motivation \& Overview}
-\label{sec:motivation}
-
-Consider the parallel program in Figure~\ref{fig:clients} invoking the add and
-remove methods of an atomic queue implementation, adding increasing integer
-values $w$ and $x$ tagged with the integers $\set{1,2}$ indicating on which
-parallel branch each add occurs. Intuitively this program is correct since
-values with the same tag are added in increasing order, and, crucially, the
-values of the queue ADT are removed in the same order in which they are added.
-Among the six possible ways to linearize these operations, the comparison {\tt i ==
-j} of tags only holds for those two beginning with
-\begin{quote}
-  \verb|q.add(<1,w>); q.add(<1,x>) | and \verb| q.add(<2,w>); q.add(<2,x>)|
-\end{quote}
-Since the queue ADT dictates that elements are removed in the order added, we
-conclude that $w$ and $x$ are removed in order when {\tt i == j}, and thus {\tt
-y < z} holds when {\tt i == j} holds.
-
-TODO SEGUE
+\section{Overview of an ADT Inference Algorithm}
+\label{sec:overview}
 
 Our basic approach to inferring ADT specifications, as outlined by the abstract
 algorithm in Figure~\ref{fig:abstract}, is to identify a finite set of
@@ -57,8 +40,8 @@ add(2); remove => 3} as distinct. The notion of \emph{matching} introduced in
 Section~\ref{sec:histories} provides a clean formal treatment.} of length at
 most $4$ of an object with add and remove methods for which remove can return
 empty. The $31$ sequences which are executable by a correct reference
-implementation of an atomic queue implementation --- i.e.,~with matching return
-values for all invocations --- are discarded. The remaining $171$ sequences are
+implementation of an atomic queue — i.e.,~with consistent return
+values for each invocation — are discarded. The remaining $171$ sequences are
 invalid, $164$ of which are redundant with the seven {\tt PATTERNS} listed on
 the left-hand side of Figure~\ref{fig:patterns}. Seven of these redundant
 sequences are shown on the right-hand side of Figure~\ref{fig:patterns}. For
@@ -76,7 +59,9 @@ pattern. For example, the first pattern could be described by the formula
   \exists o.\
     {\sf method}(o) = {\tt remove} \land {\sf unmatched}(o)
 \end{align*}
-describing an unmatched remove operation.
+describing an unmatched remove operation. The formula which excludes all
+violation patterns is satisfied by an invocation sequence if and only if that
+sequence is admitted by the given reference implementation’s implicit ADT.
 
 \begin{figure}[t]
   \begin{minipage}[b]{0.49\linewidth}
@@ -140,7 +125,8 @@ describing an unmatched remove operation.
   the left constitute a complete set. The “\#” symbols depict the time intervals
   spanned by operations horizontally, and the “{\tt [$i$:$j$]}” notation refers
   to the current line’s operation identifier $i$, and the identifier $j$ of
-  its “match-source” operation. The “{\tt X}” symbol denotes an absent match.}
+  its matching operation. Adds and empty removes match themselves, and the
+  “{\tt X}” symbol denotes an absent match.}
   \label{fig:patterns}
 \end{figure}
 
@@ -157,4 +143,5 @@ algorithm are sound, in the sense that when modular program reasoning with
 inferred specifications succeeds, correctness follows. In any case, the
 specifications inferred by our refinement of this abstract algorithm in
 Section~\ref{sec:algorithm} are both sound and complete for the
-naturally-occurring ADTs of interest.
+naturally-occurring ADTs of interest. The remainder of this article develops
+the technical machinery required to realize this abstract inference algorithm.

@@ -53,6 +53,25 @@ assert i == j ==> y < z
   \label{fig:clients}
 \end{figure}
 
+\begin{example}
+
+  Consider the parallel program in Figure~\ref{fig:clients} invoking the add and
+  remove methods of an atomic queue implementation, adding increasing integer
+  values $w$ and $x$ tagged with the integers $\set{1,2}$ indicating on which
+  parallel branch each add occurs. Intuitively this program is correct since
+  values with the same tag are added in increasing order, and, crucially, the
+  values of the queue ADT are removed in the same order in which they are added.
+  Among the six possible ways to linearize these operations, the comparison {\tt i ==
+  j} of tags only holds for those two beginning with
+  \begin{quote}
+    \verb|q.add(<1,w>); q.add(<1,x>) | and \verb| q.add(<2,w>); q.add(<2,x>)|
+  \end{quote}
+  Since the queue ADT dictates that elements are removed in the order added, we
+  conclude that $w$ and $x$ are removed in order when {\tt i == j}, and thus {\tt
+  y < z} holds when {\tt i == j} holds.
+  
+\end{example}
+
 Although formal ADT specifications are indispensable for scalable program
 reasoning, formal-specification writing is a burden for which few programmers
 posses the required combination of expertise and willingness to overcome.
