@@ -1,58 +1,6 @@
 \section{Motivation \& Overview}
 \label{sec:motivation}
 
-Effective scalable reasoning about nontrivial software implementations generally
-requires considering each software module separately, in isolation, using
-abstract specifications for other modules. When modules are objects whose
-methods may be called concurrently, their behavior is typically understood in
-terms of valid invocation sequences of atomic abstract data types (ADTs): any
-execution of overlapping method invocations can be \emph{linearized} into an
-invocation sequence admitted by the ADT~\cite{journals/toplas/HerlihyW90}. For
-example, consider the execution history depicted in Figure~\ref{fig:clients} in
-which the add operations numbered $2$ and $3$ overlap with each other, and,
-respectively, with operations $1$ and $4$. Among the five possible ways to
-linearize these six operations, the linearization~$1$; $3$; $2$; $4$; $5$; $6$
-does correspond to a valid sequence of the atomic queue ADT, and so this history
-is linearizable. ADT specifications thus decouple reasoning about object
-implementations from their client’s invocations:
-\begin{itemize}
-
-  \item Does every implementation execution have a valid linearization?
-
-  \item Does every valid linearizations preserve client invariants?
-
-\end{itemize}
-The former question depends only on a given object’s implementation, and the
-latter only on a given object’s clients.
-
-\begin{figure}[t]
-  \begin{minipage}{0.43\linewidth}
-    \begin{verbatim}
-1: add(a)       #
-2: add(b)       ###
-3: add(c)         ###
-4: add(d)           #
-5: remove => a        #
-6: remove => c          #
-    \end{verbatim}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{0.55\linewidth}
-    \begin{verbatim}
-assume w < x
-(  (q.add(<1,w>); q.add(<1,x>))
-|| (q.add(<2,w>); q.add(<2,x>)) )
-i, y := q.remove()
-j, z := q.remove()
-assert i == j ==> y < z
-    \end{verbatim}
-  \end{minipage}
-  \caption{An execution history with six numbered operations (left),
-    and a parallel program invoking six operations (right). The “\#” symbols
-    depict the time intervals spanned by operations horizontally.}
-  \label{fig:clients}
-\end{figure}
-
 Consider the parallel program in Figure~\ref{fig:clients} invoking the add and
 remove methods of an atomic queue implementation, adding increasing integer
 values $w$ and $x$ tagged with the integers $\set{1,2}$ indicating on which
@@ -68,27 +16,7 @@ Since the queue ADT dictates that elements are removed in the order added, we
 conclude that $w$ and $x$ are removed in order when {\tt i == j}, and thus {\tt
 y < z} holds when {\tt i == j} holds.
 
-Although formal ADT specifications are indispensable for scalable program
-reasoning, formal-specification writing is a burden for which few programmers
-posses the required combination of expertise and willingness to overcome.
-Typically programmers write simple ADT \emph{reference implementations},
-e.g.,~whose methods are synchronized via a global lock, and refine them with
-more efficient fine-grained implementations, e.g.,~reducing synchronization
-bottlenecks using specialized hardware instructions such as atomic compare and
-swap (CAS).
-
-Our goal in this work is thus the automated generation of formal ADT
-specifications, derived from reference implementations, which are suitable for
-automated reasoning. In particular, we aim to generate \emph{symbolic
-representations} of the valid history linearizations, according to ADTs given
-implicitly by reference implementations. We target declarative symbolic
-representations rather than imperative state-based representations in order to
-harness efficient symbolic reasoning algorithms: rather than enumerating
-linearizations explicitly, and checking their validity one by one, a symbolic
-reasoning engine may simultaneously rule out many possible linearizations,
-e.g.,~as in the example above. Previous work demonstrates that such symbolic
-reasoning can increase reasoning efficiency by orders of
-magnitude~\cite{conf/pldi/EmmiEH15}.
+TODO SEGUE
 
 Our basic approach to inferring ADT specifications, as outlined by the abstract
 algorithm in Figure~\ref{fig:abstract}, is to identify a finite set of

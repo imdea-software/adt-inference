@@ -1,34 +1,82 @@
 \section{Introduction}
 \label{sec:intro}
 
-Many modern software systems rely on efficient implementations of abstract data
-types (ADTs) like atomic collections, semaphores, and locks. Efficient
-implementation is difficult though, because efficiency entails maximizing
-concurrency, and concurrency jeopardizes atomicity. Consequently,
-implementations are vulnerable to subtle and elusive bugs compromising
-adherence to their ADTs~\cite{journals/cacm/staff11}, thus necessitating
-automated verification. Adherence of an implementation to an ADT is captured
-formally by a property called \emph{observational refinement}: any observable
-behavior over the method call and return actions of the implementation is also
-admitted by the the ADT.
+Effective scalable reasoning about nontrivial software implementations generally
+requires considering each software module separately, in isolation, using
+abstract specifications for other modules. When modules are objects whose
+methods may be called concurrently, their behavior is typically understood in
+terms of invocation sequences of abstract data types (ADTs): an execution with
+overlapping method invocations is considered valid when those invocations can be
+\emph{linearized} into a sequence admitted by the
+ADT~\cite{journals/toplas/HerlihyW90}. For example, consider the execution
+history depicted in Figure~\ref{fig:clients} in which the add operations
+numbered $2$ and $3$ overlap with each other, and, respectively, with operations
+$1$ and $4$. This execution is valid with respect to the atomic queue ADT
+because among the five possible ways to linearize its six operations, the
+sequence~$1$, $3$, $2$, $4$, $5$, $6$ is admitted. ADT specifications thus
+decouple reasoning about object implementations from their clients’ invocations:
+\begin{itemize}
 
-Although checking observational refinement is a fundamentally hard
-problem\footnote{See Section~\ref{sec:related} for further discussion.} for
-arbitrary ADTs~\cite{journals/siamcomp/GibbonsK97, conf/esop/BouajjaniEEH13},
-recent work demonstrates that implementations of naturally-occurring ADTs like
-atomic collections, semaphores, and locks can be checked efficiently given
-effective symbolic ADT representations~\cite{conf/popl/BouajjaniEEH15,
-journals/arxiv/BouajjaniEEH15, conf/pldi/EmmiEH15}, e.g.,~specified in
-first-order logic. However, writing accurate symbolic specifications is an
-expected challenge for ADT designers. In practice, ADTs are specified
-indirectly as the observable behaviors of possibly-abstract imperative
-\emph{reference implementations}. Mapping these reference implementations to
-logical formulæ describing the same sets of behaviors is a complex task
-requiring rare expertise.
+  \item Does every implementation execution have a valid linearization?
+
+  \item Does every valid linearizations preserve client invariants?
+
+\end{itemize}
+The former question depends only on a given object’s implementation, and the
+latter only on a given object’s clients.
+
+\begin{figure}[t]
+  \begin{minipage}{0.43\linewidth}
+    \begin{verbatim}
+1: add(a)       #
+2: add(b)       ###
+3: add(c)         ###
+4: add(d)           #
+5: remove => a        #
+6: remove => c          #
+    \end{verbatim}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.55\linewidth}
+    \begin{verbatim}
+assume w < x
+(  (q.add(<1,w>); q.add(<1,x>))
+|| (q.add(<2,w>); q.add(<2,x>)) )
+i, y := q.remove()
+j, z := q.remove()
+assert i == j ==> y < z
+    \end{verbatim}
+  \end{minipage}
+  \caption{An execution history with six numbered operations (left),
+    and a parallel program invoking six operations (right). The “\#” symbols
+    depict the time intervals spanned by operations horizontally.}
+  \label{fig:clients}
+\end{figure}
+
+Although formal ADT specifications are indispensable for scalable program
+reasoning, formal-specification writing is a burden for which few programmers
+posses the required combination of expertise and willingness to overcome.
+Typically programmers write simple ADT \emph{reference implementations},
+e.g.,~whose methods are synchronized via a global lock, and refine them with
+more efficient fine-grained implementations, e.g.,~reducing synchronization
+bottlenecks using specialized hardware instructions such as atomic compare and
+swap (CAS).
+
+Our goal in this work is thus the automated generation of formal ADT
+specifications, derived from reference implementations, which are suitable for
+automated reasoning. In particular, we aim to generate \emph{symbolic
+representations} of valid invocation sequences for ADTs which are given
+implicitly by reference implementations. We target declarative symbolic
+representations rather than imperative state-based representations in order to
+harness efficient symbolic reasoning algorithms: rather than enumerating
+linearizations explicitly, and checking their validity one by one, a symbolic
+reasoning engine may simultaneously rule out many possible linearizations.
+Previous work demonstrates that such symbolic reasoning can increase
+efficiency by orders of magnitude~\cite{conf/pldi/EmmiEH15}.
 
 In this work we demonstrate that effective symbolic ADT representations can be
 generated automatically from the executions of reference implementations,
-enabling the application of efficient symbolic refinement-checking algorithms
+enabling the application of efficient symbolic reasoning algorithms
 without the burden of writing formal specifications manually. Our approach
 exploits two key features of concurrent-object ADTs: that violations of each
 ADT can be decomposed into a small set of representative patterns, and that
@@ -78,20 +126,20 @@ Computing the basis sets of ADT violation patterns is a challenging problem,
 requiring the computation of global properties of an infinite number of
 executions — analogously to the inference of inductive invariants. Exploiting a
 hypothesis that violation patterns manifest in executions with few operations,
-we propose an under-approximating algorithm which extracts the patterns
-observed in all violating executions up to a given number of operations. In
-theory, for an arbitrary ADT, this is clearly incomplete: any violation which
-only surfaces with a greater number of operations would not be captured, thus
-resulting in a symbolic ADT representation which can fail to identify
-violations — though still guarantees never to classify a valid execution as a
-violation. Empirically, however, we demonstrate that our hypothesis holds: the
-patterns emerging from executions with few operations are complete in
+we propose an under-approximating algorithm which extracts the patterns observed
+in all violating executions up to a given number of operations. In theory, for
+an arbitrary ADT, this is clearly incomplete: any violation which only surfaces
+with a greater number of operations would not be captured, thus resulting in a
+symbolic ADT representation which can fail to identify violations — though still
+guarantees never to classify a valid execution as a violation, and is thus sound
+for program reasoning. Empirically, however, we demonstrate that our hypothesis
+holds: the patterns emerging from executions with few operations are complete in
 characterizing all violations of naturally-occurring concurrent object ADTs,
 thus allowing us to compute complete symbolic ADT representations in practice.
 
 Although our approach does require annotating the operations of concurrent
 object executions with a matching relation, and we demonstrate that these
-relations can be given for naturally-occurring ADTs, we also provide an
+relations are easy to provide for naturally-occurring ADTs, we also outline an
 automatic means for computing such \emph{matching schemes}. Again by sampling
 executions, we leverage automated symbolic reasoning engines to synthesize
 matching schemes for which given implementations are closed under the removal
@@ -107,13 +155,14 @@ In summary, the contributions and outline of this work are:
   \item An abstract notion of execution histories based on groups of matching
   operations (§\ref{sec:histories}).
 
-  \item The statement of the ADT inference problem (§\ref{sec:inference}).
+  \item The statement of the symbolic ADT inference problem (§\ref{sec:inference}).
 
-  \item Identification of the algebraic properties allowing finite
-  characterization and computability of infinite ADT violations sets
-  (§\ref{sec:patterns}).
+  \item Identification of the algebraic properties allowing a finite
+  characterization of infinite ADT violation sets (§\ref{sec:patterns}).
 
-  \item The computability of symbolic ADT representations (§\ref{sec:formula}).
+  \item The symbolic representation of ADT violations (§\ref{sec:formula}).
+
+  \item The computability of symbolic ADT representations (§\ref{sec:algorithm}).
 
   \item An algorithm to infer the matching schemes required for our algebraic
   characterization of ADTs (§\ref{sec:matching}).
@@ -128,8 +177,7 @@ We conclude with a discussion about the limitations of our approach
 (§\ref{sec:discussion}) and related work (§\ref{sec:related}).
 
 To the best of our knowledge, this work is the first to suggest the automatic
-generation of symbolic ADT representations for concurrent objects. By removing
-the burden of writing formal ADT specifications manually, this work broadens
-the scope of efficient symbolic refinement-checking algorithms to
-newly-designed ADTs, apart from those few traditionally studied in the
-literature.
+generation of ADT specifications. By removing the burden of writing formal ADT
+specifications manually, this work broadens the scope of modular program
+reasoning using efficient symbolic algorithms to newly-designed ADTs, apart from
+those few traditionally studied in the literature.
