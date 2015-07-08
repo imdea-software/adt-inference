@@ -6,37 +6,39 @@ In this section we formalize a notion of abstract data type and define the
 corresponding refinement and inference problems. These are the foundational
 problems addressed in this work.
 
-A \emph{kernel} of a set $H$ is a minimal set $K$ generating $H$ via the
-relation $\mathord\to = (\to_\mathrm{o} \cup \to_\mathrm{p} \cup
-\to_\mathrm{c})$, i.e.,
+Let $H^*$ denote the \emph{closure} of a history set $H$ under the relation
+$\mathord\to = (\to_\mathrm{o} \cup \to_\mathrm{p} \cup \to_\mathrm{c})$, i.e.,
 \begin{align*}
-  H = \set{ h' : \exists h \in K.\ h \to^\ast h' }.
+  H^* = \set{ h' : \exists h \in H.\ h \to^\ast h' }.
 \end{align*}
-An \emph{abstract data type (ADT)} $A$ is the kernel of the set $H(\mathcal{I})$
-of histories of some implementation $\mathcal{I}$, and $H(A)$ denotes the
-closure of $A$ under $\to$. While the kernels of arbitrary-width history sets
-may not be unique, those with \emph{atomic} kernels, i.e.,~of width-$1$, are
-guaranteed to be unique. Section~\ref{sec:nature} demonstrates that the
-histories of naturally-occurring implementations have bounded-width and
-unique ADTs, which we assume for the remainder of this work.
+A set $K$ \emph{generates} $H$ when $K^* = H$, and a \emph{kernel} of a set $H$
+is a minimal set $K$ which generates $H$. While the kernels of arbitrary sets of
+histories need not be unique, the kernels of sets which have sequential kernels
+are unique. Furthermore, Section~\ref{sec:nature} demonstrates that the
+histories of naturally-occurring implementations have unique kernels, which we
+assume for the remainder of this work. An \emph{abstract data type (ADT)} $A$ is
+the kernel of the set $H(\mathcal{I})$  of histories of some implementation
+$\mathcal{I}$. We say that \emph{$A$ is the ADT of $\mathcal{I}$} when $A^* =
+H(\mathcal{I})$.
 
-We define \emph{observational refinement} between implementations and ADTs as
-history-set inclusion. Although this refinement is typically defined with
-respect to the admissibility of program executions, recent work demonstrates
-that these definitions are equivalent~\cite{conf/popl/BouajjaniEEH15}.
+ADTs and reference implementations serve as specifications to more efficient
+implementations in the sense that they limit the set of histories that efficient
+implementation may admit. This notion of refinement ensures that client program
+(safety) properties which hold using the ADT or reference implementation also
+hold using refined implementations~\cite{conf/popl/BouajjaniEEH15}.
 
 \begin{definition}
 
   An implementation $\mathcal{I}_1$ \emph{refines} another implementation
   $\mathcal{I}_2$ when $H(\mathcal{I}_1) \subseteq H(\mathcal{I}_2)$. An
-  implementation $\mathcal{I}$ refines an ADT $A$ when $\mathcal{I}$ refines
-  $H(A)$.
+  implementation $\mathcal{I}$ refines an ADT $A$ when $H(\mathcal{I})
+  \subseteq A^*$.
 
 \end{definition}
 
-Recent works demonstrate efficient algorithms\footnote{In time polynomial in
-the number of operations, per execution.} for checking observational
-refinement~\cite{conf/popl/BouajjaniEEH15, conf/pldi/EmmiEH15}, yet rely on
+Recent works demonstrate efficient\footnote{In time polynomial in the number of
+operations, per execution.} refinement-checking
+algorithms~\cite{conf/popl/BouajjaniEEH15, conf/pldi/EmmiEH15} yet rely on
 hand-written symbolic ADT representations. In order to frame the problem of
 computing these automatically, we fix a language for symbolic representation. A
 \emph{history formula} is a first-order logic formula with
@@ -91,11 +93,10 @@ ADT inference is to compute a formula representing an ADT.
 \begin{definition}
 
   The \emph{symbolic ADT inference problem} is to compute a history formula
-  representing the ADT $\ker H(\mathcal{I})$ of a given (reference) implementation
-  $\mathcal{I}$.
+  representing the ADT of a given implementation.
 
 \end{definition}
 
-Computing a history formula representing the ADT $\ker H(\mathcal{I})$ of a
-reference implementation $\mathcal{I}$ thus enables the efficient modular
-program reasoning without the burden of writing precise formal specifications.
+Computing a history formula representing the ADT of a reference implementation
+$\mathcal{I}$ thus enables efficient modular program reasoning without the
+burden of writing precise formal specifications for $\mathcal{I}$.
