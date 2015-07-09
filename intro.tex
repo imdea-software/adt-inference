@@ -17,9 +17,9 @@ sequence~$1$, $3$, $2$, $4$, $5$, $6$ is admitted. ADT specifications thus
 decouple reasoning about object implementations from their clients’ invocations:
 \begin{itemize}
 
-  \item Does every implementation execution have a valid linearization?
+  \item Does each implementation execution have some valid linearization?
 
-  \item Does every valid linearizations preserve client invariants?
+  \item Does every valid linearization preserve client invariants?
 
 \end{itemize}
 The former question depends only on a given object’s implementation, and the
@@ -69,7 +69,7 @@ assert i == j ==> y < z
   Since the queue ADT dictates that elements are removed in the order added, we
   conclude that $w$ and $x$ are removed in order when {\tt i == j}, and thus {\tt
   y < z} holds when {\tt i == j} holds.
-  
+
 \end{example}
 
 Although formal ADT specifications are indispensable for scalable program
