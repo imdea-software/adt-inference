@@ -3,7 +3,7 @@
 \label{sec:nature}
 
 In this section we demonstrate that the premises used in the development of our
-symbolic ADT inference algorithm — i.e.,~unique and bounded-width kernels,
+symbolic ADT inference algorithm — i.e.,~uniqueness and bounded-width,
 faithful and normalizing matching schemes, and predictability — hold for the
 ADTs which are typically provided by concurrent object libraries. Furthermore,
 we demonstrate that the algorithm developed in this work computes precise
@@ -29,7 +29,7 @@ methods:
   value $-$ if no value has yet been stored.
 
 \end{itemize}
-As its name implies, its kernel is sequential.
+As its name implies, the atomic register ADT is sequential.
 
 We say an execution of read and write methods \emph{writes unique values} if
 the argument value to each write operation is unique. A faithful matching
@@ -51,8 +51,8 @@ It is easy to see that the atomic register is normal. It is
 closed under removal of read-only and duplicate operations, since  each
 match can contain an arbitrary number of read operations. Since the histories
 of atomic registers do not contain unmatched operations, they are also closed
-under their removal. Finally, since the kernel contains an arbitrary number of
-sequenced matches, atomic register histories are also closed under match
+under their removal. Finally, since the sequences contain an arbitrary number of
+matches, atomic register histories are also closed under match
 removal.
 
 Our inference algorithm computes the following four histories to generate the
@@ -82,7 +82,7 @@ enqueue and dequeue, or push and pop.}
   most-recently added value $v$, respectively.
 
 \end{itemize}
-As their names imply, their kernels are sequential.
+As their names imply, these ADTs are sequential.
 
 An execution \emph{adds unique values} if the argument value to each add
 operation is unique. We give a faithful matching scheme over executions which
@@ -154,8 +154,8 @@ providing three methods:
 
 \end{itemize}
 Each operation returns the nil value $v = -$ when $u$ is not yet
-present, and otherwise returns $v = u$. As its name implies, its kernel is
-sequential.
+present, and otherwise returns $v = u$. As its name implies, the atomic set
+ADT is sequential.
 
 An execution \emph{inserts unique values} if the argument value to each insert
 operation which returns $-$ is unique. We give a faithful matching
@@ -270,7 +270,7 @@ steal operation. We give a faithful matching scheme over executions which add
 unique values analogously to the scheme for stacks and queues, in which give
 operations match themselves, while take and steal operations match the give
 operation which added their returned value, or themselves, in case the nil
-value is returned. Note that the kernel of work-stealing queues has width $2$,
+value is returned. Note that the work-stealing queue ADT has width $2$,
 since a pairs of concurrent take and steal operations returning the same value
 are permitted, while sequentially they are not. As our implementation is
 currently limited to width-$1$ histories (see the discussion in
