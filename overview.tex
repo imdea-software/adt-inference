@@ -2,34 +2,37 @@
 \label{sec:overview}
 
 Our basic approach to inferring ADT specifications, as outlined by the abstract
-algorithm in Figure~\ref{fig:abstract}, is to identify a finite set of
+algorithm in Algorithm~\ref{alg:abstract}, is to identify a finite set of
 sequential execution histories which capture all of the reasons for which a
 sequence could be considered invalid, according to the ADT of a given reference
 implementation. These sequences thus serve as patterns indicating violations in
 the sequences which contain them. Thus the linearizations which exclude all
 violation patterns are considered valid.
 
-\begin{figure}[t]
-  \begin{verbatim}
-procedure INFER_ADT_FROM_REFERENCE_IMPL(I)
-  PATTERNS := {}
-  for each sequential history H
-    if * then
+\begin{algorithm}[t]
+  \SetAlgoLined
+  \SetKwInOut{Input}{input}
+  \Input{A reference implementation $\mathcal{I}$}
+  \KwResult{A formula representing the ADT of $\mathcal{I}$}
+  patterns $\gets$ $\emptyset$ \;
+  \For{each sequential history $h$}{
+    \uIf{$*$}{
       break
-    else if H is EXECUTABLE with I then
+    }
+    \uElseIf{$h$ is \emph{executable} with $\mathcal{I}$}{
       continue
-    else if H is REDUNDANT with PATTERNS then
+    }
+    \uElseIf{$h$ is \emph{redundant} with patterns}{
       continue
-    else
-      add H to PATTERNS
-    end
-  end
-  return EXCLUSION of PATTERNS
-end
-  \end{verbatim}
-  \caption{An abstract algorithm for symbolic ADT inference.}
-  \label{fig:abstract}
-\end{figure}
+    }
+    \Else{
+      add $h$ to patterns
+    }
+  }
+  \Return \emph{exclusion} of patterns
+  \caption{Abstract algorithm for symbolic ADT inference.}
+  \label{alg:abstract}
+\end{algorithm}
 
 As an example of this algorithm at work, consider the sequential histories
 listed in Figure~\ref{fig:patterns}. These sequences arise from an enumeration
@@ -131,7 +134,7 @@ sequence is admitted by the given reference implementation’s implicit ADT.
 \end{figure}
 
 The key technical obstacle in realizing the abstract algorithm of
-Figure~\ref{fig:abstract}, overcome in Section~\ref{sec:patterns}, is the
+Algorithm~\ref{alg:abstract}, overcome in Section~\ref{sec:patterns}, is the
 classification of violations into a finite set of patterns, rendering the
 remaining invalid sequences redundant. The symbolic representation which
 excludes a given set of patterns is relatively straightforward to construct, and
