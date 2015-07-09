@@ -70,30 +70,30 @@ such that $R(x_i,x_j)$.
 
 \end{example}
 
-The previous example demonstrates that $\preceq$ is not a wqo by allowing each
-history $h_i$ of the infinite sequence to contain more and more pending
-operations in order to ensure that $h_j \not\preceq h_i$ for every $j < i$.
-Curbing this ability by limiting the maximum amount of pending operations per
-history makes $\preceq$ a wqo. Although limiting to $k$ pending operations
-essentially limits us to width-$k$ histories, of executions with at most $k$
-operations parallel at any moment, e.g.,~of programs with at most $k$ threads,
-this restriction comes at no loss of completeness when considering only the
-histories of bounded-width ADTs, which is the subject of the remainder
-of this section.
+This example demonstrates that $\preceq$ is not a wqo by allowing each history
+$h_i$ of the infinite sequence to contain more and more pending operations in
+order to ensure that $h_j \not\preceq h_i$ for every $j < i$. Curbing this
+ability by limiting the maximum amount of pending operations per history makes
+$\preceq$ a wqo. Although limiting to $k$ pending operations essentially limits
+us to width-$k$ histories, of executions with at most $k$ operations parallel at
+any moment, e.g.,~of programs with at most $k$ threads, this restriction comes
+at no loss of completeness when considering only the histories of bounded-width
+ADTs, which is the subject of the remainder of this section.
 
 \begin{lemma}
   \label{lem:wqo}
 
-  $\preceq$ is a wqo on width-bounded histories.
+  $\preceq$ is a wqo on bounded-width histories.\footnote{The proof of
+  Lemma~\ref{lem:wqo} appears in Appendix~\ref{sec:proof}.}
 
 \end{lemma}
 
 For the remainder of this section, we fix an ADT $A$, and let $B$ be its bounded
 complement. When $A$ has bounded width, so does $B$, and thus $\preceq$ is a wqo
 on $B$. Furthermore, when $A$ normal, it is closed under $\succeq$, and thus $B$
-is closed under $\preceq$~\footnote{Actually, $B$ is closed under $\preceq$ when
-restricted to width-bounded histories, i.e., if $h_1 \preceq h_2$, $h_1 \in B$,
-and $h_2$ is width-bounded, then $h_2\in B$.}. Closure under a relation
+is closed\footnote{Actually, $B$ is closed under $\preceq$ when restricted to
+width-bounded histories, i.e., if $h_1 \preceq h_2$, $h_1 \in B$, and $h_2$ is
+width-bounded, then $h_2\in B$.} under $\preceq$. Closure under a relation
 satisfying Lemma~\ref{lem:wqo} implies representation by a finite set. Formally,
 we say a set $X$ is \emph{finitely representable} if there exists a finite set
 $Y$ and a relation $R \subseteq Y \times X$ such that $X = \set{ x : \exists
