@@ -143,8 +143,9 @@ abstract algorithm is nondeterministic, and thus the inferred ADT specification
 is generally not the strongest possible in the sense that it may not exclude
 certain invalid linearizations. Nevertheless, specifications inferred by this
 algorithm are sound, in the sense that when modular program reasoning with
-inferred specifications succeeds, correctness follows. In any case, the
-specifications inferred by our refinement of this abstract algorithm in
-Section~\ref{sec:algorithm} are both sound and complete for the
-naturally-occurring ADTs of interest. The remainder of this article develops
+inferred specifications succeeds, correctness follows. In any case, in
+Section~\ref{sec:algorithm} we give conditions under which our refinement
+of this abstract algorithm is both sound and complete, and show that these
+conditions hold for naturally-occurring ADTs, thus resulting in sound and
+complete symbolic ADT specifications. The remainder of this article develops
 the technical machinery required to realize this abstract inference algorithm.

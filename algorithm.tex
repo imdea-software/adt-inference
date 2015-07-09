@@ -2,36 +2,61 @@
 \section{A Symbolic ADT Inference Algorithm}
 \label{sec:algorithm}
 
-Algorithm~\ref{alg:inference} lists the algorithm for solving the symbolic ADT
-inference problem which is based on the relation $\preceq$ defined in
-Section~\ref{sec:patterns}. The algorithm performs an weight-increasing
-enumeration of $B$ while maintaining the $\preceq$-minimal elements, and stops
-whenever no new minimals are found at a given weight.
+Algorithm~\ref{alg:inference} solves the symbolic ADT inference problem by
+computing a finite representation of an ADT complement $B$ using the $\preceq$
+relation of Section~\ref{sec:patterns}. In general, this is achieved by
+enumerating the elements of $B$ while maintaining the $\preceq$-minimal
+elements, and recognizing a condition under which all the elements of $B$ are
+related to the current set of minimals~\cite{conf/lics/AbdullaCJT96,
+journals/tcs/FinkelS01}. In our case, we stratify our enumeration of $B$ by the
+relative sizes of its histories. Formally, we say the \emph{weight} of a history
+is the maximum among operation frequencies and the number of matches. We then
+define
+\begin{align*}
+  & B_i = \set{ h \in B : \weight(h) \le i } \\
+  & B_i' = \set{ h \in B : \exists h' \in B_i.\ h' \preceq h \text{ and } \weight(h) \le i+1 }
+\end{align*}
+respectively as the histories of $B$ with at most $i$ matches and duplicates,
+and those derived from $B_i$ with at most $i+1$ matches and duplicates. We say
+that an ADT with complement $B$ is \emph{predictable} if $B_i^* = B$ whenever
+$B_i' = B_{i+1}$, i.e.,~if all histories of $B$ are represented by $B_i$ whenever
+all histories of $B_{i+1}$ are represented by $B_i$. Algorithm~\ref{alg:inference}
+then performs a weight-increasing enumeration of $B$, collecting
+$\preceq$-minimals from smaller-weight violations before advancing to greater
+weights. When no violation is found at a given weight, the algorithm terminates.
+This algorithm is guaranteed to terminate since $\preceq$ is a
+wqo~\cite{conf/lics/AbdullaCJT96, journals/tcs/FinkelS01}. Furthermore, this
+algorithm is sound for arbitrary ADTs, and complete for predictable ADTs.
+Many naturally-occurring ADTs are predictable — in fact all of the examples we
+know of are predictable, as demonstrated in Section~\ref{sec:nature}.
 
 \begin{algorithm}[t]
   \SetAlgoLined
   \SetKwInOut{Input}{Input}
-  \Input{A reference implementation $\mathcal{I}$}
+  \Input{A reference implementation $\mathcal{I}$ of width $k$}
   \KwResult{A formula representing the ADT of $\mathcal{I}$}
-  weight $\gets$ $0$ \;
   patterns $\gets$ $\emptyset$ \;
-  \Repeat{$B_\text{weight} = B_{\text{weight}-1}$}{
-    weight $\gets$ weight + $1$ \;
-    patterns $\gets$ $\min B_\text{weight}$ \;
+  $w$ $\gets$ $0$ \;
+  \Repeat{none-found}{
+    none-found $\gets$ true \;
+    \For{each $k$-width history $h$ with weight $w$}{
+      \uIf{$h$ is \emph{executable} with $\mathcal{I}$}{
+        continue
+      }
+      \uElseIf{$\exists h' \in \text{patterns}.\ h' \preceq h$}{
+        continue
+      }
+      \Else{
+        add $h$ to patterns \;
+        none-found $\gets$ false
+      }
+    }
+    $w$ $\gets$ $w$ + $1$ \;
   }
   \Return $F(\text{patterns})$
   \caption{Symbolic ADT inference.}
   \label{alg:inference}
 \end{algorithm}
-
-The partial correctness of Algorithm~\ref{alg:inference} (i.e.,~ignoring
-termination) relies on the input ADT being \emph{predictable}, i.e.,~for all
-$i \in \mathbb{N}$,
-\begin{align*}
-  B_{i+1} \succeq \min \bigcup_{0 < j \le i} b_j
-  \text{ implies } \min B = \min \bigcup_{0 < j \le i} b_j
-\end{align*}
-Section~\ref{sec:nature} shows that many naturally-occurring ADTs are predictable.
 
 \begin{theorem}
   \label{thm:algorithm}
@@ -48,19 +73,17 @@ Section~\ref{sec:nature} shows that many naturally-occurring ADTs are predictabl
     histories up to renaming of operation identifiers.
   }
   each $B_i$ is computable.
-
-  Furthermore, when $A$ is predictable, we
-  have $B \subseteq \text{patterns}^+$, where $\text{patterns}^+$ is the
-  upward closure of $\text{patterns}$ under $\preceq$. Thus by
-  Lemma~\ref{lem:formula1}, the returned formula represents $A$.
+  When $A$ is predictable, then $B = \text{patterns}^*$, and thus by
+  Lemma~\ref{lem:formula1}, the returned formula $F(\text{patterns})$
+  represents $A$.
 \end{proof}
 
-Note that for non-predictable ADTs, the value of $\text{patterns}^+$ upon
-termination of Algorithm~\ref{alg:inference} is an under-approximation of the
-bounded ADT complement $B$. The resulting symbolic ADT representation is still
-satisfied by all histories in $A$, therefore it would still be sound for modular
-program reasoning, identifying only actual violations, and implying the
-correctness of client programs which do not depend on the stronger criteria
-which excludes unidentified violations. However, the under-approximation may be
-incomplete in identifying all violations, and in proving client programs which
-depend on the stronger criteria which excludes them all.
+For non-predictable ADTs, the value of $\text{patterns}^*$ upon termination of
+Algorithm~\ref{alg:inference} is an under-approximation of the bounded ADT
+complement $B$. The resulting symbolic ADT representation is still satisfied by
+all histories in $A$, therefore it would still be sound for modular program
+reasoning, identifying only actual violations, and implying the correctness of
+client programs which do not depend on the stronger criteria which excludes
+unidentified violations. However, the under-approximation may be incomplete in
+identifying all violations, and in proving client programs which depend on the
+stronger criteria which excludes them all.

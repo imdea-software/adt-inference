@@ -95,26 +95,30 @@ corresponding to operations matching $o_i$.
 
 \end{lemma}
 
-We obtain a formula representing an ADT $A$ by taking the conjunction of the
+We obtain a formula representing an ADT by taking the conjunction of the
 negative embedding formulas $\set{ \lnot\textsc{Embed}_h : h \in H }$ from any
-set $H$ that \emph{generates} the bounded complement $B$ of $\ker A$, i.e.,
-$H\subseteq B\subseteq Cl_\preceq(H)$ where $Cl_\preceq(H)$ is the closure of $H$ w.r.t. $\preceq$.
+set $H$ that generates its bounded complement $B$, i.e.,~whose closure under
+$\preceq$, denoted by $H^*$ henceforth, is equal to $B$. We define the
+\emph{exclusion formula} of a set of histories $H$ as $F(H) = \bigwedge_{h \in
+H} \neg \textsc{Embed}_h$.
 
-\begin{lemma}\label{lem:formula2}
+\begin{lemma}
+  \label{lem:formula2}
 
-  The formula $F(H)=\bigwedge_{h \in H} \neg \textsc{Embed}_h$ represents $A$,
-  for any set $H$ which generates the bounded complement of $\ker A$.
+  Let $B$ be the bounded complement of a bounded-width ADT $A$, and $H$
+  a set of histories. $F(H)$ represents $A$ if $H^* = B$.
 
 \end{lemma}
+
 \begin{proof}
-For a set $\Sigma$, let $\neg \Sigma$ denote its complement.
-By Lemma~\ref{lem:ADT_closure}, the complement of $A$ is closed under $\preceq$. Since
-$H\subseteq B\subseteq  \neg \ker A \subseteq \neg A$, we have that $Cl(H)\subseteq \neg A$.
-By Lemma~\ref{lem:formula1}, the formula $F(H)$ holds exactly for the set of histories $\neg Cl(H)$.
-%which is the complement of $Cl(M)$.
-By the previous inclusions, we have that $A\subseteq \neg Cl(H)\subseteq \neg B$.
-Therefore, $F(H)$ holds for all histories in $\ker A$
-and doesn't hold for histories in $B$, which concludes the proof.
+
+  For a set $\Sigma$, let $\neg \Sigma$ denote its complement. By
+  Lemma~\ref{lem:ADT_closure}, the complement of $A$ is closed under $\preceq$.
+  Since $H\subseteq B\subseteq  \neg A \subseteq \neg A$, we have that
+  $H^* \subseteq \neg A$. By Lemma~\ref{lem:formula1}, the formula $F(H)$ holds
+  exactly for the set of histories $\neg H^*$. By the previous inclusions, we
+  have that $A\subseteq \neg H^* \subseteq \neg B$. Therefore, $F(H)$ holds for
+  all histories in $A$ and doesn't hold for histories in $B$.
 \end{proof}
 
 \begin{example}
