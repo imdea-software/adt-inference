@@ -175,17 +175,17 @@ values via equality.
 We compute the following nine histories to generate the complement of the
 atomic set ADT:
 \begin{verbatim}
-  [1:X] insert(1) => 1 (RO)  #        [1:1] insert(1) => -  #
-  ---                                 [2:1] remove(1) => 1    #
-  [1:X] remove(1) => 1  #             [3:1] remove(1) => 1      #
-  ---                                 ---
-  [1:X] contains(1) => 1 (RO)  #      [1:1] insert(1) => -         #
-  ---                                 [2:1] remove(1) => 1           #
-  [1:1] insert(1) => -       #        [3:1] contains(1) => 1 (RO)      #
-  [2:2] remove(1) => - (RO)    #      ---
-  ---                                 [1:1] insert(1) => -       #
-  [1:1] insert(1) => -         #      [2:2] remove(1) => - (RO)    #
-  [2:2] contains(1) => - (RO)    #    [3:1] remove(1) => 1           #
+  [1:X] insert(1) => 1 (RO)  #       [1:1] insert(1) => -  #
+  ---                                [2:1] remove(1) => 1   #
+  [1:X] remove(1) => 1  #            [3:1] remove(1) => 1    #
+  ---                                ---
+  [1:X] contains(1) => 1 (RO) #      [1:1] insert(1) => -        #
+  ---                                [2:1] remove(1) => 1         #
+  [1:1] insert(1) => -       #       [3:1] contains(1) => 1 (RO)   #
+  [2:2] remove(1) => - (RO)   #      ---
+  ---                                [1:1] insert(1) => -      #
+  [1:1] insert(1) => -         #     [2:2] remove(1) => - (RO)  #
+  [2:2] contains(1) => - (RO)   #    [3:1] remove(1) => 1        #
 \end{verbatim}
 As new generators are discovered for $n=1$ and $n=2$ matches only, the atomic
 set ADT is predictable.
