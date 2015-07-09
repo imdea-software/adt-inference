@@ -101,7 +101,7 @@ This matching scheme is faithful since two executions with the same history are
 identical up to homomorphic renaming of data values, and the queue and stack
 ADTs only relate data values via equality.
 
-It is not hard to see that the atomic queues and stacks are
+Atomic queues and stacks are
 normal. They are closed under removal of read-only operations: only empty
 removes, i.e.,~remove $\Rightarrow -$, are read-only. They are
 closed under the removal of duplicate operations: only non-empty removes can be
@@ -154,8 +154,7 @@ providing three methods:
 
 \end{itemize}
 Each operation returns the nil value $v = -$ when $u$ is not yet
-present, and otherwise returns $v = u$. As its name implies, the atomic set
-ADT is sequential.
+present, and otherwise returns $v = u$. The atomic set ADT is sequential.
 
 An execution \emph{inserts unique values} if the argument value to each insert
 operation which returns $-$ is unique. We give a faithful matching
@@ -219,7 +218,7 @@ unique keys as follows:
   has no match.
 
 \end{itemize}
-It is easy to see that this matching scheme is faithful, and normalizing.
+This matching scheme is faithful, and normalizing.
 
 We compute the following eleven histories to generate the complement of the
 atomic lock ADT:
@@ -266,8 +265,8 @@ recent.} (FIFO) removal order, proving three methods:
 \end{itemize}
 Unlike atomic queues, the work-stealing queue permits values to be removed
 twice: once normally, via the take operation, and once exceptionally, via the
-steal operation. We give a faithful matching scheme over executions which add
-unique values analogously to the scheme for stacks and queues, in which give
+steal operation. A faithful matching scheme over executions which add
+unique values is analogous to the scheme for stacks and queues: give
 operations match themselves, while take and steal operations match the give
 operation which added their returned value, or themselves, in case the nil
 value is returned. Note that the work-stealing queue ADT has width $2$,

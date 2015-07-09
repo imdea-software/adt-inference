@@ -1,8 +1,5 @@
 %!TEX root = draft.tex
-\appendix
-\section{Proof of Lemma~\ref{lem:wqo}}
-
-It is well-known that every potentially infinite set of elements has a finite set of minimals w.r.t. a well-quasi-ordering.
+\section{Proof that $\preceq$ is a Well-Quasi-Order (Lemma~\ref{lem:wqo})}
 
 We first prove that the embedding order, defined hereafter, is a wqo on width-bounded
 labeled interval orders.
@@ -24,7 +21,7 @@ $\subseteq$ is a wqo on width-bounded interval orders.
 By definition, for every interval order $(A,\leq,\ell)$, there exists a mapping $I$ from elements of $A$ to intervals on $\mathbb{N}$ such that for every $x,y\in A$, if $x\leq y$, then the interval $I(x)$ ends before the interval $I(y)$ (i.e., the upper bound of $I(x)$ is strictly smaller than the lower bound of $I(y)$). %In general, there are more than one mappings $I_A$ that satisfy these constraints. In the following, we assume that the mapping $I_A$ is arbitrary but fixed.
 Therefore, in the following, we assume that an interval order is a multiset $\Gamma$ of triples of the form $[i,j,a]$ where $[i,j]$ is an interval on $\mathbb{N}$ and $a$ is a symbol in $\Sigma$.
 
-We actually prove that another order on interval orders, denoted by $\subseteqq$, which is stronger than the embedding order $\subseteq$, is a wqo. The order $\subseteqq$ is defined by: $\Gamma_1\subseteqq \Gamma_2$ iff there exists an injective function $h:\Gamma_1\rightarrow \Gamma_2$ such that
+We prove that another order $\subseteqq$, stronger than the embedding order $\subseteq$, is a wqo. The order $\subseteqq$ is defined by: $\Gamma_1\subseteqq \Gamma_2$ iff there exists an injective function $h:\Gamma_1\rightarrow \Gamma_2$ such that
 \begin{enumerate}
 	\item $h$ preserves the labeling, i.e., for any triple $[i,j,a]$, $h([i,j,a])=[i',j',a]$, for some $i'$ and $j'$,
 	\item $h$ preserves the ordering constraints, i.e., for every two triples $[i,j,a]$ and $[k,l,b]$ such that $j< k$, $h([i,j,a])=[i',j',a]$, $h([k,l,b])=[k',l',b]$, and $j'< k'$.
@@ -45,12 +42,13 @@ For each $\Gamma_k$, let $\Lambda_k$ be the interval order obtained from $\Gamma
 By the minimality assumptions, the infinite sequence $\Gamma_1$, $\Gamma_2$,$\ldots$,$\Gamma_{k_1-1}$, $\Lambda_{k_1}$, $\Lambda_{k_2}$,$\ldots$ is not bad.
 Therefore, there exists $m<n$ such that $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$.
 
-It remains to prove that:
-\begin{itemize}
-	\item if $Init(\Gamma_{k_m})=Init(\Gamma_{k_n})$ and $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$, then $\Gamma_{k_m}\subseteqq \Gamma_{k_n}$.
-\end{itemize}
-
-Let $h$ be the injective function witnessing $\Lambda_{k_m}\subseteqq \Lambda_{k_n}$. We prove that the extension $h'$ of $h$ between $\Gamma_{k_m}$ and $\Gamma_{k_n}$, defined by $h'(Min(\Gamma_{k_m}))=Min(\Gamma_{k_n})$ and $h'(t)=h(t)$, for all $t\in \Lambda_{k_m}$, witnesses $\Gamma_{k_m}\subseteqq \Gamma_{k_n}$.
+It remains to prove that $\Gamma_{k_m}\subseteqq \Gamma_{k_n}$ when
+$Init(\Gamma_{k_m})=Init(\Gamma_{k_n})$ and $\Lambda_{k_m}\subseteqq
+\Lambda_{k_n}$. Let $h$ be the injective function witnessing
+$\Lambda_{k_m}\subseteqq \Lambda_{k_n}$. We prove that the extension $h'$ of $h$
+between $\Gamma_{k_m}$ and $\Gamma_{k_n}$, defined by
+$h'(Min(\Gamma_{k_m}))=Min(\Gamma_{k_n})$ and $h'(t)=h(t)$, for all $t\in
+\Lambda_{k_m}$, witnesses $\Gamma_{k_m}\subseteqq \Gamma_{k_n}$.
 
 Clearly, $h'$ preserves the labeling.
 To prove that $h'$ preserves the ordering constraints, let $Min(\Gamma_{k_m})=[i,j,a]$ and $[k,l,b]\in \Gamma_{k_m}$ such that $j< k$. Also, let $Min(\Gamma_{k_n})=[i',j',a]$ and $h'([k,l,b])=h([k,l,b])=[k',l',b]$. Assume by contradiction that $k'\leq j'$. Since $h$ is injective, there exists an element $[e,f,c]\in \Gamma_{k_m}$ incomparable to $Min(\Gamma_{k_m})$ which is mapped to an element $[e',f',c]$ greater than $Min(\Gamma_{k_n})$ (because, by definition, $\Gamma_{k_m}$ and $\Gamma_{k_n}$ have the same number of elements incomparable to $Min(\Gamma_{k_m})$ and respectively, $Min(\Gamma_{k_n})$).
@@ -93,11 +91,9 @@ The \emph{signature} of a history $h$ is the tuple
 && \set{\sigma(o): o\mbox{ unmatched}}, \\
 && \mset{\sigma(o): o\mbox{ pending and non-matched}}).
 \end{align*}
-
-The history signature contains sets of signatures
-(for matches, read-only and respectively, completed and unmatched operations)
-and the multiset of signatures of the pending and non-matched operations.
-
+The history signature contains sets of signatures (for matches, read-only,
+completed, and unmatched operations) and the multiset of signatures of the
+pending and non-matched operations.
 %Assume by contradiction that $\preceq$ has an infinite antichain.
 Since the set of history signatures is bounded (because the set of methods
 and the set of pending operations are bounded),
