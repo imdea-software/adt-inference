@@ -138,7 +138,7 @@ To enforce that each operation of an execution $e$ will have a unique match,
 we define the macro $\textsc{UniqueMatch}_e$:
 \begin{align*}
   \bigwedge_{o_1,o_2 \in O_e} \Big(
-    \textsc{IsMatch}_{e,o_2,o_2} \implies
+    \textsc{IsMatch}_{e,o_1,o_2} \implies
     \bigwedge_{o_1' \neq o_1} \lnot \textsc{IsMatch}_{e,o_1',o_2}
   \Big).
 \end{align*}

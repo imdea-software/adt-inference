@@ -49,7 +49,7 @@ closure under $\succeq$ follows immediately.
 
 \end{lemma}
 
-Besides this closure property, the $\preceq$ relation enjoys a certain notion of
+Besides this closure property, the inverse $\preceq$ relation enjoys a certain notion of
 well-foundedness when restricted to bounded-width histories: the set of
 $\preceq$-minimal elements of any (potentially infinite) history set is finite.
 This property is what enables us to represent infinite sets of invalid ADT
@@ -90,7 +90,7 @@ ADTs, which is the subject of the remainder of this section.
 
 For the remainder of this section, we fix an ADT $A$, and let $B$ be its bounded
 complement. When $A$ has bounded width, so does $B$, and thus $\preceq$ is a wqo
-on $B$. Furthermore, when $A$ normal, it is closed under $\succeq$, and thus $B$
+on $B$. Furthermore, when $A$ is normal, it is closed under $\succeq$, and thus $B$
 is closed\footnote{Actually, $B$ is closed under $\preceq$ when restricted to
 width-bounded histories, i.e., if $h_1 \preceq h_2$, $h_1 \in B$, and $h_2$ is
 width-bounded, then $h_2\in B$.} under $\preceq$. Closure under a relation
