@@ -1,13 +1,12 @@
-%!TEX root = draft.tex
 \section{Symbolic ADT Representations}
 \label{sec:formula}
 
-While Section~\ref{sec:patterns} demonstrates that (the complements) of
+While Section~\ref{sec:patterns} demonstrates that (the complements of)
 naturally-occurring ADTs can be represented finitely, in this section we
-demonstrate that such finite representations have logical interpretations,
-allowing us to derive the formulas representing ADTs. In what follows, we
-describe how to obtain a formula which is satisfied by the histories which
-embed a given history, via $\preceq$. Then, using the finite set of histories
+demonstrate that those representations have logical interpretations,
+allowing us to derive formulas representing ADTs. In what follows we
+describe how to obtain formulas satisfied by the histories which
+embed a given history via $\preceq$. Then, using the finite set of histories
 which represent the complement of a given ADT, we represent the ADT itself as
 the conjunction of negations of these embedding formulas. The resulting formula
 is satisfied only on the histories which do not embed the generators of a given
@@ -15,8 +14,8 @@ ADT’s complement.
 
 Let $h = \tup{O,<,c,f,m,r}$ be a history with operations $O = \set{ o_1, \ldots,
 o_n }$. Without loss of generality, we assume the match targets $\set{o_1,
-\ldots, o_k}$ of $h$ are indexed consecutively from $1$ to $k$, for some $k \le
-n$. For each $o \in O$, we define the macro $\textsc{Embed}_o(x,Y,z)$:
+\ldots, o_k}$ of $h$ are indexed consecutively from $1$ to $k$ for some $k \le
+n$. For each $o \in O$, the macro $\textsc{Embed}_o(x,Y,z)$:
 \begin{align*}
   & \big(c(o) \implies {\sf c}(x)\big) \land {\sf f}(x) = f(o) \land {\sf r}(x) \Leftrightarrow r(o) \\
   & \land \big(o \in \dom(m)
@@ -24,7 +23,7 @@ n$. For each $o \in O$, we define the macro $\textsc{Embed}_o(x,Y,z)$:
   & \land \big(o \not\in \dom(m) \implies {\sf um}(x)\big)
     \land \bigwedge_{y \in Y} x < y
 \end{align*}
-capturing the correspondence between the operation $o$ and the logical variable
+captures the correspondence between the operation $o$ and the logical variable
 $x$ representing $o$. The variables $Y$ and $z$ represent the operations
 ordered after $x$, and the operation which $x$ matches. The macro
 $\textsc{Identical}(x,y)$:
@@ -71,7 +70,7 @@ corresponding to operations matching $o_i$.
   \begin{align*}
     \exists x_1.\ {\sf c}(x_1) \land {\sf f}(x_1) = \mathrm{read} \land {\sf um}(x_1) \land {\sf r}(x_1).
   \end{align*}
-  The $\textsc{Embed}$ formula for second history,
+  The $\textsc{Embed}$ formula for the second history,
 \begin{verbatim}
   [1:1] write(1)            #
   [2:2] read => - (RO)    #
@@ -99,8 +98,8 @@ corresponding to operations matching $o_i$.
 We obtain a formula representing an ADT by taking the conjunction of the
 negative embedding formulas $\set{ \lnot\textsc{Embed}_h : h \in H }$ from any
 set $H$ that generates its bounded complement $B$, i.e.,~whose closure under
-$\preceq$, denoted by $H^*$ henceforth, is equal to $B$. We define the
-\emph{exclusion formula} of a set of histories $H$ as $F(H) = \bigwedge_{h \in
+$\preceq$, denoted by $H^*$ henceforth, is equal to $B$. The
+\emph{exclusion formula} of a set of histories $H$ is $F(H) = \bigwedge_{h \in
 H} \neg \textsc{Embed}_h$.
 
 \begin{lemma}
@@ -113,13 +112,13 @@ H} \neg \textsc{Embed}_h$.
 
 \begin{proof}
 
-  For a set $\Sigma$, let $\neg \Sigma$ denote its complement. By
+  Let $\neg \Sigma$ denote the complement of a set $\Sigma$. By
   Lemma~\ref{lem:ADT_closure}, the complement of $A$ is closed under $\preceq$.
-  Since $H^* \subseteq B\subseteq \neg A$, we have that
+  Since $H^* \subseteq B\subseteq \neg A$, we know
   $H^* \subseteq \neg A$. By Lemma~\ref{lem:formula1}, the formula $F(H)$ holds
-  exactly for the set of histories $\neg H^*$. By the previous inclusions, we
+  exactly for the histories $\neg H^*$. By the previous inclusions, we
   have that $A\subseteq \neg H^* \subseteq \neg B$. Therefore, $F(H)$ holds for
-  all histories in $A$ and doesn't hold for histories in $B$.
+  $A$ and not for $B$.
 \end{proof}
 
 \begin{example}
@@ -129,12 +128,3 @@ H} \neg \textsc{Embed}_h$.
   Example~\ref{ex:formulas}, represents the atomic register ADT.
 
 \end{example}
-
-%For normal and predictable ADTs, such sets are computable, and so our inference
-%problem is also computable.
-%
-%\begin{theorem}
-%
-%  The symbolic ADT inference problem is computable for normal and predictable ADTs.
-%
-%\end{theorem}
