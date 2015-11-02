@@ -126,17 +126,237 @@ Concurrency; Refinement; Linearizability
 % \balancecolumns
 
 \bibliographystyle{abbrvnat}
-\bibliography{violin}
 
+% \bibliography{dblp,books}
 
-% % The bibliography should be embedded for final submission.
-%
-% \begin{thebibliography}{}
-% \softraggedright
-%
-% \bibitem[Smith et~al.(2009)Smith, Jones]{smith02}
-% P. Q. Smith, and X. Y. Jones. ...reference text...
-%
-% \end{thebibliography}
+\begin{thebibliography}{26}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abdulla et~al.(1996)Abdulla, Cerans, Jonsson, and
+  Tsay]{conf/lics/AbdullaCJT96}
+P.~A. Abdulla, K.~Cerans, B.~Jonsson, and Y.~Tsay.
+\newblock General decidability theorems for infinite-state systems.
+\newblock In \emph{Proceedings, 11th Annual {IEEE} Symposium on Logic in
+  Computer Science, New Brunswick, New Jersey, USA, July 27-30, 1996}, pages
+  313--321. {IEEE} Computer Society, 1996.
+\newblock \url{http://dx.doi.org/10.1109/LICS.1996.561359}.
+
+\bibitem[Abdulla et~al.(2013)Abdulla, Haziza, Hol{\'{\i}}k, Jonsson, and
+  Rezine]{conf/tacas/AbdullaHHJR13}
+P.~A. Abdulla, F.~Haziza, L.~Hol{\'{\i}}k, B.~Jonsson, and A.~Rezine.
+\newblock An integrated specification and verification technique for highly
+  concurrent data structures.
+\newblock In \emph{Tools and Algorithms for the Construction and Analysis of
+  Systems - 19th International Conference, {TACAS} 2013, Held as Part of the
+  European Joint Conferences on Theory and Practice of Software, {ETAPS} 2013,
+  Rome, Italy, March 16-24, 2013. Proceedings}, volume 7795 of \emph{Lecture
+  Notes in Computer Science}, pages 324--338. Springer, 2013.
+\newblock \url{http://dx.doi.org/10.1007/978-3-642-36742-7_23}.
+
+\bibitem[Amit et~al.(2007)Amit, Rinetzky, Reps, Sagiv, and
+  Yahav]{conf/cav/AmitRRSY07}
+D.~Amit, N.~Rinetzky, T.~W. Reps, M.~Sagiv, and E.~Yahav.
+\newblock Comparison under abstraction for verifying linearizability.
+\newblock In \emph{Computer Aided Verification, 19th International Conference,
+  {CAV} 2007, Berlin, Germany, July 3-7, 2007, Proceedings}, volume 4590 of
+  \emph{Lecture Notes in Computer Science}, pages 477--490. Springer, 2007.
+\newblock \url{http://dx.doi.org/10.1007/978-3-540-73368-3_49}.
+
+\bibitem[Angluin(1987)]{journals/iandc/Angluin87}
+D.~Angluin.
+\newblock Learning regular sets from queries and counterexamples.
+\newblock \emph{Inf. Comput.}, 75\penalty0 (2):\penalty0 87--106, 1987.
+\newblock \url{http://dx.doi.org/10.1016/0890-5401(87)90052-6}.
+
+\bibitem[Bouajjani et~al.(2015{\natexlab{a}})Bouajjani, Emmi, Enea, and
+  Hamza]{conf/icalp/BouajjaniEEH15}
+A.~Bouajjani, M.~Emmi, C.~Enea, and J.~Hamza.
+\newblock On reducing linearizability to state reachability.
+\newblock In \emph{Automata, Languages, and Programming - 42nd International
+  Colloquium, {ICALP} 2015, Kyoto, Japan, July 6-10, 2015, Proceedings, Part
+  {II}}, volume 9135 of \emph{Lecture Notes in Computer Science}, pages
+  95--107. Springer, 2015{\natexlab{a}}.
+\newblock \url{http://dx.doi.org/10.1007/978-3-662-47666-6_8}.
+
+\bibitem[Bouajjani et~al.(2015{\natexlab{b}})Bouajjani, Emmi, Enea, and
+  Hamza]{conf/popl/BouajjaniEEH15}
+A.~Bouajjani, M.~Emmi, C.~Enea, and J.~Hamza.
+\newblock Tractable refinement checking for concurrent objects.
+\newblock In \emph{Proceedings of the 42nd Annual {ACM} {SIGPLAN-SIGACT}
+  Symposium on Principles of Programming Languages, {POPL} 2015, Mumbai, India,
+  January 15-17, 2015}, pages 651--662. {ACM}, 2015{\natexlab{b}}.
+\newblock \url{http://doi.acm.org/10.1145/2676726.2677002}.
+
+\bibitem[Burckhardt et~al.(2010)Burckhardt, Dern, Musuvathi, and
+  Tan]{conf/pldi/BurckhardtDMT10}
+S.~Burckhardt, C.~Dern, M.~Musuvathi, and R.~Tan.
+\newblock Line-up: a complete and automatic linearizability checker.
+\newblock In \emph{Proceedings of the 2010 {ACM} {SIGPLAN} Conference on
+  Programming Language Design and Implementation, {PLDI} 2010, Toronto,
+  Ontario, Canada, June 5-10, 2010}, pages 330--340. {ACM}, 2010.
+\newblock \url{http://doi.acm.org/10.1145/1806596.1806634}.
+
+\bibitem[Burnim et~al.(2011)Burnim, Necula, and Sen]{conf/asplos/BurnimNS11}
+J.~Burnim, G.~C. Necula, and K.~Sen.
+\newblock Specifying and checking semantic atomicity for multithreaded
+  programs.
+\newblock In \emph{Proceedings of the 16th International Conference on
+  Architectural Support for Programming Languages and Operating Systems,
+  {ASPLOS} 2011, Newport Beach, CA, USA, March 5-11, 2011}, pages 79--90.
+  {ACM}, 2011.
+\newblock \url{http://doi.acm.org/10.1145/1950365.1950377}.
+
+\bibitem[Dodds et~al.(2015)Dodds, Haas, and Kirsch]{conf/popl/DoddsHK15}
+M.~Dodds, A.~Haas, and C.~M. Kirsch.
+\newblock A scalable, correct time-stamped stack.
+\newblock In \emph{Proceedings of the 42nd Annual {ACM} {SIGPLAN-SIGACT}
+  Symposium on Principles of Programming Languages, {POPL} 2015, Mumbai, India,
+  January 15-17, 2015}, pages 233--246. {ACM}, 2015.
+\newblock \url{http://doi.acm.org/10.1145/2676726.2676963}.
+
+\bibitem[Dragoi et~al.(2013)Dragoi, Gupta, and Henzinger]{conf/cav/DragoiGH13}
+C.~Dragoi, A.~Gupta, and T.~A. Henzinger.
+\newblock Automatic linearizability proofs of concurrent objects with
+  cooperating updates.
+\newblock In \emph{Computer Aided Verification - 25th International Conference,
+  {CAV} 2013, Saint Petersburg, Russia, July 13-19, 2013. Proceedings}, volume
+  8044 of \emph{Lecture Notes in Computer Science}, pages 174--190. Springer,
+  2013.
+\newblock \url{http://dx.doi.org/10.1007/978-3-642-39799-8_11}.
+
+\bibitem[Emmi et~al.(2015)Emmi, Enea, and Hamza]{conf/pldi/EmmiEH15}
+M.~Emmi, C.~Enea, and J.~Hamza.
+\newblock Monitoring refinement via symbolic reasoning.
+\newblock In \emph{Proceedings of the 36th {ACM} {SIGPLAN} Conference on
+  Programming Language Design and Implementation, Portland, OR, USA, June
+  15-17, 2015}, pages 260--269. {ACM}, 2015.
+\newblock \url{http://doi.acm.org/10.1145/2737924.2737983}.
+
+\bibitem[Finkel and Schnoebelen(2001)]{journals/tcs/FinkelS01}
+A.~Finkel and P.~Schnoebelen.
+\newblock Well-structured transition systems everywhere!
+\newblock \emph{Theor. Comput. Sci.}, 256\penalty0 (1-2):\penalty0 63--92,
+  2001.
+\newblock \url{http://dx.doi.org/10.1016/S0304-3975(00)00102-X}.
+
+\bibitem[Fishburn(1985)]{books/Fishburn85}
+P.~C. Fishburn.
+\newblock \emph{Interval Orders and Interval Graphs: A Study of Partially
+  Ordered Sets}.
+\newblock Wiley-Interscience Series in Discrete Mathematics. John Wiley \& Sons
+  Inc, 1985.
+
+\bibitem[Giannakopoulou et~al.(2005)Giannakopoulou, Pasareanu, and
+  Barringer]{journals/ase/GiannakopoulouPB05}
+D.~Giannakopoulou, C.~S. Pasareanu, and H.~Barringer.
+\newblock Component verification with automatically generated assumptions.
+\newblock \emph{Autom. Softw. Eng.}, 12\penalty0 (3):\penalty0 297--320, 2005.
+\newblock \url{http://dx.doi.org/10.1007/s10515-005-2641-y}.
+
+\bibitem[Hemed and Rinetzky(2014)]{conf/podc/HemedR14}
+N.~Hemed and N.~Rinetzky.
+\newblock Brief announcement: concurrency-aware linearizability.
+\newblock In \emph{{ACM} Symposium on Principles of Distributed Computing,
+  {PODC} '14, Paris, France, July 15-18, 2014}, pages 209--211. {ACM}, 2014.
+\newblock \url{http://doi.acm.org/10.1145/2611462.2611513}.
+
+\bibitem[Hendler et~al.(2006)Hendler, Lev, Moir, and
+  Shavit]{journals/dc/HendlerLMS06}
+D.~Hendler, Y.~Lev, M.~Moir, and N.~Shavit.
+\newblock A dynamic-sized nonblocking work stealing deque.
+\newblock \emph{Distributed Computing}, 18\penalty0 (3):\penalty0 189--207,
+  2006.
+\newblock \url{http://dx.doi.org/10.1007/s00446-005-0144-5}.
+
+\bibitem[Henzinger et~al.(2013)Henzinger, Sezgin, and
+  Vafeiadis]{conf/concur/HenzingerSV13}
+T.~A. Henzinger, A.~Sezgin, and V.~Vafeiadis.
+\newblock Aspect-oriented linearizability proofs.
+\newblock In \emph{{CONCUR} 2013 - Concurrency Theory - 24th International
+  Conference, {CONCUR} 2013, Buenos Aires, Argentina, August 27-30, 2013.
+  Proceedings}, volume 8052 of \emph{Lecture Notes in Computer Science}, pages
+  242--256. Springer, 2013.
+\newblock \url{http://dx.doi.org/10.1007/978-3-642-40184-8_18}.
+
+\bibitem[Herlihy and Wing(1990)]{journals/toplas/HerlihyW90}
+M.~Herlihy and J.~M. Wing.
+\newblock Linearizability: {A} correctness condition for concurrent objects.
+\newblock \emph{{ACM} Trans. Program. Lang. Syst.}, 12\penalty0 (3):\penalty0
+  463--492, 1990.
+\newblock \url{http://doi.acm.org/10.1145/78969.78972}.
+
+\bibitem[Liang and Feng(2013)]{conf/pldi/LiangF13}
+H.~Liang and X.~Feng.
+\newblock Modular verification of linearizability with non-fixed linearization
+  points.
+\newblock In \emph{{ACM} {SIGPLAN} Conference on Programming Language Design
+  and Implementation, {PLDI} '13, Seattle, WA, USA, June 16-19, 2013}, pages
+  459--470. {ACM}, 2013.
+\newblock \url{http://doi.acm.org/10.1145/2462156.2462189}.
+
+\bibitem[Liu et~al.(2009)Liu, Chen, Liu, and Sun]{conf/fm/LiuCLS09}
+Y.~Liu, W.~Chen, Y.~A. Liu, and J.~Sun.
+\newblock Model checking linearizability via refinement.
+\newblock In \emph{{FM} 2009: Formal Methods, Second World Congress, Eindhoven,
+  The Netherlands, November 2-6, 2009. Proceedings}, volume 5850 of
+  \emph{Lecture Notes in Computer Science}, pages 321--337. Springer, 2009.
+\newblock \url{http://dx.doi.org/10.1007/978-3-642-05089-3_21}.
+
+\bibitem[O'Hearn et~al.(2010)O'Hearn, Rinetzky, Vechev, Yahav, and
+  Yorsh]{conf/podc/OHearnRVYY10}
+P.~W. O'Hearn, N.~Rinetzky, M.~T. Vechev, E.~Yahav, and G.~Yorsh.
+\newblock Verifying linearizability with hindsight.
+\newblock In \emph{Proceedings of the 29th Annual {ACM} Symposium on Principles
+  of Distributed Computing, {PODC} 2010, Zurich, Switzerland, July 25-28,
+  2010}, pages 85--94. {ACM}, 2010.
+\newblock \url{http://doi.acm.org/10.1145/1835698.1835722}.
+
+\bibitem[Shacham et~al.(2011)Shacham, Bronson, Aiken, Sagiv, Vechev, and
+  Yahav]{conf/oopsla/ShachamBASVY11}
+O.~Shacham, N.~G. Bronson, A.~Aiken, M.~Sagiv, M.~T. Vechev, and E.~Yahav.
+\newblock Testing atomicity of composed concurrent operations.
+\newblock In \emph{Proceedings of the 26th Annual {ACM} {SIGPLAN} Conference on
+  Object-Oriented Programming, Systems, Languages, and Applications, {OOPSLA}
+  2011, part of {SPLASH} 2011, Portland, OR, USA, October 22 - 27, 2011}, pages
+  51--64. {ACM}, 2011.
+\newblock \url{http://doi.acm.org/10.1145/2048066.2048073}.
+
+\bibitem[Vafeiadis(2010)]{conf/cav/Vafeiadis10}
+V.~Vafeiadis.
+\newblock Automatically proving linearizability.
+\newblock In \emph{Computer Aided Verification, 22nd International Conference,
+  {CAV} 2010, Edinburgh, UK, July 15-19, 2010. Proceedings}, volume 6174 of
+  \emph{Lecture Notes in Computer Science}, pages 450--464. Springer, 2010.
+\newblock \url{http://dx.doi.org/10.1007/978-3-642-14295-6_40}.
+
+\bibitem[Wing and Gong(1993)]{journals/jpdc/WingG93}
+J.~M. Wing and C.~Gong.
+\newblock Testing and verifying concurrent objects.
+\newblock \emph{J. Parallel Distrib. Comput.}, 17\penalty0 (1-2):\penalty0
+  164--182, 1993.
+\newblock \url{http://dx.doi.org/10.1006/jpdc.1993.1015}.
+
+\bibitem[Zhang et~al.(2013)Zhang, Chattopadhyay, and Wang]{conf/kbse/ZhangCW13}
+L.~Zhang, A.~Chattopadhyay, and C.~Wang.
+\newblock Round-up: Runtime checking quasi linearizability of concurrent data
+  structures.
+\newblock In \emph{2013 28th {IEEE/ACM} International Conference on Automated
+  Software Engineering, {ASE} 2013, Silicon Valley, CA, USA, November 11-15,
+  2013}, pages 4--14. {IEEE}, 2013.
+\newblock \url{http://dx.doi.org/10.1109/ASE.2013.6693061}.
+
+\bibitem[Zhang(2011)]{conf/icse/Zhang11a}
+S.~J. Zhang.
+\newblock Scalable automatic linearizability checking.
+\newblock In \emph{Proceedings of the 33rd International Conference on Software
+  Engineering, {ICSE} 2011, Waikiki, Honolulu , HI, USA, May 21-28, 2011},
+  pages 1185--1187. {ACM}, 2011.
+\newblock \url{http://doi.acm.org/10.1145/1985793.1986037}.
+
+\end{thebibliography}
 
 \end{document}
