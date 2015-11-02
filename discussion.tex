@@ -21,11 +21,10 @@ are normally represented with histories with few operations, we do expect it to
 incur a noticeable cost.
 
 Second, ADTs whose specifications rely on relations (besides equality) on
-method argument and return values cannot be expressed with our notion of
-histories based on matching schemes. A notable example of such an ADT is the
+method argument and return values cannot be expressed with our matching-scheme
+based notion of histories. A notable example is the
 \emph{priority queue}, whose \emph{dequeue} operations return the
 smallest/largest \emph{enqueue}d value which has not yet been dequeued.
-%It appears that such ADTs are rare in practice.
 Overcoming this limitation would
 require a refinement to matching schemes which can track additional relations
 among data values.
@@ -35,8 +34,8 @@ deterministically. For example, each \emph{wait} operation of \emph{semaphore}
 ADT should naturally match the \emph{notify} operation which enabled it.
 However, it is not possible to determine this based on operation labels alone,
 and it is not clear whether all implementations effectively keep track of this
-correspondence. Furthermore, choosing matches arbitrarily would be unsound, and
+correspondence. Choosing matches arbitrarily would be unsound, and
 result in inferring ADTs with artificial constraints, e.g.,~that the notify and
 wait operations behave according to a FIFO discipline, each wait matching the
-oldest unmatched notify. Overcoming this limitation may require introducing a
-notion of nondeterminism into matching schemes.
+oldest unmatched notify. Overcoming this limitation may require introducing
+nondeterminism into matching schemes.

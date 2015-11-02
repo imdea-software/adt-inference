@@ -123,8 +123,8 @@ sequence is admitted by the given reference implementation’s implicit ADT.
 [3:X] remove => 2      #
     \end{verbatim}
   \end{minipage}
-  \caption{Invalid sequences according to the atomic queue ADT. The histories
-  on the right are each redundant with some history on the left, and those on
+  \caption{Invalid sequences according to the atomic queue ADT. Histories
+  on the right are each redundant with some on the left; those on
   the left constitute a complete set. The “\#” symbols depict the time intervals
   spanned by operations horizontally, and the “{\tt [$i$:$j$]}” notation refers
   to the current line’s operation identifier $i$, and the identifier $j$ of
@@ -133,9 +133,9 @@ sequence is admitted by the given reference implementation’s implicit ADT.
   \label{fig:patterns}
 \end{figure}
 
-The key technical obstacle in realizing the abstract algorithm of
-Algorithm~\ref{alg:abstract}, overcome in Section~\ref{sec:patterns}, is the
-classification of violations into a finite set of patterns, rendering the
+The key technical obstacle in realizing Algorithm~\ref{alg:abstract},
+which we overcome in Section~\ref{sec:patterns}, is
+classifying violations into a finite set of patterns, rendering the
 remaining invalid sequences redundant. The symbolic representation which
 excludes a given set of patterns is relatively straightforward to construct, and
 is given in Section~\ref{sec:formula}. Note however that the termination of this
