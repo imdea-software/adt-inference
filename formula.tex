@@ -39,8 +39,7 @@ To express the constraints among the matches of embedded operations, we define
 the macro $\textsc{Match}(Y,z)$:
 \begin{align*}
   \forall x.
-  \lnot{\sf um}(x) \land
-  {\sf m}(x) = z \implies
+  \left(\lnot{\sf um}(x) \land {\sf m}(x) = z\right) \implies
   {\sf r}(x) \lor \bigvee_{y \in Y} \textsc{Identical}(x,y)
 \end{align*}
 which requires any operation which matches $z$ to be either read-only, or

@@ -70,8 +70,7 @@ register ADT is predictable.
 
 Atomic queues and stacks implement atomic collections of data values with
 first-in-first-out (FIFO) and last-in-first-out (LIFO) removal order,
-respectively, providing two methods:\footnote{These methods are also known as
-enqueue and dequeue, or push and pop.}
+respectively, providing two methods:
 \begin{itemize}
 
   \item add$(v)$ adds the value $v$ to the collection, and
@@ -156,7 +155,7 @@ Each operation returns the nil value $v = -$ when $u$ is not yet
 present, and otherwise returns $v = u$. The atomic set ADT is sequential.
 
 An execution \emph{inserts unique values} if the argument value to each insert
-operation which returns $-$ is unique. We give a faithful matching
+operation returning $-$ is unique. We give a faithful matching
 scheme over executions which insert unique values as follows:
 \begin{itemize}
 
@@ -269,7 +268,7 @@ unique values is analogous to the scheme for stacks and queues: give
 operations match themselves, while take and steal operations match the give
 operation which added their returned value, or themselves, in case the nil
 value is returned. Note that the work-stealing queue ADT has width $2$,
-since a pairs of concurrent take and steal operations returning the same value
+since pairs of concurrent take and steal operations returning the same value
 are permitted, while sequentially they are not. As our implementation is
 currently limited to width-$1$ histories (see the discussion in
 Section~\ref{sec:discussion}), below we generate only the width-$1$ complement.
@@ -277,7 +276,7 @@ Section~\ref{sec:discussion}), below we generate only the width-$1$ complement.
 We compute the following twenty-four histories to generate the complement of
 the work-stealing queue ADT:
 \begin{verbatim}
-  [1:_] take => 1  #             [1:_] steal => 1  #
+  [1:X] take => 1  #             [1:X] steal => 1  #
   ---                            ---
   [1:1] give(1)         #        [1:1] give(1)          #
   [2:2] take => - (RO)    #      [2:2] steal => - (RO)    #
